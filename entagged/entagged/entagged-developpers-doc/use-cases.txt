@@ -1,0 +1,23 @@
+Use Cases Document
+// $Id: use-cases.txt,v 1.1 2007/03/23 14:16:41 nicov1 Exp $ //
+We can imagine two kind of Entagged (ET from now on) users:
+
+	-The novice user, or regular user:
+		He want a software to tag mostly automatically and transparently his musical files, without worrying about
+		what is happening, or what kind of tag he is using. He want this to "just work". The library could be used
+		to prepare a report of the audio files he is taking on holiday, in a simple html, or exell spreadsheet.
+		The freedb function should be intuitive, and straitforward. Renaming the files from the tag should be easy,
+		and should work with a lot of files at once.
+	
+	-The power user, or the "one know what happens behind"
+		He wants all what a novice would want, but he should be given access to all the advanced features,
+		such as SQL query in the database, access to the specific tags for each tag format, rename using regex, etc.
+		A specific part of the GUI should be dedicated to this usage.
+		
+Here come the true use cases.
+
+	-
+	
+	-
+	
+	-

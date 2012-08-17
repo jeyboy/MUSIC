@@ -1,0 +1,8 @@
+*.class
+sourceforge_upload
+entagged-tageditor-*.tar.gz
+entagged-tageditor-*.zip
+build
+*.tar.gz
+*.jar
+*.exe

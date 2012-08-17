@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+ "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<article>
+	<articleinfo>
+		<title>Entagged - The Musical Box Readme</title>
+		<subtitle>Entagged Documentation</subtitle>
+		<author><firstname>Raphaël</firstname><surname>Slinckx</surname><othername>KiKiDonK</othername><authorblurb><para>Project Manager</para></authorblurb></author>
+		<pubdate>$Id: readme.xml,v 1.1 2007/03/23 14:16:43 nicov1 Exp $</pubdate>
+		
+		<revhistory>
+			<revision>
+				<revnumber>0.09</revnumber>
+				<date>14 April 2004</date>
+				<revremark>First version of this readme (shipped with v0.09)</revremark>
+			</revision>
+			<revision>
+				<revnumber>0.10</revnumber>
+				<date>18 July 2004</date>
+				<revremark>Update for v0.10</revremark>
+			</revision>
+			<revision>
+				<revnumber>0.11</revnumber>
+				<date>31 october 2004</date>
+				<revremark>Update for v0.11</revremark>
+			</revision>
+		</revhistory>
+
+		<keywordset>
+			<keyword>readme</keyword>
+			<keyword>entagged</keyword>
+			<keyword>documentation</keyword>
+			<keyword>tag</keyword>
+			<keyword>tagger</keyword>
+			<keyword>freedb</keyword>
+			<keyword>java</keyword>
+			<keyword>musical box</keyword>
+		</keywordset>
+	</articleinfo>
+
+
+	<section>
+		<title>Entagged - The Musical Box User Manual</title>
+		<para><emphasis>Please report bugs</emphasis>. That would help us to improve the stability and make this program a great tool !</para>
+		
+		<section>
+			<title>Introduction</title>
+			
+			<section>
+				<title>Rationale</title>
+				<para>Our aim is to provide a simple, intuitive and powerful interface for audio file tagging. Simple because it don't bug the user with thousand of options, only the essential one are provided. Powerful because it supports freedb, it supports recursive processing of tag and rename operations. Intuitive because it is nearly transparent for the user. Want to rename all your files ? Simply select the directory and choose a mask, click rename, it's done !<emphasis>TODO</emphasis></para>
+			</section>
+
+			<section>
+				<title>Features</title>
+				<para>Here is a list of current Entagged features
+					<itemizedlist>
+						<listitem><para>Support for OGG Vorbis files - MP3 (id3v1 and id3v2 tags) files - FLAC Files - MPC(MP+) Musepack Files - APE Monkey Audio Files - WAV files (see <xref linkend="supportedformats" />)</para></listitem>
+						<listitem><para>Handles all files independently of their type (allows to batch files even from mixed types)</para></listitem>
+						<listitem><para>Edit essential tag information (Artist-Album-Title-TrackNb-Comment-Genre-Year) easily</para></listitem>
+						<listitem><para>Rename files from their tag using any of the above infos with any pattern</para></listitem>
+						<listitem><para>Tag files (again using the above fields) from their filename with any pattern</para></listitem>
+						<listitem><para>Pattern can use filename but also directory name, easy to create a well structured audio files repository</para></listitem>
+						<listitem><para>freedb search using automatically computed cddb id's (the way it is meant to be used). Simply select some files that represent an album, then query and tag.</para></listitem>
+						<listitem><para>freedb search using manually searched cddb id. When entagged can't find any match, you can search freedb for a given artist/album and find the correct match yourself, then ask entagged to tag the files.</para></listitem>
+						<listitem><para>Supports Multi langage (currently only english,french and spanish) (contributors appreciated)</para></listitem>
+						<listitem><para>Recursive processing of all the above operations, easily !</para></listitem>
+						<listitem><para>Text transformation: capitalize, uppercase roman numerals, lowercase, and more that can be used either while tagging or renaming.</para></listitem>
+						<listitem><para>Separate freedb and audioformats libraries that can be used independently by anyone who want to read and/or write meta data to audio files</para></listitem>
+						<listitem><para>More (to come)</para></listitem>
+					</itemizedlist>
+				</para>
+			</section>
+
+			<section>
+				<title>What's next ?</title>
+				<para>The following features are planned to be added soon or late...
+					<itemizedlist>
+						<listitem><para>Support for Musicbrainz database or others ?</para></listitem>
+					</itemizedlist>
+				</para>
+			</section>
+
+			<section>
+				<title>Requirements</title>
+				<para>You will need:
+					<itemizedlist>
+						<listitem><para><ulink url="http://www.javasoft.com/getjava/">Java J2RE or Java J2SDK v1.4 (v1.4.2_01 or better recommended)</ulink> at least installed (and maybe the java executable in your shell path for linux users)</para></listitem>
+						<listitem><para>Some audio files :)</para></listitem>
+					</itemizedlist>
+				</para>
+			</section>
+			
+			<section>
+				<title>Disclaimer</title>
+				<para><emphasis>Use this program at your own risks !</emphasis> Even if it has been tested, and most potentially harmful bugs have been removed I recommend backing up important files before trying to use Entagged.. (especially that rare 650Mb FLAC bootleg you just finished downloading after 3 weeks...)</para>
+			</section>
+		</section>
+		
+		<section>
+			<title>Installation</title>
+			<section>
+				<title>How to obtain Entagged ?</title>
+				<para>To run Entagged, you need first of all to download the Java Runtime Environment (JRE or JDK) because Entagged is written in Java. This ensures crossplatform compatibility at the little (approx. 10Mb) cost of these libraries.
+				<orderedlist>
+					<listitem>
+						<para>You can grab the <ulink url="http://java.sun.com/j2se/1.4.2/download.html">latest Sun JRE</ulink> or any other java JRE that suits your architecture (<ulink url="http://www.blackdown.org/java-linux/javalinux-d.html">Blackdown</ulink> on linux, etc) (Entagged needs at least JRE v1.4.1 to work properly !).</para>
+						<para>Go to the "Download J2SE v 1.4.xxx" table and pick under "JRE" your platform's version.</para>
+					</listitem>
+					<listitem>
+						<para>You can then <ulink url="http://sourceforge.net/project/showfiles.php?group_id=88759">download Entagged</ulink> at sourceforge file release section, make sure you are downloading the latest version !</para>
+						<para>Entagged is packaged in three different ways:
+						<itemizedlist>
+							<listitem><para><filename>entagged-install-w32-x.xx.exe</filename> is the windows only installer version of this package. Windows user should use this. (note: that it is only a .exe wrapper to lauch the jar file, no native code here !)</para></listitem>
+							<listitem><para><filename>entagged-tageditor-x.xx.zip</filename> is the "all platform" package, Linux and Mac users have to use this one, windows could also use it, but it's easier with the installer.</para></listitem>
+							<listitem><para><filename>entagged-tageditor-x.xx.tar.gz</filename> contains the source code and the resources needed to compile and build entagged (ant file, resources, NSIS script, etc). This package is NOT needed if you only want to use Entagged (this is a developper resource)</para></listitem>
+						</itemizedlist>
+						</para>
+					</listitem>
+				</orderedlist>
+				</para>
+			</section>
+			
+			<section>
+				<title>Building from source</title>
+				<para>TO BE COMPLETED</para>
+				<para>After a successful CVS checkout or using the downloaded tarball, use <command>$ ant package</command> to create the package, or <command>$ ant compile</command> to compile the files in place, in the root directory. Mail me if there are problems</para>
+			</section>
+			
+			<section>
+				<title>Installing</title>
+				<para>
+				<itemizedlist>
+					<listitem><para>Windows Installer: simply follow the instructions of the wizard. It will create icons in the start menu and/or on the desktop.</para></listitem>
+					<listitem>
+						<para>Zip cross-platform file: Extract the zip archive into any directory.</para>
+						<para><command>$ unzip entagged-vx.xx.zip</command> in your shell should extract the archive in the current directory</para>
+					</listitem>
+				</itemizedlist>
+				</para>
+			</section>
+		</section>
+		
+		<section>
+			<title>Using Tag Editor</title>
+			<section>
+				<title>Starting entagged-tag editor</title>
+				<para>Simply follow these instructions:
+				<itemizedlist>
+					<listitem><para>Windows users: if you used the windows installer, icons should have been created in the start menu (under Programs--Entagged) and/or on your desktop. Simply double-click on it to launch entagged.</para></listitem>
+					<listitem>
+						<para>Zip-file users: change the current directory to <filename>installation_dir</filename> and launch <command>$ java -jar entagged-tageditor-x.xx.jar</command> (this assumes that java is in your current path of course).</para>
+						<para>Example: (assuming that you extracted the zip file in <filename>/home/kikidonk/bin/entagged/</filename></para>
+						<para><command>$ cd /home/kikidonk/bin/entagged/</command></para>
+						<para><command>$ java -jar entagged-tageditor-0.10.jar</command></para>
+					</listitem>
+					<listitem>
+						<para>If you compiled yourself Entagged and want to run it from the sources, there is a script called <filename>entagged.sh</filename> or <filename>entagged.bat</filename> (unix or windows), to launch entagged.</para>
+					</listitem>
+				</itemizedlist>
+				</para>
+				<para>If you have any problems feel free to send a mail to raf.raf AT wol.be or post it on the sourceforge site.</para>
+			</section>
+			
+			<section>
+				<title>Getting Started</title>
+				<para>TODO</para>
+				
+				<section>
+					<title>The main window</title>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-general.png" format="PNG" />
+								</imageobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-general.ps" format="PS" />
+								</imageobject>
+								<textobject>
+									<phrase>The Main Window</phrase>
+								</textobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>The main window is divided in 5 zones
+						<orderedlist>
+							<listitem><para>The Classic menu bar</para></listitem>
+							<listitem><para>The main view</para></listitem>
+							<listitem><para>The control panel (that contains several tabs as described in <xref linkend="controlpanel" /></para></listitem>
+						</orderedlist>
+					</para>
+					<para>The general procedure is to
+						<orderedlist>
+							<listitem><para>For windows users, select the disk you want to browse in the upper left of the screen.</para></listitem>
+							<listitem><para>Browse through the directories using the main view and select the files and directories you want to process.</para></listitem>
+							<listitem><para>Use the control panel to do the desired action on these files</para></listitem>
+						</orderedlist>
+					</para>
+				</section>
+				
+				<section>
+					<title>Menu Reference</title>
+					<section>
+						<title><guimenu>The File Menu</guimenu></title>
+						<para><guimenuitem>Exit</guimenuitem> Exits Entagged-Tag Editor</para>
+					</section>
+					<section>
+						<title><guimenu>The Tools Menu</guimenu></title>
+						<para><guimenuitem>Options...</guimenuitem> Opens the Entagged-Tag Editor <link linkend="optiondialog">option dialog</link></para>
+					</section>
+					<section>
+						<title><guimenu>The Help Menu</guimenu></title>
+						<para><guimenuitem>About...</guimenuitem> Shows a nice about dialog, with credits and license </para>
+					</section>
+				</section>
+				
+				<section>
+					<title>The main view</title>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-mainview.png" format="PNG" />
+								</imageobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-mainview.ps" format="PS" />
+								</imageobject>
+								<textobject>
+									<phrase>The Main view</phrase>
+								</textobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>Here you will browse the folders on the selected disk.</para>
+					<para>This view uses color codes to show useful infos about the displayed files
+						<itemizedlist>
+							<listitem><para>Simple folders will appear with a white background</para></listitem>
+							<listitem><para>Supported audio files that have already a tag will appear with a light green background</para></listitem>
+							<listitem><para>Supported audio files that have not already been tagged will appear with a light blue background</para></listitem>
+							<listitem><para>Supported audio files that could not be read, or had errors are displayed with a light red background, and an exclamation icon</para></listitem>
+							<listitem><para>Selected files will appear with a grey background</para></listitem>
+						</itemizedlist>
+					</para>
+					<para>There are also little icons that indicate at a glance of wich type are the displayed files like 
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata scalefit="1" fileref="images/oggtag.png" format="PNG" />
+							</imageobject>
+							<imageobject>
+								<imagedata scalefit="1" fileref="images/oggtag.ps" format="PS" />
+							</imageobject>
+							<textobject>
+								<phrase>OGG Tag</phrase>
+							</textobject>
+						</inlinemediaobject>
+						 and 
+						 <inlinemediaobject>
+							<imageobject>
+								<imagedata scalefit="1" fileref="images/flactag.png" format="PNG" />
+							</imageobject>
+							<imageobject>
+								<imagedata scalefit="1" fileref="images/flactag.ps" format="PS" />
+							</imageobject>
+							<textobject>
+								<phrase>FLAC Tag</phrase>
+							</textobject>
+						</inlinemediaobject>
+					</para>
+					<para>The different fields are displayed as cells of a table, the first column shows the filename, then the artist, etc, or blank if that info is blank or don't exists in the tag.</para>
+					<para>The columns can be resized and moved for the best convenience. It can also be sorted by clicking on the header of the column</para>
+					<para>To enter a folder, double click it.</para>
+					<para>Selections are important, because entagged will always process the selected files only. To select multiple files:
+						<keycombo action="simul">
+  							<keycap>ctrl</keycap>
+  							<mousebutton>left button</mousebutton>
+						</keycombo>
+						 and select your files, or 
+						 <keycombo action="simul">
+  							<keycap>shift</keycap>
+  							<mousebutton>left button</mousebutton>
+						</keycombo> to select a lot of contiguous files.
+					</para>
+					<para>You can select files or folders, or both, files will be processed independently, folders will be processed recursively, that means that if you select a folder and choose to rename, all the files contained in every subfolder of the selected one will be processed.</para>
+				</section>
+				
+				<section id="controlpanel">
+					<title>The control panel</title>
+					<para>This is the operational panel, it contains several tabs described here under. Remember, any action done in this panel will only apply to selected files and directories in the main view</para>
+					<section>
+						<title>Tag editor Tab</title>
+						<para>
+							<screenshot>
+								<mediaobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-tageditortab.png" format="PNG" />
+									</imageobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-tageditortab.ps" format="PS" />
+									</imageobject>
+									<textobject>
+										<phrase>Tag Editor Tab</phrase>
+									</textobject>
+								</mediaobject>
+							</screenshot>
+						</para>
+						<para>This is the simple yet powerful tag editor. Simply change the field you want to update then click save. When multiple files are selected the <computeroutput>&lt;??&gt;</computeroutput> text may appear, that means that this field will remain untouched when changes are saved.</para>
+						<para>Example: you select an entire album, all the tracks have different titles, and the artist field is blank. Simply select all files fill the artist field and check that <computeroutput>&lt;??&gt;</computeroutput> is put in the title filed. Now click save, all the files have now the same artist, but kept their own title...</para>
+						<para>You can also select a transformation that will be applied to all fields of the tag. Mutually exclusive options, like UPPERCASE and lowercase, cannot be selected at the same time. To select (compatible) multiple transformations, just click on the name, it works like a toggle: selected is on, unselected is off...</para>
+					</section>
+					<section>
+						<title>Rename from tag Tab</title>
+						<para>
+							<screenshot>
+								<mediaobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-renamefromtag.png" format="PNG" />
+									</imageobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-renamefromtag.ps" format="PS" />
+									</imageobject>
+									<textobject>
+										<phrase>Rename from tag tab</phrase>
+									</textobject>
+								</mediaobject>
+							</screenshot>
+						</para>
+						<para>On the top combobox you can enter the pattern that will be used to create the new file's directory if the checkbox is selected, otherwise it won't be used (meaning that the files will stay in the current directory after the rename)</para>
+						<para>On the bottom, you can enter the pattern that will be used to create the new filename.</para>
+						<para>You can use any of the following strings that will be replaced by the indicated string during the rename:
+							<itemizedlist>
+								<listitem><para><userinput>&lt;artist&gt;</userinput> will become <computeroutput>Artist</computeroutput></para></listitem>
+								<listitem><para><userinput>&lt;album&gt;</userinput> will become <computeroutput>Album</computeroutput></para></listitem>
+								<listitem><para><userinput>&lt;title&gt;</userinput> will become <computeroutput>Title</computeroutput></para></listitem>
+								<listitem><para><userinput>&lt;track&gt;</userinput> will become <computeroutput>Track</computeroutput></para></listitem>
+								<listitem><para><userinput>&lt;genre&gt;</userinput> will become <computeroutput>Genre</computeroutput></para></listitem>
+								<listitem><para><userinput>&lt;year&gt;</userinput> will become <computeroutput>Year</computeroutput></para></listitem>
+								<listitem><para><userinput>&lt;comment&gt;</userinput> will become <computeroutput>Comment</computeroutput></para></listitem>
+							</itemizedlist>
+						</para>
+						<para>You can of course also add any other string in the pattern that will be left as is: eg. <userinput>&lt;track&gt; - &lt;title&gt; some crap &lt;artist&gt;_other crap-&lt;album&gt;</userinput>. Also if there are invalid characters (characters that can't be used in a filename) they will be deleted or replaced by a <literal>_</literal></para>
+						<para>Example: Directory pattern <filename>/home/kikidonk/&lt;artist&gt;/&lt;album&gt;</filename> and file pattern <filename>&lt;track&gt; - &lt;title&gt;</filename> will rename to <filename>/home/kikidonk/Genesis/Tresspass/01 - Title_oftrack1.ogg</filename></para>
+						<para>Notes: the last <literal>/</literal> or <literal>\</literal> (depending on the OS) in the directory pattern is optional. The filename pattern must not contain the extension, it will be added automatically !</para>
+						<para>You can also select a transformation that will be applied to the filename of the processed file. Mutually exclusive options, like UPPERCASE and lowercase, cannot be selected at the same time. To select (compatible) multiple transformations, just click on the name, it works like a toggle: selected is on, unselected is off...</para>
+					</section>
+					<section>
+						<title>Tag from filename Tab</title>
+						<para>
+							<screenshot>
+								<mediaobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-tagfromfilename.png" format="PNG" />
+									</imageobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-tagfromfilename.ps" format="PS" />
+									</imageobject>
+									<textobject>
+										<phrase>Tag From Filename Tab</phrase>
+									</textobject>
+								</mediaobject>
+							</screenshot>
+						</para>
+						<para>This panel looks exactly the same as the rename from tag, except that it does the exact oposite !</para>
+						<para>The special characters <userinput>&lt;xxxx&gt;</userinput> have the same meaning.</para>
+						<para>An additional mask &lt;ignore&gt; is accepted, and will simply ignore a variable amount of text located between two other masks.</para>
+						<para>The directory pattern will try to match the file's directory, and the filename pattern will try to match the file's filename</para>
+						<para>Note: You should very carefully create the pattern so the files can be easily tagged, see the example to see how to do it</para>
+						<para>Example: Directory pattern: <filename>/home/kikidonk/&lt;artist&gt;/&lt;album&gt;</filename> , filename pattern: <filename>&lt;track&gt; &lt;ignore&gt;- &lt;title&gt;</filename>. If the file is <filename>/home/kikidonk/artist/album/05 some crap - Nice_title.mp3</filename> it will be tagged with the following fields: Artist = artist, Album = album, TrackNb = 05, Title = Nice_title</para>
+						<para>Notes: the last / or \ (depending on the OS) in the directory pattern is optional. The filename pattern must not contain the extension !</para>
+						<para>You can also select a transformation that will be applied to all fields of the tag. Mutually exclusive options, like UPPERCASE and lowercase, cannot be selected at the same time. To select (compatible) multiple transformations, just click on the name, it works like a toggle: selected is on, unselected is off...</para>
+					</section>
+					<section>
+						<title>Freedb search</title>
+						<para>
+							<screenshot>
+								<mediaobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-freedb.png" format="PNG" />
+									</imageobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-freedb.ps" format="PS" />
+									</imageobject>
+									<textobject>
+										<phrase>Freedb Search Tab</phrase>
+									</textobject>
+								</mediaobject>
+							</screenshot>
+						</para>
+						<para>This panel allows you to search the freedb database for the selected album. You must remember that freedb uses the length of the tracks to compute an unique identifier for an album. It is important that the files are in the correct order and are in the same number as on the original CD for this function to work properly</para>
+						<para>Select the files that are an album (note that it can be with files of several different formats, entagged doesn't care), then click Search.</para>
+						<para>Quickly after, the combobox will populate with the results of the query, select a result to display the infos it contains in the fields.</para>
+						<para>You can change the fields if you feel like, before clicking on the save button, and your files are tagged.</para>
+						<para>Note: You can't change the titles individually, but only the album infos: Artist, genre, year, album name, etc. Of course, after using the freedb function, you can always use the tag editor to fine tune the titles individually...</para>
+					</section>
+					<section>
+						<title>Freedb manual search</title>
+						<para>
+						<screenshot>
+								<mediaobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-manfreedb.png" format="PNG" />
+									</imageobject>
+									<imageobject>
+										<imagedata scalefit="1" fileref="images/entagged-tageditor-manfreedb.ps" format="PS" />
+									</imageobject>
+									<textobject>
+										<phrase>Freedb Manual Search Tab</phrase>
+									</textobject>
+								</mediaobject>
+							</screenshot>
+						</para>
+						<para>This panel allows the same thing as the above one, but you have to enter manually the freedb id and genre of the result you want to be applied.</para>
+						<para>!! This is still experimental, and the number of selected files must match the number of tracks in the freedb result. !!</para>
+						<para>Browse the freedb site, either by clicking the Launch Browser button (browser command line must be configured in the option dialog before) or manually as you would do everyday.</para>
+						<para>Search your album and copy/paste the the freedb ID number and select the correct freedb genre. You can now click search and the result will be loaded</para>
+						<para>You can change as before the album infos, then click save, and the files are tagged !</para>
+						<para>Note: This feature will be improved with a conflict resolution dialog if the number of track doesn't match..</para>
+					</section>
+				</section>
+			</section>
+			
+			<section id="supportedformats">
+				<title>Supported File types</title>
+				<para>TODO</para>
+				<section>
+					<title>MP3</title>
+					<para>Only ID3v2.3 synchronized are supported, the other v2.4 and v2.2 will be supported soon</para>
+				</section>
+				<section>
+					<title>OGG</title>
+					<para>TODO</para>
+				</section>
+				<section>
+					<title>FLAC</title>
+					<para>TODO</para>
+				</section>
+				<section>
+					<title>WAV</title>
+					<para>This is not very useful..</para>
+				</section>
+			</section>
+			
+			<section id="optiondialog">
+				<title>Preferences</title>
+				<para>Preferences are changed using the Option Dialog located in the <guimenu>Tools</guimenu> menu. Click on the left buttons-icons to select a preferences page and modify the options. Then click save to exit or close the dialog to cancel.</para>
+				<section>
+					<title>Langage</title>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-lang.png" format="PNG" />
+								</imageobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-lang.ps" format="PS" />
+								</imageobject>
+								<textobject>
+									<phrase>Langage Options</phrase>
+								</textobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>There is only one combobox that allows to choose the langage of Entagged-Tag Editor (currently only english and partially french). You need to restart entagged for the changes to take effect !</para>
+				</section>
+				<section>
+					<title>Skins</title>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-laf.png" format="PNG" />
+								</imageobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-laf.ps" format="PS" />
+								</imageobject>
+								<textobject>
+									<phrase>Look nd Feel Options</phrase>
+								</textobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>Here you can change the skin of Entagged. Squareness Look And Feel is selected by defaut, but you are free to change.</para>
+					<para>Skin changes are applied immediately but you may need to restart for some icons to reload properly !</para>
+				</section>
+				<section>
+					<title>General prefs</title>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-globalopt.png" format="PNG" />
+								</imageobject>
+								<imageobject>
+									<imagedata scalefit="1" fileref="images/entagged-tageditor-globalopt.ps" format="PS" />
+								</imageobject>
+								<textobject>
+									<phrase>General Options</phrase>
+								</textobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>Used for the moment only to indicate the command to execute to launch the browser, <userinput>%1</userinput> is replaced with the URL. Linux users will use <userinput>mozilla %1</userinput> or something like that most of the time, Windows users will use <userinput>iexplore.exe %1</userinput> i think,...</para>
+				</section>
+				<section>
+					<title>Tag editor prefs*</title>
+					<para>This is not yet implemented</para>
+				</section>
+			</section>
+		</section>
+		
+		<section>
+			<title>Credits and License</title>
+			<section>
+				<title>Developpers</title>
+				<para>These are the people who helped me so far:
+					<itemizedlist>
+						<listitem><para>Miguel Sahagun (Anacleto) (developpement)</para></listitem>
+						<listitem><para>Andrew Gaydenko (debug, tests..)</para></listitem>
+					</itemizedlist>
+				</para>
+			</section>
+			<section>
+				<title>Libraries licenses</title>
+				<para>This product includes:
+					<itemizedlist>
+						<listitem><para>The <ulink url="http://squareness.sourceforge.net/skins/jlf.html">Squareness look</ulink> and feel</para></listitem>
+					</itemizedlist>
+				</para>
+				<para>All the licenses regarding these libraries can be found either on their website, or in the /docs/ folder located in your entagged installation directory. Thanks to them, for providing such great libraries!</para>
+			</section>
+			<section>
+				<title>Thankings</title>
+				<para>I would like to thank:
+					<itemizedlist>
+						<listitem><para>O'Reilly &amp; Associates, "Java Foundation Classes in a nutshell". <ulink url="http://www.kfunigraz.ac.at/edvndwww/books/books/javaenterprise/jfc/ch03_19.htm">Making a filesystem tree easily</ulink></para></listitem>
+						<listitem><para>Terry Yuen - http://jelude.cjb.net (for the idea of making the nsis launcher for the .jar)</para></listitem>
+						<listitem><para>Nullsoft for making this great GPL tool : NSIS Installer Script compiler</para></listitem>
+						<listitem><para>Sourceforge for providing such a kick-ass Web management for OSD.</para></listitem>
+						<listitem><para>The authors of Look And Feels</para></listitem>
+					</itemizedlist>
+				</para>
+			</section>
+			<section>
+				<title>Entagged license</title>
+				<para><emphasis>(c) 2003 Entagged Developpement Team <ulink url="http://www.sourceforge.net/projects/entagged">http://www.sourceforge.net/projects/entagged</ulink></emphasis></para>
+				<para>All rights reserved</para>
+				<para>The Entagged project is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation;</para>
+				<para>The GNU General Public License can be found at <ulink url="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</ulink></para>
+				<para>This program contains libraries with their own licenses, see the entagged/lib/ folder to read it.</para>
+			</section>
+		</section>
+	</section>
+</article>

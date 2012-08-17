@@ -1,0 +1,11 @@
+It would be a nice option for Entagged to include the ability to retain the original file date instead of changing it to the current time.
+DONE via general Options
+
+---------------------------
+
+When adding tags to .flac files through "tag from filename" some files give me the error:
+"You Must At Least Fill A File Pattern"
+I am just using the file pattern <track>-<artist>-<title> and I'm not using the directory pattern option. Since I've had this trouble I've been tagging files on a single file basis.
+What seems weird is that if I click on the down arrow by the file pattern and it "highlights" the file pattern I can then try to re-tag the file and it works.
+I tested the FLAC files and they are fine. The error is arbitrary and after retrying a couple times I am able to get it to work.
+Also, there is still a problem where the "tag from filename" will make all the FLAC tags lower case. This was mentioned in another topic. Using the "Capitalize" option is still a workaround for that.

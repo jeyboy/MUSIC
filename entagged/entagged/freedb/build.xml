@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!-- build file for entagged freedb library -->
+<!-- $Id: build.xml,v 1.1 2007/03/23 14:16:58 nicov1 Exp $ -->
+<!--
+ *  ********************************************************************   **
+ *  Copyright notice                                                       **
+ *  																	   **
+ *  (c) 2003 Entagged Developpement Team				                   **
+ *  http://www.sourceforge.net/projects/entagged                           **
+ *  																	   **
+ *  All rights reserved                                                    **
+ *  																	   **
+ *  This script is part of the Entagged project. The Entagged 			   **
+ *  project is free software; you can redistribute it and/or modify        **
+ *  it under the terms of the GNU General Public License as published by   **
+ *  the Free Software Foundation; either version 2 of the License, or      **
+ *  (at your option) any later version.                                    **
+ *  																	   **
+ *  The GNU General Public License can be found at                         **
+ *  http://www.gnu.org/copyleft/gpl.html.                                  **
+ *  																	   **
+ *  This copyright notice MUST APPEAR in all copies of the file!           **
+ *  ********************************************************************
+ -->
+
+<project name="entagged-freedb" default="build" basedir=".">
+	<description>Entagged Freedb Library compile/build script</description>
+	
+	<!-- set global properties for the whole project -->
+	<property name="entagged_dir" location="../../"/>
+	<property name="library_dir" location="."/>
+	<property name="library_classpath" location="../../" />
+	<property name="library_version" value="0.04"/>
+	<property name="library_jar" value="${library_dir}/entagged-freedb-${library_version}.jar"/>
+	<property name="library_source_tar" value="${library_dir}/entagged-freedb-source-${library_version}.tar"/>
+	<property name="library_source_targz" value="${library_source_tar}.gz"/>
+	<property name="library_javadoc" value="${library_dir}/javadoc"/>
+	<property name="targz_exclude" value="**/*.class"/>
+
+	<target name="prepare">
+		<delete dir="${library_javadoc}" />
+		<delete file="${library_jar}" />
+		<delete file="${library_source_tar}" />
+		<delete file="${library_source_targz}" />
+		<delete>
+			<fileset dir="${library_dir}" includes="**/*.class"/>
+		</delete>
+	</target>
+	
+	<target name="compile" depends="prepare">
+		<javac srcdir="${library_dir}" classpath="${library_classpath}" source="1.4"/>
+	</target>
+	
+	<target name="javadoc" depends="prepare">
+		<javadoc
+			destdir="${library_javadoc}"
+			author="true"
+			version="true"
+			use="true"
+			windowtitle="Entagged freedb API"
+			source="1.4"
+			access="protected"
+			Version="true"
+			Use="true"
+			Author="true"
+			>
+		    
+			<!-- linksource="true" -->
+			
+			<!--
+			<fileset dir="${library_dir}" defaultexcludes="yes">
+		   		<include name="**/*.java" />
+			</fileset>
+			-->
+			
+			<packageset dir="${library_classpath}" defaultexcludes="yes">
+				<include name="entagged/freedb" />
+	  		</packageset>
+
+			<tag name="todo" description="TO DO:" /> 
+			
+			<!-- <link href="http://java.sun.com/j2se/1.4.2/docs/api/"/> -->
+		</javadoc>
+	</target>
+		
+	<target name="build" depends="compile,javadoc">
+		<jar destfile="${library_jar}" basedir="${entagged_dir}" includes="entagged/freedb/**/*.class" index="true"/>
+		
+		<tar tarfile="${library_source_tar}" basedir="${entagged_dir}" includes="entagged/freedb/**/*.java entagged/freedb/build.xml entagged/freedb/javadoc/**" />
+		<gzip zipfile="${library_source_targz}" src="${library_source_tar}"/>
+		<delete file="${library_source_tar}" />
+	</target>
+</project>

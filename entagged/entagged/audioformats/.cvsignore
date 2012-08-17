@@ -1,0 +1,4 @@
+*.class
+javadoc
+*.jar
+*.gz

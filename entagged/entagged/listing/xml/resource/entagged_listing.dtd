@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<!--
+/*
+ *  ********************************************************************   **
+ *  Copyright notice                                                       **
+ *  **																	   **
+ *  (c) 2003 Entagged Developpement Team				                   **
+ *  http://www.sourceforge.net/projects/entagged                           **
+ *  **																	   **
+ *  All rights reserved                                                    **
+ *  **																	   **
+ *  This script is part of the Entagged project. The Entagged 			   **
+ *  project is free software; you can redistribute it and/or modify        **
+ *  it under the terms of the GNU General Public License as published by   **
+ *  the Free Software Foundation; either version 2 of the License, or      **
+ *  (at your option) any later version.                                    **
+ *  **																	   **
+ *  The GNU General Public License can be found at                         **
+ *  http://www.gnu.org/copyleft/gpl.html.                                  **
+ *  **																	   **
+ *  This copyright notice MUST APPEAR in all copies of the file!           **
+ *  ********************************************************************
+ */
+-->
+
+<!-- Contains all the files -->
+<!ELEMENT audiolist (file+)>
+
+<!-- The tag of a file -->
+<!ELEMENT file (tag?)>
+
+<!-- The attribute which takes the relative path to
+ 	the desribed file in respect to the root directory.-->
+<!ATTLIST file
+	name CDATA #REQUIRED
+>
+
+<!-- Definition of the tag, containing the song tag info -->
+<!ELEMENT tag (artist?,album?,track?,title?,genre?,year?,comment?)>
+
+<!-- following tags contain the values of the corresponding audio tags.-->
+<!ELEMENT artist  (#PCDATA)>
+<!ELEMENT album   (#PCDATA)>
+<!ELEMENT track   (#PCDATA)>
+<!ELEMENT title   (#PCDATA)>
+<!ELEMENT genre   (#PCDATA)>
+<!ELEMENT year    (#PCDATA)>
+<!ELEMENT comment (#PCDATA)>
