@@ -68,16 +68,17 @@ public class MenuBar extends JMenuBar {
 						Tab tab = Common.tabber.GetCurrentTab();
 						if (tab == null) return; 
 						prepareGUI(tab.GetTitle(), tab.options.delete_files, tab.options.interactive, tab.options.delete_empty_folders, tab.options.remote_source);
-					    Object complexMsg[] = { "Create tab with title", title, delete_with_file, delete_empty_folders, interactive, remote_source };		
+					    Object complexMsg[] = { "Modify tab title", title, delete_with_file, delete_empty_folders, interactive, remote_source };		
 						int option = JOptionPane.showOptionDialog(  
 								MenuBar.this,  
 								complexMsg,  
-								"Creating drop elem", JOptionPane.OK_CANCEL_OPTION,  
+								"Modify drop elem", JOptionPane.OK_CANCEL_OPTION,  
 								JOptionPane.PLAIN_MESSAGE, null, null,  
 								null 
 				        );
 						if( option == JOptionPane.OK_OPTION ) {
-							tab.SetTitle(title.getText());
+							if (title.getText().trim().length() > 0)
+								tab.SetTitle(title.getText());
 							tab.options = new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected());
 							tab.UpdateCounter();
 						}						
