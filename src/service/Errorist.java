@@ -12,7 +12,6 @@ public class Errorist {
 //	this.getClass().getName()+"."+ new Exception().getStackTrace()[0].getMethodName();
 	public static void printLog(Exception e) {
 		printLog(e.getStackTrace()[0].getClassName() + "." + e.getStackTrace()[0].getMethodName(), e.getMessage());
-		
 	}	
 	
 	public static void printLog(String className, String funcName, String error) {
@@ -27,6 +26,7 @@ public class Errorist {
 		
 		if (err_writer != null)
 			err_writer.println(new SimpleDateFormat("[yyyy/MM/dd HH:mm:ss]").format(new Date()) + " " + objName + "   **   " + error);
+		System.err.println(new SimpleDateFormat("[yyyy/MM/dd HH:mm:ss]").format(new Date()) + " " + objName + "   **   " + error);
 	}
 	
 	public static void close() {

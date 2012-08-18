@@ -70,7 +70,8 @@ public class TabberLoader extends BaseThread {
 	  		Common.save_flag = true;
 		}
 		catch (FileNotFoundException e) { Common.save_flag = true; }
-		catch (Exception e) { Errorist.printLog(e); }    	
+		catch (Exception e) { Errorist.printLog(e); }
+		System.out.println("===========" + Common.save_flag);
     }
     
     void proceedTab(final FileList list, final ArrayList<ListItem> items) {

@@ -24,25 +24,35 @@ import service.Common;
 import service.Errorist;
 import service.IOOperations;
 import service.MediaInfo;
+import tabber.Tab;
 import tabber.TabOptions;
 import tabber.Tabber;
 
 public class MenuBar extends JMenuBar {
 	private static final long serialVersionUID = 5651526930411426260L;
-	private JTextField title = new JTextField();
-	private JCheckBox delete_with_file = new JCheckBox("Delete file with item");
-	private JCheckBox interactive = new JCheckBox("Interactive tab");
-	private JCheckBox delete_empty_folders = new JCheckBox("Delete empty folders");
-	private JCheckBox remote_source = new JCheckBox("Source of data is remote");
+	private JTextField title;
+	private JCheckBox delete_with_file;
+	private JCheckBox interactive;
+	private JCheckBox delete_empty_folders;
+	private JCheckBox remote_source;
 	JFileChooser fileChooser = new JFileChooser(".");
-	
 	private Color default_item_color;
+	
+	void prepareGUI(String tit, boolean del, boolean inter, boolean del_ef, boolean remote) {
+		title = new JTextField(tit);
+		delete_with_file = new JCheckBox("Delete file with item", del);
+		interactive = new JCheckBox("Interactive tab", inter);
+		delete_empty_folders = new JCheckBox("Delete empty folders", del_ef);
+		remote_source = new JCheckBox("Source of data is remote", remote);		
+	}
+	void prepareGUI() { prepareGUI("", false, false, false, false); }
+	
 	public MenuBar(final Tabber tab) {
 		ActionBind [] actions = {
 				new ActionBind("add_tab", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-					    Object complexMsg[] = { "Create tab with title", title, delete_with_file, delete_empty_folders, interactive, remote_source };		
+						prepareGUI();
+					    Object complexMsg[] = { "Create tab with title", title, new JCheckBox[] {delete_with_file, delete_empty_folders, interactive, remote_source} };		
 						int option = JOptionPane.showOptionDialog(  
 								MenuBar.this,  
 								complexMsg,  
@@ -53,16 +63,31 @@ public class MenuBar extends JMenuBar {
 						if( option == JOptionPane.OK_OPTION ) Common.tabber.AddTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected()));							
 				    }
 				}),
+				new ActionBind("settings", new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Tab tab = Common.tabber.GetCurrentTab();
+						if (tab == null) return; 
+						prepareGUI(tab.GetTitle(), tab.options.delete_files, tab.options.interactive, tab.options.delete_empty_folders, tab.options.remote_source);
+					    Object complexMsg[] = { "Create tab with title", title, delete_with_file, delete_empty_folders, interactive, remote_source };		
+						int option = JOptionPane.showOptionDialog(  
+								MenuBar.this,  
+								complexMsg,  
+								"Creating drop elem", JOptionPane.OK_CANCEL_OPTION,  
+								JOptionPane.PLAIN_MESSAGE, null, null,  
+								null 
+				        );
+						if( option == JOptionPane.OK_OPTION ) {
+							tab.SetTitle(title.getText());
+							tab.options = new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected());
+							tab.UpdateCounter();
+						}						
+				    }
+				}),
 				new ActionBind("start_play", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
 				    }
-				}),				
-				new ActionBind("settings", new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-				    }
-				}),
+				}),					
 				new ActionBind("include_base", new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
