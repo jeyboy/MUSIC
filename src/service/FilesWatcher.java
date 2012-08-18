@@ -35,7 +35,6 @@ public class FilesWatcher {
 	                 System.out.println("Modify: " + event.context().toString());
 	             }	             
 	         }
-	        
 	     }
 	     catch (Exception e) { Errorist.printLog(e); }		
 	}

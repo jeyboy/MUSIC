@@ -90,8 +90,8 @@ public class IOOperations {
     	finally {/*Show error message*/}
     }
     
-    public static void deleteFile(String path) 	{ deleteFile(new File(path)); }    
-    public static void deleteFile(File f) 		{ f.delete(); }
+    public static boolean deleteFile(String path) 	{ return deleteFile(new File(path)); }    
+    public static boolean deleteFile(File f) 		{ return f.delete(); }
 	
 	// application associated to a file extension
 	public static void open(File document) throws IOException {

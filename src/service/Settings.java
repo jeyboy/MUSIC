@@ -8,6 +8,7 @@ public class Settings {
 	final static public String settingspath = apppath + "/settings";
 	final static public String tabspath = apppath + "/tabs";
 	final static public String logpath = apppath + "/logs";
+	final static public String trashpath = apppath + "/trash";
 	
 	
 	final static String droppannelspath = apppath + "/drops";

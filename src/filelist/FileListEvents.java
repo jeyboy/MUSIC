@@ -30,7 +30,6 @@ import filelist.ListItem.STATUS;
 
 import service.Common;
 import service.Dropper;
-import service.IOOperations;
 
 public class FileListEvents  implements DragSourceListener, DragGestureListener {
 	FileList filelist;
@@ -115,7 +114,7 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
     				int last_pos = filelist.getSelectedIndex() - 1;
     				for(Object obj: filelist.getSelectedValuesList()) {
 	    				if (filelist.parent.options.delete_files)
-	    					IOOperations.deleteFile(((ListItem)obj).file);
+	    					Common._trash.AddPath(((ListItem)obj).file);
     					filelist.model.removeElement(obj);
     				}
     				filelist.CalcSelect(last_pos, true);

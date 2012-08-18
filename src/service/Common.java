@@ -4,6 +4,7 @@ import hot_keys.HotKeyManager;
 import service_threads.DropIniter;
 import service_threads.ItemsStateIniter;
 import service_threads.ItemsStateRefresher;
+import service_threads.Trasher;
 import tabber.Tabber;
 
 public class Common {
@@ -43,11 +44,13 @@ public class Common {
 	static public ItemsStateIniter _initer = new ItemsStateIniter();
 	static public ItemsStateRefresher _refresher = new ItemsStateRefresher();
 	static public DropIniter _drop_initer = new DropIniter();
+	static public Trasher _trash = new Trasher();
 	
 	static public void Shutdown() {
-		Errorist.close();
+		_trash.close();
 		hotkey_manager.Shutdown();
 		_initer.close();
 		_refresher.close();
+		Errorist.close();
 	} 
 }
