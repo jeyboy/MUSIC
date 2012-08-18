@@ -14,6 +14,7 @@ import entagged.audioformats.AudioFileIO;
 import entagged.audioformats.exceptions.CannotReadException;
 
 public class MediaInfo {
+//	AudioSystem.getAudioFileTypes()
 	static public String SitesFilter(String title)	{ return title.replaceAll("([\\(\\[](http:\\/\\/)*(www\\.)*([a-z0-9р-џ])+\\.[a-z]+[\\]\\)])", ""); }
 	static public String ForwardNumberPreFilter(String title)	{ return title.replaceAll("\\A\\d{1,}.|\\(\\w*\\d{1,}\\w*\\)", ""); }
 	static public String SpacesFilter(String title) { return title.replaceAll("[^0-9A-Za-zР-пр-џР-пр-џ]", ""); }

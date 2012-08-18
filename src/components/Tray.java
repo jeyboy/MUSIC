@@ -14,8 +14,6 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioSystem;
-
 import filelist.ListItem;
 
 import service.Common;
@@ -58,7 +56,6 @@ public class Tray {
 	    MenuItem messageItem = new MenuItem("Toggle window");
 	    messageItem.addActionListener(new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
-//	        JOptionPane.showMessageDialog(null, AudioSystem.getAudioFileTypes());
 	    	  MainWnd.Toggle();
 	      }
 	    });

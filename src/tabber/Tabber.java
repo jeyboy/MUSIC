@@ -30,33 +30,6 @@ public class Tabber extends JTabbedPane {
 	static public void Load() {
 		Common.tabber = new Tabber();
 		new TabberLoader();
-//		Collection<ListItem> files = new ArrayList<ListItem>(); 
-//		
-//		try {
-//			BufferedReader bin = IOOperations.GetReader(service.Settings.tabspath);
-//	  		String strLine;
-//	  		Tab curr_tab = null;
-//	  		
-//	  		while ((strLine = bin.readLine()) != null) {
-//	  			if (strLine.length() == 0) continue;
-//	  			switch(strLine.charAt(0)) {
-//	  				case '*':
-//	  					curr_tab = Common.tabber.AddTab(strLine.substring(2), new TabOptions(strLine.charAt(1)));
-//	  					break;
-//	  				case 'f': 
-//	  					ListItem t_item = ListItem.Load(strLine);
-//	  					if (!curr_tab.options.interactive || (curr_tab.options.interactive && t_item.file.exists()))
-//	  						files.add(t_item);  
-//	  					break;
-//	  				case ' ':
-//	  					curr_tab.Files.AddElemsLI(files);
-//	  					files.clear();
-//	  					break;
-//	  			}
-//	  		}
-//	  		bin.close();
-//		} 
-//		catch (Exception e) { Errorist.printLog(e); }
 	}
 	
 	public void Save() {
@@ -155,9 +128,7 @@ public class Tabber extends JTabbedPane {
 	public void MoveSelectAndInit(Boolean next) {
 		GetTab(getSelectedIndex()).Files.MoveSelectAndInit(next);
 	}	
-	
-	
-	
+
 	/**
 	 * @param index
 	 * @param key =  KeyEvent.VK_C or ...
