@@ -17,7 +17,8 @@ public class Trasher extends BaseThread {
 	
     public Trasher() {
 //		this.setDaemon(true);
-//		this.setPriority(Thread.NORM_PRIORITY);
+		setPriority(Thread.MIN_PRIORITY);
+    	start();
     }
 
     synchronized public void run() { routing(); }
@@ -42,7 +43,6 @@ public class Trasher extends BaseThread {
 	        try { wait(2000); }
 	        catch (InterruptedException e) { Errorist.printLog(e); }
     	}
-    	save();
     }
     
     void load() {
@@ -52,7 +52,7 @@ public class Trasher extends BaseThread {
     		reader = IOOperations.GetReader(Settings.trashpath);
     		String temp;
     		
-    		while((temp = reader.readLine()) != "")
+    		while((temp = reader.readLine()) != null)
     			AddPath(new File(temp));
 		}
     	
@@ -63,7 +63,7 @@ public class Trasher extends BaseThread {
     	}
     }
     
-    void save() {
+    public void save() {
     	PrintWriter wri = null;
 		try {
 			wri = IOOperations.GetWriter(Settings.trashpath, true);

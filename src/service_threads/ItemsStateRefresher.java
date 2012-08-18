@@ -15,6 +15,7 @@ public class ItemsStateRefresher extends BaseThread {
     public ItemsStateRefresher() {
 		this.setDaemon(true);
 //		this.setPriority(Thread.NORM_PRIORITY);
+		start();
     }
 
     synchronized public void run() { routing(); }
