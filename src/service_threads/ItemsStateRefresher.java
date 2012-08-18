@@ -1,10 +1,12 @@
 package service_threads;
 
 import java.util.ArrayList;
+
 import filelist.ListItem;
 import filelist.ListItem.STATUS;
 
 import service.Common;
+import service.Errorist;
 import tabber.Tab;
 
 public class ItemsStateRefresher extends BaseThread {
@@ -15,20 +17,23 @@ public class ItemsStateRefresher extends BaseThread {
 //		this.setPriority(Thread.NORM_PRIORITY);
     }
 
-    public void run() {	routing(); }
+    synchronized public void run() { routing(); }
     
     public void AddExample(String [] pieces) {
     	examples_collection.add(pieces);
-    	if (examples_collection.size() == 1)
-    		run();
     }
 
     void routing() {
-        while(examples_collection.size() > 0) {
-        	if (closeRequest()) return;
-        	cycle(examples_collection.get(0));
-        	examples_collection.remove(0);
-        }
+    	while(!closeRequest()) {
+            while(examples_collection.size() > 0) {
+            	if (closeRequest()) return;
+            	cycle(examples_collection.get(0));
+            	examples_collection.remove(0);
+            }
+            
+	        try { wait(2000); }
+	        catch (InterruptedException e) { Errorist.printLog(e); }
+    	}     	
     }
     
     void cycle(String [] examples) {
