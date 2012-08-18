@@ -16,7 +16,7 @@ public class TabOptions {
 	public TabOptions() {}
 	
 	public String Serialize() {
-		byte ret = 0;
+		byte ret = (byte)128;
 		ret |= bc(delete_files) << 0;
 		ret |= bc(interactive) << 1;
 		ret |= bc(delete_empty_folders) << 2;
