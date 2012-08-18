@@ -17,6 +17,9 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.JOptionPane;
 
+import filelist.ListItem;
+
+import service.Common;
 import service.Errorist;
 
 public class Tray {
@@ -32,43 +35,44 @@ public class Tray {
 		};
 	static MouseListener mouse_listens = 
 		new MouseListener() {
-	        public void mouseClicked(MouseEvent e) {
-	          System.out.println("Tray icon: Mouse clicked");
-	        }
-	        public void mouseEntered(MouseEvent e) {
-	          System.out.println("Tray icon: Mouse entered");
-	        }
-	        public void mouseExited(MouseEvent e) {
-	          System.out.println("Tray icon: Mouse exited");
-	        }
+	        public void mouseClicked(MouseEvent e) 	{}
+	        public void mouseEntered(MouseEvent e) 	{}
+	        public void mouseExited(MouseEvent e) 	{}
 	        public void mousePressed(MouseEvent e)  {}
 	        public void mouseReleased(MouseEvent e) {}
 	   };
 	static MouseMotionListener mouse_motion_listens = 	      
 	    new MouseMotionListener() {
 	        public void mouseDragged(MouseEvent e) 	{}
-	        public void mouseMoved(MouseEvent e) 	{}
+	        public void mouseMoved(MouseEvent e) 	{
+	        	ListItem temp_li = Common.tabber.GetCurrentItem();
+	        	String temp = temp_li == null ? "None" : temp_li.title;
+	        	
+	        	trayIcon.setToolTip(temp);
+//	        	trayIcon.displayMessage("Now active...", temp, TrayIcon.MessageType.INFO);	        	
+	        }
 	    };
 	
 	static PopupMenu BuildMenu() {
 		PopupMenu popup = new PopupMenu();
+		
+	    MenuItem messageItem = new MenuItem("Toggle window");
+	    messageItem.addActionListener(new ActionListener() {
+	      public void actionPerformed(ActionEvent e) {
+//	        JOptionPane.showMessageDialog(null, AudioSystem.getAudioFileTypes());
+	    	MainWnd.wnd.setVisible(!MainWnd.wnd.isVisible());
+	      }
+	    });
+	    popup.add(messageItem);		
+		
 		MenuItem miExit = new MenuItem("Exit");
 		ActionListener al = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Goodbye");
 				System.exit(0);
 		    }
 		};
 		miExit.addActionListener(al);
 		popup.add(miExit);
-	    MenuItem messageItem = new MenuItem("Show window");
-	    messageItem.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent e) {
-	        JOptionPane.showMessageDialog(null, AudioSystem.getAudioFileTypes());
-//	    	MainWnd.wnd.setVisible(true);
-	      }
-	    });
-	    popup.add(messageItem);
 	    return popup;
 	}   
 	static boolean TrayIconInitialization()
@@ -76,7 +80,7 @@ public class Tray {
 		if (SystemTray.isSupported()) {
 			try { image = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(service.Settings.imagepath + "tray.png")); }
 			catch (IOException e) { Errorist.printLog(e); }
-			trayIcon = new TrayIcon(image, "OLOLO");
+			trayIcon = new TrayIcon(image, "(O_o)");
 			
 			trayIcon.setImageAutoSize(true);
 			trayIcon.addActionListener(actions);

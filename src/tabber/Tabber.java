@@ -22,6 +22,10 @@ public class Tabber extends JTabbedPane {
 	public Tab GetCurrentTab()				{ return (Tab) getSelectedComponent();}
 	public void SetCurrentTab(int index)	{ setSelectedIndex(index);}
 	public void SetCurrentTab(Tab tab)		{ setSelectedComponent(tab);}
+	public ListItem GetCurrentItem()		{
+		try { return (ListItem)GetCurrentTab().Files().getSelectedValue(); }
+		catch(Exception e) { return null; }
+	}
 	
 	static public void Load() {
 		Common.tabber = new Tabber();
