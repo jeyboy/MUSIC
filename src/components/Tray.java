@@ -15,7 +15,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
-import javax.swing.JOptionPane;
 
 import filelist.ListItem;
 
@@ -60,7 +59,7 @@ public class Tray {
 	    messageItem.addActionListener(new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
 //	        JOptionPane.showMessageDialog(null, AudioSystem.getAudioFileTypes());
-	    	MainWnd.wnd.setVisible(!MainWnd.wnd.isVisible());
+	    	  MainWnd.Toggle();
 	      }
 	    });
 	    popup.add(messageItem);		
