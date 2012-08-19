@@ -32,7 +32,7 @@ public class ItemsStateRefresher extends BaseThread {
             	examples_collection.remove(0);
             }
             
-	        try { wait(2000); }
+	        try { wait(sleep_time); }
 	        catch (InterruptedException e) { Errorist.printLog(e); }
     	}     	
     }

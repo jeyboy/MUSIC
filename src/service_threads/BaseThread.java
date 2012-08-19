@@ -4,7 +4,8 @@ package service_threads;
 //import java.util.TimerTask;
 
 public class BaseThread extends Thread {
-	int close_flag = 0;	
+	int close_flag = 0;
+	int sleep_time = 1000;
 	
 	public boolean closeRequest() { return close_flag == 1; }
 	

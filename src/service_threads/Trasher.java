@@ -40,7 +40,7 @@ public class Trasher extends BaseThread {
                 catch(Exception e) {}
             }
             
-	        try { wait(2000); }
+	        try { wait(sleep_time); }
 	        catch (InterruptedException e) { Errorist.printLog(e); }
     	}
     }
