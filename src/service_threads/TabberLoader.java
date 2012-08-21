@@ -11,8 +11,9 @@ import tabber.TabOptions;
 public class TabberLoader extends BaseThread {
 	
     public TabberLoader() {
-		start();
-		setPriority(Thread.MAX_PRIORITY);
+//		start();
+//		setPriority(Thread.MAX_PRIORITY);
+    	run();
     }
 
     public synchronized void run() { routing(); }
@@ -23,7 +24,7 @@ public class TabberLoader extends BaseThread {
 	  		String strLine;
 	  		
 	  		while ((strLine = bin.readLine()) != null) {
-	  			if (strLine == Settings._tab)
+	  			if (strLine.startsWith(Settings._tab))
 	  				Common.tabber.AddTab(strLine.substring(2), new TabOptions(strLine.charAt(1))).Load(bin);
 	  		}
 	  		bin.close();

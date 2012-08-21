@@ -22,6 +22,7 @@ import filelist.ListItem;
 
 public class Tab extends JScrollPane {
 	void proceedTab(final String path, final ArrayList<ListItem> items) throws Exception {
+		if (items.isEmpty()) return;
 		if (path == null) throw new Exception("Path are empty");
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
