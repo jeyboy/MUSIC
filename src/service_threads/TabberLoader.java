@@ -18,9 +18,9 @@ import filelist.ListItem;
 public class TabberLoader extends BaseThread {
 	
     public TabberLoader() {
-//		this.setDaemon(true);
-		this.start();
-//		this.setPriority(Thread.NORM_PRIORITY);
+//		setDaemon(true);
+    	setPriority(Thread.MAX_PRIORITY);    	
+		start();
     }
 
     public synchronized void run() { routing(); }

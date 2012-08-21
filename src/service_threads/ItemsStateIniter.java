@@ -10,9 +10,9 @@ public class ItemsStateIniter extends BaseThread {
 	ArrayList<ListItem> items_collection = new ArrayList<ListItem>();
 	
     public ItemsStateIniter() {
-		this.setDaemon(true);
-		this.start();
-//		this.setPriority(Thread.NORM_PRIORITY);
+		setDaemon(true);
+//		setPriority(Thread.NORM_PRIORITY);
+		start();
     }
 
     public synchronized void run() { routing(); }

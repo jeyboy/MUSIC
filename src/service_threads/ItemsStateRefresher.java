@@ -13,8 +13,8 @@ public class ItemsStateRefresher extends BaseThread {
 	ArrayList<String[]> examples_collection = new ArrayList<String[]>();
 	
     public ItemsStateRefresher() {
-		this.setDaemon(true);
-//		this.setPriority(Thread.NORM_PRIORITY);
+		setDaemon(true);
+//		setPriority(Thread.NORM_PRIORITY);
 		start();
     }
 

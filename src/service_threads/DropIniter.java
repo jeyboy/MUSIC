@@ -14,9 +14,9 @@ public class DropIniter extends BaseThread {
 	ArrayList<DropCell> drops_collection = new ArrayList<DropCell>();
 	
     public DropIniter() {
-		this.setDaemon(true);
-		this.start();
-//		this.setPriority(Thread.NORM_PRIORITY);
+		setDaemon(true);
+		setPriority(Thread.MAX_PRIORITY);
+		start();
     }
 
     public synchronized void run() { routing(); }
