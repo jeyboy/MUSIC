@@ -11,9 +11,8 @@ import tabber.TabOptions;
 public class TabberLoader extends BaseThread {
 	
     public TabberLoader() {
-//		start();
-//		setPriority(Thread.MAX_PRIORITY);
-    	run();
+		setPriority(Thread.MAX_PRIORITY);    	
+		start();
     }
 
     public synchronized void run() { routing(); }

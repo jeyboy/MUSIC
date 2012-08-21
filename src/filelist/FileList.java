@@ -3,6 +3,7 @@ package filelist;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Icon;
 import javax.swing.JTree;
@@ -16,8 +17,8 @@ import tabber.Tab;
 public class FileList extends JTree {
 	
 	private static final long serialVersionUID = 2216859386306446869L;
-	private static DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-	public HashMap<String, DefaultMutableTreeNode> roots = new HashMap<String, DefaultMutableTreeNode>(5);
+	private static DefaultMutableTreeNode root = new DefaultMutableTreeNode("*******");
+	public ConcurrentHashMap<String, DefaultMutableTreeNode> roots = new ConcurrentHashMap<String, DefaultMutableTreeNode>(5);
 	Tab parent;
 	
 	
@@ -29,7 +30,7 @@ public class FileList extends JTree {
 		setRootVisible(false);
 		parent = parent_tab;
 		CommonInitPart();
-		setBackground(Color.black);
+//		setBackground(Color.black);
 	}
 	
     private void CommonInitPart() {
@@ -49,11 +50,19 @@ public class FileList extends JTree {
 		Common._initer.AddItem(elem);    	
     }
 	public void ProceedElem(DefaultMutableTreeNode root_node, ListItem elem) 	{ ElemProceeding(root_node, elem);	}
-	public void ProceedElem(ListItem elem) 										{ ElemProceeding( GetRoot(elem.file.getParent()), elem); }
     
+	void LinkRoot(DefaultMutableTreeNode new_root) { root.add(new_root); }
     public DefaultMutableTreeNode GetRoot(String path) {
     	DefaultMutableTreeNode res = roots.get(path);
-    	return (res != null) ? res : roots.put(path, new DefaultMutableTreeNode(path));
+    	if (res == null) {
+    		System.out.println("******* init new root");
+    		res = new DefaultMutableTreeNode(path);
+    		System.out.println("******* " + res);
+//        	res = roots.put(path, res);
+        	System.out.println("******* " + res);
+        	LinkRoot(res);    		
+    	}
+    	return res;
     }
    
 	// This method is called as the cursor moves within the list.

@@ -112,14 +112,15 @@ public class Tab extends JScrollPane {
 		return count; 
 	}
 	
+	public DefaultMutableTreeNode GetNode(String path) { return Files.GetRoot(path); }
+	
 	public void AddListItems(String path, Collection<ListItem> items) {
 		DefaultMutableTreeNode root = Files.GetRoot(path);
 		for(ListItem elem:items) Files.ProceedElem(root, elem);
 	}
 	
-	public void AddFileItems(String path, Collection<File> items) {
-		DefaultMutableTreeNode root = Files.GetRoot(path);
-		for(File elem:items) Files.ProceedElem(root, new ListItem(elem));
+	public void AddFileItems(DefaultMutableTreeNode node, Collection<File> items) {
+		for(File elem:items) Files.ProceedElem(node, new ListItem(elem));
 	}	
 	
 	public String GetTitle() 									{	return tabhead.GetTitle(); }

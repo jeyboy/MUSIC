@@ -82,12 +82,12 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         filelist.addMouseListener(new MouseListener() {
         	@Override
             public void mouseClicked(MouseEvent mouseEvent) {
-              JList<?> theList = (JList<?>) mouseEvent.getSource();
-              if (mouseEvent.getClickCount() == 2) {
-                int index = theList.locationToIndex(mouseEvent.getPoint());
-                if (index >= 0)
-                  ((ListItem) theList.getModel().getElementAt(index)).Exec();
-              }
+//              JList<?> theList = (JList<?>) mouseEvent.getSource();
+//              if (mouseEvent.getClickCount() == 2) {
+//                int index = theList.locationToIndex(mouseEvent.getPoint());
+//                if (index >= 0)
+//                  ((ListItem) theList.getModel().getElementAt(index)).Exec();
+//              }
             }
     		@Override
     		public void mouseEntered(MouseEvent arg0) {}
