@@ -1,6 +1,10 @@
 package service_threads;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Map.Entry;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import filelist.ListItem;
 import filelist.ListItem.STATUS;
@@ -45,10 +49,13 @@ public class ItemsStateRefresher extends BaseThread {
     }
     
     void procTab(Tab tab, String [] examples) {
-    	for(int loop1 = 0; loop1 < tab.FilesCount(); loop1++) {
-    		if (closeRequest()) return;
-    		procItem(tab.File(loop1), examples);
-    	}
+		for(Entry<String, DefaultMutableTreeNode> entry : tab.Roots()) {
+			for (Enumeration<?> e = entry.getValue().children(); e.hasMoreElements();) {
+				if (closeRequest()) return;
+				DefaultMutableTreeNode o = (DefaultMutableTreeNode) e.nextElement();
+				procItem(((ListItem)o.getUserObject()), examples);
+		    }			
+		}    	
     }
     
     void procItem(ListItem item, String [] examples) {

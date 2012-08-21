@@ -16,4 +16,12 @@ public class Settings {
 	final static public String drop_right_path = droppannelspath + "_right";
 	final static public String drop_top_path = droppannelspath + "_top";
 	final static public String drop_bottom_path = droppannelspath + "_bottom";
+	
+	
+	static public String _posttab= "";
+	static public String _tab 	= "t";
+	static public String _group = "g";
+	static public String _item 	= "i";
+	
+	static public int scan_deep_level = 3;
 }

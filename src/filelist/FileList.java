@@ -2,106 +2,77 @@ package filelist;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.Collection;
+import java.util.HashMap;
 
 import javax.swing.Icon;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
+import javax.swing.JTree;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
 import service.Common;
-import service.IOOperations;
 import tabber.Tab;
 
-
-@SuppressWarnings("rawtypes")
-public class FileList extends JList {
-	//Customization
-//	Property String	Object Type
-//	List.actionMap	ActionMap
-//	List.background	Color
-//	List.border	Border
-//	List.cellHeight	Integer
-//	List.cellRenderer	ListCellRenderer
-//	List.focusCellHighlightBorder	Border
-//	List.focusInputMap	InputMap
-//	List.focusInputMap.RightToLeft	InputMap
-//	List.font	Font
-//	List.foreground	Color
-//	List.lockToPositionOnScroll	Boolean
-//	List.rendererUseListColors Boolean	List.rendererUseUIBorder Boolean
-//	List.selectionBackground	Color
-//	List.selectionForeground	Color
-//	List.timeFactor	Long
-//	ListUI	String		
+public class FileList extends JTree {
 	
 	private static final long serialVersionUID = 2216859386306446869L;
+	private static DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+	public HashMap<String, DefaultMutableTreeNode> roots = new HashMap<String, DefaultMutableTreeNode>(5);
 	Tab parent;
 	
+	
     //Alter = Vector, ArrayList
-	public MyListModel<ListItem> model = new MyListModel<ListItem>(this);
 	private IconListRenderer listrender = new IconListRenderer();
 	
 	public FileList(Tab parent_tab) {
+		super(root);
+		setRootVisible(false);
 		parent = parent_tab;
 		CommonInitPart();
 		setBackground(Color.black);
 	}
-    public FileList(Tab parent_tab, ListItem [] items) {
-    	parent = parent_tab;
-    	CommonInitPart();
-    	AddElems(items);
-    }	
 	
-	@SuppressWarnings("unchecked")
-	private void CommonInitPart() {
-		super.setModel(model);
+    private void CommonInitPart() {
     	super.setCellRenderer(listrender);
-    	super.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    	getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
     	new FileListEvents(this);
 	}
 
-//    private void ProceedElem(String elem) {	ProceedElem(new ListItem(elem)); }
-	private void ProceedElem(File elem) { ProceedElem(new ListItem(elem)); }
-    private void ProceedElem(ListItem elem) {
-        AddAssocIcon(elem.ext, FileSystemView.getFileSystemView().getSystemIcon(elem.file));
-        model.addElement(elem);
-        Common._initer.AddItem(elem);
-    }
-
-    public void AddElems(ListItem [] items) {
-    	model.ensureCapacity(model.size() + items.length + 1);
-    	for(ListItem elem:items) ProceedElem(elem);
-    }
-	public void AddElemsLI(Collection<ListItem> items) {
-    	model.ensureCapacity(model.size() + items.size() + 1);
-    	for(ListItem elem:items) ProceedElem(elem);
-    }
-	
-    public void AddElemsF(Collection<File> items) {
-    	model.ensureCapacity(model.size() + items.size() + 1);
-    	for(File elem:items) ProceedElem(elem);
-    }    
-	
     public void AddAssocIcon(String ext, Icon icon) {
     	if (listrender.icons.containsKey(ext) || icon == null) return; 
     	listrender.icons.put(ext, icon); 
     }
     
-    public void ChangeViewToVertical() { setLayoutOrientation(JList.VERTICAL); }
-    public void ChangeViewToVerticalWrap() { setLayoutOrientation(JList.VERTICAL_WRAP); }
-    public void ChangeViewToHorizontalWrap() { setLayoutOrientation(JList.HORIZONTAL_WRAP); }
+    void ElemProceeding(DefaultMutableTreeNode root_node, ListItem elem) {
+    	root_node.add(new DefaultMutableTreeNode(elem));
+		AddAssocIcon(elem.ext, FileSystemView.getFileSystemView().getSystemIcon(elem.file));
+		Common._initer.AddItem(elem);    	
+    }
+	public void ProceedElem(DefaultMutableTreeNode root_node, ListItem elem) 	{ ElemProceeding(root_node, elem);	}
+	public void ProceedElem(ListItem elem) 										{ ElemProceeding( GetRoot(elem.file.getParent()), elem); }
+    
+    public DefaultMutableTreeNode GetRoot(String path) {
+    	DefaultMutableTreeNode res = roots.get(path);
+    	return (res != null) ? res : roots.put(path, new DefaultMutableTreeNode(path));
+    }
    
 	// This method is called as the cursor moves within the list.
     public String getToolTipText(MouseEvent evt) {
-      int index = locationToIndex(evt.getPoint());
-      if (index > -1) {
-	      ListItem item = (ListItem)getModel().getElementAt(index);
-	      return item.media_info.toString();
-      }
-      return null;
-    }	
+//      int index = locationToIndex(evt.getPoint());
+//      if (index > -1) {
+//	      ListItem item = (ListItem)getModel().getElementAt(index);
+//	      return item.media_info.toString();
+//      }
+//      return null;
+    	return super.getToolTipText(evt);
+    }
+    
+    public void LockPaint(boolean lock) {
+			setEnabled(!lock);
+			setVisible(!lock);
+			setIgnoreRepaint(lock);
+			if (!lock) repaint();
+    }
 
 
 
@@ -176,39 +147,4 @@ public class FileList extends JList {
 //    }
 // 
 //}
-
-
-
-	/// Helper methods
-	
-	private int CheckRange(int index) {
-		if (index >= model.getSize()) index = 0;
-		return (index < 0) ? (model.getSize() - 1) : index;
-	}
-
-	public int CalcSelect(int curr, boolean next) {
-		int index = CheckRange(curr + (next ? 1 : -1));
-		setSelectedIndex(index);
-		return index;
-	}	
-	
-	public int MoveSelect(boolean next) { return CalcSelect(getSelectedIndex(), next); }
-	
-	public void MoveSelectAndInit(boolean next) { model.elementAt(MoveSelect(next)).Exec();	}
-	
-	public void DeleteSelectAndInit() {
-		int selected = getSelectedIndex();
-		if (selected == -1) {
-			MoveSelectAndInit(true);
-			return;
-		}
-		if (parent.options.delete_files)
-			IOOperations.deleteFile(((ListItem)getSelectedValue()).file);
-		model.remove(selected);
-		if ((selected = CheckRange(selected)) == -1) return;
-		setSelectedIndex(selected);
-		model.elementAt(selected).Exec();
-	}
-	
-	public void SetStatus(String status) {parent.SetStatus(status);}
 }

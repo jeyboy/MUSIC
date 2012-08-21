@@ -1,6 +1,7 @@
 package service;
 
 import java.awt.Desktop;
+import java.awt.List;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +16,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -118,50 +122,6 @@ public class IOOperations {
 	    dt.mail(document);
 	}	
 	
-
-	public static Collection<File> ScanDirectoriesSF(String[] IOItems) {
-	    final Collection<File> all = new ArrayList<File>();
-	    for(String item:IOItems) addFilesRecursivelyF(new File(item), all);
-	    return all;
-	}	
-	
-	public static Collection<String> ScanDirectoriesS(String[] IOItems) {
-	    final Collection<String> all = new ArrayList<String>();
-	    for(String item:IOItems) addFilesRecursivelyS(new File(item), all);
-	    return all;
-	}
-	
-	private static void addFilesRecursivelyS(File file, Collection<String> all) {
-	    final File[] children = file.listFiles();
-	    if (children != null)
-	        for (File child : children) addFilesRecursivelyS(child, all);
-	    else {
-			try { all.add(file.getCanonicalPath());	}
-			catch (IOException e) { Errorist.printLog(e); }
-	    }
-	}
-
-	
-	public static Collection<String> ScanDirectoriesFS(File[] IOItems) {
-	    final Collection<String> all = new ArrayList<String>();
-	    for(File item:IOItems) addFilesRecursivelyS(item, all);
-	    return all;
-	}	
-	
-	public static Collection<File> ScanDirectoriesF(File[] IOItems) {
-	    final Collection<File> all = new ArrayList<File>();
-	    for(File item:IOItems) addFilesRecursivelyF(item, all);
-	    return all;
-	}
-	
-	private static void addFilesRecursivelyF(File file, Collection<File> all) {
-	    final File[] children = file.listFiles();
-	    if (children != null)
-	        for (File child : children) addFilesRecursivelyF(child, all);
-	    else all.add(file);
-	}
-	
-
 	public static char extensionSeparator = '.'; 
 	public static String extension(String fullPath) {
 		int dot = fullPath.toLowerCase().lastIndexOf(extensionSeparator);
@@ -177,5 +137,5 @@ public class IOOperations {
 	public static String path(String fullPath) {
 		int sep = fullPath.lastIndexOf(File.separatorChar);
 		return fullPath.substring(0, sep);
-	}	
+	}
 }

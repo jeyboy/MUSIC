@@ -9,64 +9,35 @@ import java.awt.Toolkit;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
-public class IconListRenderer extends DefaultListCellRenderer {
+public class IconListRenderer extends DefaultTreeCellRenderer {
 	private static final long serialVersionUID = -1227188542632542649L;
-	
+	public Map<String, Icon> icons = new HashMap<String, Icon>();
+
 	int left_padding = 16;
-	int among_space = 1;
+	int among_space = 1;	
 	
-	//////temp
 	ListItem curr_item;
 	boolean selected;
-	JLabel label;
-	boolean focused;
-	//////
+	JLabel label;	
 	
-	public Map<String, Icon> icons = new HashMap<String, Icon>();
- 
-	public IconListRenderer() {}
-
-	@Override
-	public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	public Component getTreeCellRendererComponent(
+			JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+		label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 		curr_item = (ListItem) value;
-		selected = isSelected;
-		focused = cellHasFocus;
-//		switch (curr_item.state) {
-//			case LIKED : SetAsLiked(); break;
-//			case LISTENED : SetAsListened(); break;
-//		}
-		
+		this.selected = selected;
+	
 		Icon icon = icons.get(curr_item.ext);
 		if (icon == null) icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(service.Settings.imagepath + "items/default.png"));
-		label.setIcon(icon);
-	//		label.setBorder(
-	////			BorderFactory.createCom poundBorder(
-	////				BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "1234", TitledBorder.CENTER, TitledBorder.TOP),
-	////				BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "4321", TitledBorder.CENTER, TitledBorder.BOTTOM)
-	////			)
-	//			BorderFactory.createTitledBorder(
-	//					BorderFactory.createTitledBorder(
-	//							BorderFactory.createTitledBorder(
-	//									BorderFactory.createEtchedBorder()
-	//							, item.ext.toUpperCase(), TitledBorder.CENTER, TitledBorder.TOP)
-	//					, "43221", TitledBorder.RIGHT, TitledBorder.BOTTOM)
-	//			, "1234", TitledBorder.LEFT, TitledBorder.TOP)				
-	//		);
-//			label.setBorder(null);
-//			label.setBorder(BorderFactory.createEmptyBorder(among_space + 1, 0, among_space + 1, 0));
-		return label;
+		label.setIcon(icon);	  
+	  
+	  return label; 
 	}
-//	
-//	private void SetAsListened() { setBackground(Color.RED); }
-//	private void SetAsLiked() { setBackground(Color.ORANGE); }	
-	
 	
 	protected void paintComponent( Graphics g ) 
 	{
@@ -78,34 +49,6 @@ public class IconListRenderer extends DefaultListCellRenderer {
 			gp = new GradientPaint(
 				    0, 0, FileListConst.selected_grad[0],
 				    0, r.height, FileListConst.selected_grad[1] );			
-			
-//			switch (curr_item.state) {
-//				case LIKED :
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.droped_grad[0],
-//						    0, r.height, FileListConst.droped_grad[1] );
-//					break;
-//				case LISTENED :
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.listened_grad[0],
-//						    0, r.height, FileListConst.listened_grad[1] );
-//					break;
-//				case PLAYED:
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.played_grad[0],
-//						    0, r.height, FileListConst.played_grad[1] );
-//					break;
-//				case NONE:
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.usual_grad[0],
-//						    0, r.height, FileListConst.usual_grad[1] );
-//					break;					
-//			}
-		}
-		else if (focused) {
-			gp = new GradientPaint(
-				    0, 0, FileListConst.focused_grad[0],
-				    0, r.height, FileListConst.focused_grad[1] );			
 			
 //			switch (curr_item.state) {
 //				case LIKED :
@@ -166,5 +109,5 @@ public class IconListRenderer extends DefaultListCellRenderer {
 	    setOpaque( false );
 	    super.paintComponent(g);
 	    setOpaque( true );
-	}
+	}	
 }

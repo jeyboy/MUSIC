@@ -23,8 +23,9 @@ import java.util.Vector;
 
 import javax.swing.JList;
 import javax.swing.TransferHandler;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
 
 import filelist.ListItem.STATUS;
 
@@ -49,7 +50,7 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         	public void filesDropped(Dropper.Event ev) {
         		if (!(boolean)ev.getSource())
         			//filelist.AddElemsF(IOOperations.ScanDirectoriesF(ev.getFiles()));
-        			Common._drop_initer.ProceedDrop(filelist, ev.getFiles());
+        			Common._drop_initer.ProceedDrop(filelist.parent, ev.getFiles());
         	}
         });
         
@@ -61,29 +62,22 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         filelist.setTransferHandler(new TransferHandler(null));
 //        filelist.setTransferHandler(new FileTransferHandler());
         
-//    	void setSelectedIndex(int index)   
-//    	void setSelectedIndices(int[] indices)   
-//    	void setSelectedValue(Object object, boolean shouldScroll)	
-//    	public void ensureIndexIsVisible(int index) {};
-    	filelist.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-//              System.out.println("First index: " + listSelectionEvent.getFirstIndex());
-//              System.out.println(", Last index: " + listSelectionEvent.getLastIndex());
-//              boolean adjust = listSelectionEvent.getValueIsAdjusting();
-//              System.out.println(", Adjusting? " + adjust);
-//              if (!adjust) {
-//                JList list = (JList) listSelectionEvent.getSource();
-//                int selections[] = list.getSelectedIndices();
-//                Object selectionValues[] = list.getSelectedValues();
-//                for (int i = 0, n = selections.length; i < n; i++) {
-//                  if (i == 0) {
-//                    System.out.println(" Selections: ");
-//                  }
-//                  System.out.println(selections[i] + "/" + selectionValues[i] + " ");
-//                }
-//              }
-	       }
-	    });
+        filelist.getModel().addTreeModelListener(new TreeModelListener() {
+
+			@Override
+			public void treeNodesChanged(TreeModelEvent e) {}
+
+			@Override
+			public void treeNodesInserted(TreeModelEvent e) { filelist.parent.UpdateCounter(); }
+
+			@Override
+			public void treeNodesRemoved(TreeModelEvent e) { filelist.parent.UpdateCounter(); }
+
+			@Override
+			public void treeStructureChanged(TreeModelEvent e) {}
+        	
+        });
+
         
         filelist.addMouseListener(new MouseListener() {
         	@Override
@@ -111,17 +105,17 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
     		@Override
     		public void keyPressed(KeyEvent e) {
     			if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-    				int last_pos = filelist.getSelectedIndex() - 1;
-    				for(Object obj: filelist.getSelectedValuesList()) {
+    				TreePath last_pos = filelist.getSelectionPath();
+    				for(TreePath obj: filelist.getSelectionPaths()) {
 	    				if (filelist.parent.options.delete_files)
-	    					Common._trash.AddPath(((ListItem)obj).file);
-    					filelist.model.removeElement(obj);
+	    					Common._trash.AddPath(((ListItem)obj.getLastPathComponent()).file);
+	    				filelist.removeSelectionPath(obj);
     				}
-    				filelist.CalcSelect(last_pos, true);
+//    				filelist.CalcSelect(last_pos, true);
     			}
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-    				for(int index:filelist.getSelectedIndices())
-    					filelist.model.elementAt(index).Exec();
+    				for(TreePath obj : filelist.getSelectionPaths())
+    					((ListItem)obj.getLastPathComponent()).Exec();
     			}
     		}
     		@Override
@@ -170,17 +164,13 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
     		return files;
 		}
     }
-    
-    
-    
 
 	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
-		JList<?> list = (JList<?>)filelist;
 		List<File> files = new ArrayList<File>();
 		ListItem temp;
-		for (Object obj: list.getSelectedValuesList()) {
-			temp = (ListItem)obj;
+		for (TreePath obj: filelist.getSelectionPaths()) {
+			temp = (ListItem)obj.getLastPathComponent();
 			files.add(temp.file);
 			droped_items.add(temp);
 		}

@@ -8,6 +8,7 @@ import service.Errorist;
 import service.IOOperations;
 import service.MediaInfo;
 import service.ServiceAgent;
+import service.Settings;
 
 public class ListItem {
 	public enum STATUS { LISTENED, LIKED, PLAYED, NONE }
@@ -32,12 +33,8 @@ public class ListItem {
 		}			
 	}
 	
-	public static ListItem Load(String info) {
-		return new ListItem(info.substring(2), str_to_status(info.charAt(1)));
-	}
-	public String SaveInfo() {
-		return "f" + status_to_str() + file.getAbsolutePath();
-	} 
+	public static ListItem Load(String info) 				{ return new ListItem(info.substring(2), str_to_status(info.charAt(1))); }
+	public String SaveInfo() 								{ return Settings._item + status_to_str() + file.getParent(); } 
 	
 	public String title;
 	public String ext;
@@ -45,13 +42,13 @@ public class ListItem {
 	public STATUS state = STATUS.NONE;
 	public MediaInfo media_info = null;
 
-	public ListItem(String path) { this(new File(path)); }
-	public ListItem(String path, STATUS state) { this(new File(path), state); }
+	public ListItem(String path) 							{ this(new File(path)); }
+	public ListItem(String path, STATUS state) 				{ this(new File(path), state); }
 
-	public ListItem(File file) { this(file, STATUS.NONE); }
-	public ListItem(File file, STATUS state) { this(file, IOOperations.extension(file.getName()), state); }
-	public ListItem(File file, String ext) { this(file, ext, STATUS.NONE); }	
-	public ListItem(File file, String ext, STATUS state) {
+	public ListItem(File file) 								{ this(file, STATUS.NONE); }
+	public ListItem(File file, STATUS state) 				{ this(file, IOOperations.extension(file.getName()), state); }
+	public ListItem(File file, String ext) 					{ this(file, ext, STATUS.NONE); }	
+	public ListItem(File file, String ext, STATUS state) 	{
 		this.file = file;
 		this.ext = ext;
 		this.title = file.getName();
@@ -59,11 +56,9 @@ public class ListItem {
 	}	
 	
 	@Override
-	public String toString() { return title; }
-	
-	public long MemorySize() { return ServiceAgent.getObjectSize(this); }
-	
-	public void Exec() {
+	public String toString() 								{ return title; }
+	public long MemorySize() 								{ return ServiceAgent.getObjectSize(this); }
+	public void Exec() 										{
         try { 
         	IOOperations.open(file);
         	SetState(STATUS.LISTENED);
@@ -75,12 +70,11 @@ public class ListItem {
       	   //alt try open the file
         }
 	}
-	
-	public void SetState(STATUS newstate) {
+	public void SetState(STATUS newstate) 					{
     	state = newstate;
     	for(String tstr : media_info.Titles)
     		Common.library.Set(tstr, newstate == STATUS.LIKED);		
 	} 
 
-	public void InitMedia() { Common.library.ProceedItem(this); }
+	public void InitMedia() 								{ Common.library.ProceedItem(this); }
 }

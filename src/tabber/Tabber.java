@@ -13,19 +13,15 @@ public class Tabber extends JTabbedPane {
 	
 	public Tabber() { setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);  } //JTabbedPane.SCROLL_TAB_LAYOUT
 	
-	Tab InitTab(String title, TabOptions opts, ListItem [] items) 		{ return new Tab(this, title, opts, items); }
-	public Tab AddTab(String title, TabOptions opts, ListItem [] items)	{ return InitTab(title, opts, items); }
-	public Tab AddTab(String title, TabOptions opts)					{ return InitTab(title, opts, null); }
-	public Tab AddTab(String title)										{ return InitTab(title, new TabOptions(), null); }
+	Tab InitTab(String title, TabOptions opts) 			{ return new Tab(this, title, opts); }
+	public Tab AddTab(String title, TabOptions opts)	{ return InitTab(title, opts); }
+	public Tab AddTab(String title)						{ return InitTab(title, new TabOptions()); }
 	
 	public Tab GetTab(int index)			{ return (Tab) getComponentAt(index);}
 	public Tab GetCurrentTab()				{ return (Tab) getSelectedComponent();}
 	public void SetCurrentTab(int index)	{ setSelectedIndex(index);}
 	public void SetCurrentTab(Tab tab)		{ setSelectedComponent(tab);}
-	public ListItem GetCurrentItem()		{
-		try { return (ListItem)GetCurrentTab().Files().getSelectedValue(); }
-		catch(Exception e) { return null; }
-	}
+	public ListItem GetCurrentItem()		{ return GetCurrentTab().GetSelected(); }
 	
 	static public void Load() {
 		Common.tabber = new Tabber();
@@ -39,25 +35,15 @@ public class Tabber extends JTabbedPane {
 		if (!Common.save_flag) return;
 		
 	    PrintWriter pw = null;
-	    Tab curr_tab;
 
 	    try {
 	        pw = IOOperations.GetWriter(service.Settings.tabspath, false);
 	        	        
-	        for(int loop = 0; loop < getTabCount(); loop++) {
-	        	curr_tab = GetTab(loop);
-	        	
-	        	pw.println('*' + curr_tab.options.Serialize() + curr_tab.GetTitle());
-	        	
-	        	for(int loop1 = 0; loop1 < curr_tab.FilesCount(); loop1++) 
-	        		pw.println(curr_tab.File(loop1).SaveInfo());
-	        	
-	        	pw.println(" ");
-	        	pw.flush();
-	        }
+	        for(int loop = 0; loop < getTabCount(); loop++)
+	        	GetTab(loop).Save(pw);
 	    }
 	    catch (Exception e) { Errorist.printLog(e); }
-	    finally { if (pw != null) pw.close(); }
+	    if (pw != null) pw.close();
 	}		
 // Customizzation
 //	Property String	Object Type
@@ -125,12 +111,12 @@ public class Tabber extends JTabbedPane {
 	
 	//Delete selected elem in selected tab and init next
 	public void DeleteSelectAndInit() {
-		GetTab(getSelectedIndex()).Files.DeleteSelectAndInit();
+		GetTab(getSelectedIndex()).DeleteSelectAndInit();
 	}
 	
 	//Move to the next elem from selected elem in selected tab
-	public void MoveSelectAndInit(Boolean next) {
-		GetTab(getSelectedIndex()).Files.MoveSelectAndInit(next);
+	public void MoveSelectAndInit(boolean next) {
+		GetTab(getSelectedIndex()).MoveSelectAndInit(next);
 	}	
 
 	/**
