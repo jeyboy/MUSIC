@@ -9,6 +9,8 @@ import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import service.Common;
@@ -20,7 +22,8 @@ public class FileList extends JTree {
 	private static DefaultMutableTreeNode root = new DefaultMutableTreeNode("*******");
 	public ConcurrentHashMap<String, DefaultMutableTreeNode> roots = new ConcurrentHashMap<String, DefaultMutableTreeNode>(5);
 	Tab parent;
-	
+	DefaultTreeModel model;
+
 	
     //Alter = Vector, ArrayList
 	private IconListRenderer listrender = new IconListRenderer();
@@ -28,6 +31,8 @@ public class FileList extends JTree {
 	public FileList(Tab parent_tab) {
 		super(root);
 		setRootVisible(false);
+		model = (DefaultTreeModel)getModel();
+
 		parent = parent_tab;
 		CommonInitPart();
 //		setBackground(Color.black);
@@ -46,12 +51,14 @@ public class FileList extends JTree {
     
     void ElemProceeding(DefaultMutableTreeNode root_node, ListItem elem) {
     	root_node.add(new DefaultMutableTreeNode(elem));
+//    	model.insertNodeInto(new DefaultMutableTreeNode(elem), root, root.getChildCount());
 		AddAssocIcon(elem.ext, FileSystemView.getFileSystemView().getSystemIcon(elem.file));
-		Common._initer.AddItem(elem);    	
+		Common._initer.AddItem(elem);
+		model.nodeStructureChanged(root_node);
     }
 	public void ProceedElem(DefaultMutableTreeNode root_node, ListItem elem) 	{ ElemProceeding(root_node, elem);	}
     
-	void LinkRoot(DefaultMutableTreeNode new_root) { root.add(new_root); }
+	void LinkRoot(DefaultMutableTreeNode new_root) { root.add(new_root); model.nodeStructureChanged(root);}
     public DefaultMutableTreeNode GetRoot(String path) {
     	DefaultMutableTreeNode res = roots.get(path);
     	if (res == null) {
