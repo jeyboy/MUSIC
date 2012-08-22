@@ -134,12 +134,18 @@ public class MenuBar extends JMenuBar {
 	void ParseBase(String path) {
 		try {
 			BufferedReader reader = IOOperations.GetReader(path);
-	  		String strLine;
+	  		String strLine, ext;
 	  		
 	  		try {
 				while ((strLine = reader.readLine()) != null) {
 					if (strLine.length() == 0) continue;
 					boolean flag = reader.readLine().charAt(0) == '1';
+					
+					strLine = strLine.toLowerCase();
+					ext = IOOperations.extension(strLine);
+					
+					if (ext.length() != 0)
+						strLine = strLine.substring(0, strLine.length() - (ext.length() + 1));				
 					
 					String temp = MediaInfo.SitesFilter(strLine);  
 					temp = MediaInfo.SpacesFilter(MediaInfo.ForwardNumberPreFilter(temp));
