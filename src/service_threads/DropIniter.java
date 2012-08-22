@@ -26,9 +26,9 @@ public class DropIniter extends BaseThread {
     	drops_collection.add(new DropCell(curr_tab, curr_elems));
     }
     
-    void ProcCollection(final DropCell temp, final int max_deep_level) {
+    synchronized void ProcCollection(final DropCell temp, final int max_deep_level) {
         try {
-			SwingUtilities.invokeAndWait(new Runnable() {
+			SwingUtilities.invokeLater(new Runnable() {
 			    public void run() {
 			    	DefaultMutableTreeNode node = temp.tab.GetNode(temp.elems[0].getParent());
 			    	Vector<File> filelist = addFilesRecursively(node, temp.elems, 1, max_deep_level, new Vector<File>());
@@ -59,7 +59,7 @@ public class DropIniter extends BaseThread {
 				    return filelist;
 				}
 			});
-		} catch (InvocationTargetException | InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}    	

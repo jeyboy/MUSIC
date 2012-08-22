@@ -70,8 +70,8 @@ public class Tab extends JScrollPane {
 	public void Save(PrintWriter pw) {
     	pw.println(Settings._tab + options.Serialize() + GetTitle());
     	
-		for(Entry<String, DefaultMutableTreeNode> entry : Files.roots.entrySet()) {
-			for (Enumeration<?> e = entry.getValue().children(); e.hasMoreElements();) {
+		for(Enumeration<DefaultMutableTreeNode> er =  Files.root.children(); er.hasMoreElements();) {
+			for (Enumeration<?> e = ((DefaultMutableTreeNode) er.nextElement()).children(); e.hasMoreElements();) {
 				DefaultMutableTreeNode o = (DefaultMutableTreeNode) e.nextElement();
 				
 				pw.println(((ListItem)o.getUserObject()).SaveInfo());
@@ -107,8 +107,8 @@ public class Tab extends JScrollPane {
 	}
 	public Integer FilesCount() 		{
 		int count = 0;
-		for(Entry<String, DefaultMutableTreeNode> entry : Files.roots.entrySet())
-			count += entry.getValue().getChildCount();
+//		for(Entry<String, DefaultMutableTreeNode> entry : Files.roots.entrySet())
+//			count += entry.getValue().getChildCount();
 		return count; 
 	}
 	
@@ -128,7 +128,7 @@ public class Tab extends JScrollPane {
 	public void UpdateCounter()									{	tabhead.SetCount(FilesCount()); }
 	public void SetStatus(String status)						{   tabhead.SetStatus(status);	}
 	public void LockPaint(boolean lock)							{	Files.LockPaint(lock); }
-	public Set<Entry<String, DefaultMutableTreeNode>> Roots() 	{	return Files.roots.entrySet(); }
+//	public Set<Entry<String, DefaultMutableTreeNode>> Roots() 	{	return Files.roots.entrySet(); }
 
 
 	/// Helper methods

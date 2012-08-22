@@ -49,13 +49,13 @@ public class ItemsStateRefresher extends BaseThread {
     }
     
     void procTab(Tab tab, String [] examples) {
-		for(Entry<String, DefaultMutableTreeNode> entry : tab.Roots()) {
-			for (Enumeration<?> e = entry.getValue().children(); e.hasMoreElements();) {
-				if (closeRequest()) return;
-				DefaultMutableTreeNode o = (DefaultMutableTreeNode) e.nextElement();
-				procItem(((ListItem)o.getUserObject()), examples);
-		    }			
-		}    	
+//		for(Entry<String, DefaultMutableTreeNode> entry : tab.Roots()) {
+//			for (Enumeration<?> e = entry.getValue().children(); e.hasMoreElements();) {
+//				if (closeRequest()) return;
+//				DefaultMutableTreeNode o = (DefaultMutableTreeNode) e.nextElement();
+//				procItem(((ListItem)o.getUserObject()), examples);
+//		    }			
+//		}    	
     }
     
     void procItem(ListItem item, String [] examples) {

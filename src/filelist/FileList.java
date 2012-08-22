@@ -2,15 +2,15 @@ package filelist;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashSet;
 
 import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import service.Common;
@@ -19,8 +19,8 @@ import tabber.Tab;
 public class FileList extends JTree {
 	
 	private static final long serialVersionUID = 2216859386306446869L;
-	private static DefaultMutableTreeNode root = new DefaultMutableTreeNode("*******");
-	public ConcurrentHashMap<String, DefaultMutableTreeNode> roots = new ConcurrentHashMap<String, DefaultMutableTreeNode>(5);
+	public static DefaultMutableTreeNode root = new DefaultMutableTreeNode("*******");
+//	public HashMap<String, DefaultMutableTreeNode> roots = new HashMap<String, DefaultMutableTreeNode>(5);
 	Tab parent;
 	DefaultTreeModel model;
 
@@ -35,7 +35,7 @@ public class FileList extends JTree {
 
 		parent = parent_tab;
 		CommonInitPart();
-//		setBackground(Color.black);
+		setBackground(Color.black);
 	}
 	
     private void CommonInitPart() {
@@ -59,17 +59,29 @@ public class FileList extends JTree {
 	public void ProceedElem(DefaultMutableTreeNode root_node, ListItem elem) 	{ ElemProceeding(root_node, elem);	}
     
 	void LinkRoot(DefaultMutableTreeNode new_root) { root.add(new_root); model.nodeStructureChanged(root);}
-    public DefaultMutableTreeNode GetRoot(String path) {
-    	DefaultMutableTreeNode res = roots.get(path);
-    	if (res == null) {
-    		System.out.println("******* init new root");
-    		res = new DefaultMutableTreeNode(path);
-    		System.out.println("******* " + res);
+	synchronized public DefaultMutableTreeNode GetRoot(String path) {
+//    	DefaultMutableTreeNode res = roots.get(path);
+//    	if (res == null) {
+//    		System.out.println("******* init new root");
+//    		res = new DefaultMutableTreeNode(path);
+//    		System.out.println("******* " + res);
 //        	res = roots.put(path, res);
-        	System.out.println("******* " + res);
-        	LinkRoot(res);    		
-    	}
-    	return res;
+//        	System.out.println("******* " + res);
+//        	LinkRoot(res);    		
+//    	}
+		
+	    DefaultMutableTreeNode node = null;
+	    Enumeration<?> e = root.breadthFirstEnumeration();
+	    while (e.hasMoreElements()) {
+	      node = (DefaultMutableTreeNode) e.nextElement();
+	      if (path.equals(node.getUserObject().toString())) {
+	        return node;
+	      }
+	    }
+		
+	    node = new DefaultMutableTreeNode(path);
+	    LinkRoot(node);
+    	return node;
     }
    
 	// This method is called as the cursor moves within the list.

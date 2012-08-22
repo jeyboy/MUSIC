@@ -1,5 +1,6 @@
 package filelist;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -30,7 +31,10 @@ public class IconListRenderer extends DefaultTreeCellRenderer {
 	public Component getTreeCellRendererComponent(
 			JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 		label = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+		setBackgroundNonSelectionColor(Color.black);
+		setBorder(null);
 		
+		curr_item = null;
 		Object temp = ((DefaultMutableTreeNode) value).getUserObject();
 		if (temp instanceof ListItem) {
 			curr_item = (ListItem)temp;
@@ -40,18 +44,16 @@ public class IconListRenderer extends DefaultTreeCellRenderer {
 			if (icon == null) icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(service.Settings.imagepath + "items/default.png"));
 			label.setIcon(icon);
 		}
-	  
-	  return label; 
+		return label; 
 	}
 	
 	protected void paintComponent( Graphics g ) 
 	{
-		if (curr_item != null) {
+		Graphics2D g2d = (Graphics2D)g.create(0, 0, label.getWidth(), label.getHeight());
+		Rectangle r = new Rectangle(0, 0, label.getWidth(), label.getHeight());//g.getClipBounds(); //label.getBounds();//
+		GradientPaint gp = null;		
 		
-			Graphics2D g2d = (Graphics2D)g.create(0, 0, label.getWidth(), label.getHeight());
-			Rectangle r = new Rectangle(0, 0, label.getWidth(), label.getHeight());//g.getClipBounds(); //label.getBounds();//
-			GradientPaint gp = null;
-			
+		if (curr_item != null) {
 			if (selected) {
 				gp = new GradientPaint(
 					    0, 0, FileListConst.selected_grad[0],
@@ -104,15 +106,20 @@ public class IconListRenderer extends DefaultTreeCellRenderer {
 						break;										
 				}
 			}		
-			
-			if (gp != null) {
-				g2d.setPaint(gp);
-				g2d.fillRoundRect(r.x + left_padding, r.y + among_space, r.width - left_padding, r.height - among_space * 2, 10, 30);
-	//			g2d.setColor(Color.black);
-	//			g2d.setStroke(new BasicStroke(1.5F));
-	//			g2d.drawRoundRect(r.x + left_padding, r.y + among_space, r.width - left_padding, r.height - among_space * 2, 10, 30);
-			}
 		}
+		else {
+			gp = new GradientPaint(
+				    0, 0, Color.white,
+				    0, r.height, Color.white );
+		}
+		
+		if (gp != null) {
+			g2d.setPaint(gp);
+			g2d.fillRoundRect(r.x + left_padding, r.y + among_space, r.width - left_padding, r.height - among_space * 2, 10, 30);
+//			g2d.setColor(Color.black);
+//			g2d.setStroke(new BasicStroke(1.5F));
+//			g2d.drawRoundRect(r.x + left_padding, r.y + among_space, r.width - left_padding, r.height - among_space * 2, 10, 30);
+		}		
 		
 	    setOpaque( false );
 	    super.paintComponent(g);
