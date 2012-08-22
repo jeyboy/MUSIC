@@ -22,9 +22,11 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JList;
+import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import filelist.ListItem.STATUS;
@@ -82,12 +84,12 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         filelist.addMouseListener(new MouseListener() {
         	@Override
             public void mouseClicked(MouseEvent mouseEvent) {
-//              JList<?> theList = (JList<?>) mouseEvent.getSource();
-//              if (mouseEvent.getClickCount() == 2) {
-//                int index = theList.locationToIndex(mouseEvent.getPoint());
-//                if (index >= 0)
-//                  ((ListItem) theList.getModel().getElementAt(index)).Exec();
-//              }
+              JTree theList = (JTree) mouseEvent.getSource();
+              if (mouseEvent.getClickCount() == 2) {
+            	TreePath path = theList.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
+                if (path != null)
+                  ((ListItem) ((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject()).Exec();
+              }
             }
     		@Override
     		public void mouseEntered(MouseEvent arg0) {}

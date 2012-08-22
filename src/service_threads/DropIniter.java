@@ -47,7 +47,7 @@ public class DropIniter extends BaseThread {
 			    		    	if ((level > max_level)) {
 			    		    		filelist = addFilesRecursively(node, ch, level + 1, max_level, filelist);    		    		
 			    		    	} else {
-			    		    		DefaultMutableTreeNode child_node = new DefaultMutableTreeNode(child.getParent());
+			    		    		DefaultMutableTreeNode child_node = new DefaultMutableTreeNode(child.getName());
 			    		    		node.add(child_node);
 			    		        	flist = addFilesRecursively(child_node, ch, level + 1, max_level, flist);
 			    		        	temp.tab.AddFileItems(child_node, flist);
