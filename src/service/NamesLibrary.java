@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import components.MainWnd;
+
 import filelist.ListItem;
 import filelist.ListItem.STATUS;
 
@@ -123,6 +125,7 @@ public class NamesLibrary {
 			for(String title : item.media_info.Titles)
 				if (Contains(title)) {
 					item.state = Get(title) ? STATUS.LIKED : STATUS.LISTENED;
+					MainWnd.wnd.repaint();
 					break;
 				} 
 	//			else Set(title, false);		
