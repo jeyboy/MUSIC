@@ -48,6 +48,7 @@ public class MenuBar extends JMenuBar {
 	void prepareGUI() { prepareGUI("", false, false, false, false); }
 	
 	public MenuBar(final Tabber tab) {
+		setBackground(Color.black);
 		ActionBind [] actions = {
 				new ActionBind("add_tab", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -108,6 +109,7 @@ public class MenuBar extends JMenuBar {
 			} 
 			catch (IOException e) {Errorist.printLog(e);}
 			final JMenuItem item = new JMenuItem(n);
+			item.setBackground(Color.black);
 			item.addActionListener(actions[loop1].action);
 			item.addMouseListener(new MouseListener() {
 				@Override

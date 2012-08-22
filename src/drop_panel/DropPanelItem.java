@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JButton;
-
 import service.Common;
 import service.Errorist;
 import service.IOOperations;
@@ -40,8 +39,9 @@ public class DropPanelItem extends JButton  implements DropTargetListener {
 	}
 	
 	public DropPanelItem(String text, String path) {
+//		setBorder(BorderFactory.createEmptyBorder());
 		setPath(path);
-		super.setText(text); 
+		super.setText(text);
 		setPreferredSize(new Dimension(getPreferredSize().width, 15));
 		addActionListener(new ActionListener() {          
 			@Override

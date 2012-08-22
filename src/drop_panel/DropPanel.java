@@ -1,5 +1,6 @@
 package drop_panel;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -23,6 +24,7 @@ public class DropPanel extends JScrollPane {
 		panel_menus = new DropPanelMenus(new DropPanelDialogs(this));
 		
 		setViewportView(content_pane);
+		content_pane.setBackground(Color.black);
 		BoxLayout box = new BoxLayout(content_pane, axis_orient);
 		content_pane.setLayout(box);
 		panel_menus.SetContainerMenu(this);

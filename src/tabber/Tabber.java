@@ -1,5 +1,6 @@
 package tabber;
 
+import java.awt.Color;
 import java.io.PrintWriter;
 import javax.swing.JTabbedPane;
 import service.Common;
@@ -29,6 +30,7 @@ public class Tabber extends JTabbedPane {
 	
 	static public void Load() {
 		Common.tabber = new Tabber();
+		Common.tabber.setBackground(Color.black);
 		new TabberLoader();
 	}
 	
