@@ -11,7 +11,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileSystemView;
 
 import service.Common;
-import service.IOOperations;
 import tabber.Tab;
 
 
@@ -208,6 +207,7 @@ public class FileList extends JList {
 		model.remove(selected);
 		if ((selected = CheckRange(selected)) == -1) return;
 		setSelectedIndex(selected);
+		ensureIndexIsVisible(selected);
 		model.elementAt(selected).Exec();
 	}
 	

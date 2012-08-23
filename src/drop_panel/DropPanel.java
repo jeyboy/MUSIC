@@ -13,7 +13,7 @@ import service.IOOperations;
 
 public class DropPanel extends JScrollPane {
 	private static final long serialVersionUID = -9051505855046492589L;
-	private int width = 50;
+	private int width = 30;
 	public JPanel content_pane = new JPanel();
 	DropPanelMenus panel_menus; 
 	
@@ -33,15 +33,15 @@ public class DropPanel extends JScrollPane {
 	private void initYGUI() {
 		commonInit(BoxLayout.Y_AXIS);
 		setPreferredSize(new Dimension(width, getPreferredSize().height));
-		setMaximumSize(new Dimension(width, 100000));
-		setMinimumSize(new Dimension(width, 10));
+//		setMaximumSize(new Dimension(width, 100000));
+//		setMinimumSize(new Dimension(width, 10));
 	}
 	
 	private void initXGUI() {
 		commonInit(BoxLayout.X_AXIS);
 		setPreferredSize(new Dimension(getPreferredSize().width, width));
-		setMaximumSize(new Dimension(100000, width));
-		setMinimumSize(new Dimension(10, width));
+//		setMaximumSize(new Dimension(100000, width));
+//		setMinimumSize(new Dimension(10, width));
 	}
 	
     public DropPanel(boolean vertical) { if (vertical) initYGUI(); else initXGUI(); }

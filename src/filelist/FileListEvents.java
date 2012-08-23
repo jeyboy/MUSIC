@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
@@ -48,7 +49,6 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         dropper = new Dropper(filelist, new Dropper.Listener() {
         	public void filesDropped(Dropper.Event ev) {
         		if (!(boolean)ev.getSource())
-        			//filelist.AddElemsF(IOOperations.ScanDirectoriesF(ev.getFiles()));
         			Common._drop_initer.ProceedDrop(filelist, ev.getFiles());
         	}
         });
@@ -58,13 +58,12 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         
         //dragging
         filelist.setDragEnabled(true);
-        filelist.setTransferHandler(new TransferHandler(null));
-//        filelist.setTransferHandler(new FileTransferHandler());
+//        filelist.setTransferHandler(new TransferHandler(null));
+        filelist.setTransferHandler(new FileTransferHandler());
         
 //    	void setSelectedIndex(int index)   
 //    	void setSelectedIndices(int[] indices)   
 //    	void setSelectedValue(Object object, boolean shouldScroll)	
-//    	public void ensureIndexIsVisible(int index) {};
     	filelist.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
 //              System.out.println("First index: " + listSelectionEvent.getFirstIndex());
@@ -88,12 +87,12 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         filelist.addMouseListener(new MouseListener() {
         	@Override
             public void mouseClicked(MouseEvent mouseEvent) {
-              JList<?> theList = (JList<?>) mouseEvent.getSource();
-              if (mouseEvent.getClickCount() == 2) {
-                int index = theList.locationToIndex(mouseEvent.getPoint());
-                if (index >= 0)
-                  ((ListItem) theList.getModel().getElementAt(index)).Exec();
-              }
+        		if (mouseEvent.getClickCount() == 2) {
+        			JList<?> theList = (JList<?>) mouseEvent.getSource();
+        			int index = theList.locationToIndex(mouseEvent.getPoint());
+        			if (index >= 0)
+        				((ListItem) theList.getModel().getElementAt(index)).Exec();
+        		}
             }
     		@Override
     		public void mouseEntered(MouseEvent arg0) {}
@@ -129,25 +128,25 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         });
 	}
 	
-//    private class FileTransferHandler extends TransferHandler {
-//		private static final long serialVersionUID = 1873106934925755472L;
-//
-//		@Override
-//    	protected Transferable createTransferable(JComponent c) {
-//    		JList<Object> list = (JList<Object>)c;
-//    		List<File> files = new ArrayList<File>();
-//    		for (Object obj: list.getSelectedValuesList()) {
-//    			files.add(((ListItem)obj).file);
-////    			Common.library.Set(title, down)ProceedItem((ListItem)obj);
-//    		}
-//    		return new FileTransferable(c, files);
-//    	}
-//
-//    	@Override
-//    	public int getSourceActions(JComponent c) {
-//    		return COPY; //MOVE
-//    	}
-//    }
+    private class FileTransferHandler extends TransferHandler {
+		private static final long serialVersionUID = 1873106934925755472L;
+
+		@Override
+    	protected Transferable createTransferable(JComponent c) {
+    		JList<?> list = (JList<?>)c;
+    		List<File> files = new ArrayList<File>();
+    		for (Object obj: list.getSelectedValuesList()) {
+    			files.add(((ListItem)obj).file);
+//    			Common.library.Set(title, down)ProceedItem((ListItem)obj);
+    		}
+    		return new FileTransferable(files);
+    	}
+
+    	@Override
+    	public int getSourceActions(JComponent c) {
+    		return COPY; //MOVE
+    	}
+    }
 
     private class FileTransferable implements Transferable {
     	private List<File> files;
@@ -176,42 +175,24 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
 
 	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
-		JList<?> list = (JList<?>)filelist;
-		List<File> files = new ArrayList<File>();
-		ListItem temp;
-		for (Object obj: list.getSelectedValuesList()) {
-			temp = (ListItem)obj;
-			files.add(temp.file);
-			droped_items.add(temp);
-		}
-	
-	    ds.startDrag(dge, DragSource.DefaultCopyDrop, new FileTransferable(files), this);
+//		JList<?> list = (JList<?>)filelist;
+//		List<File> files = new ArrayList<File>();
+//		ListItem temp;
+//		for (Object obj: list.getSelectedValuesList()) {
+//			temp = (ListItem)obj;
+//			files.add(temp.file);
+//			droped_items.add(temp);
+//		}
+//	
+//	    ds.startDrag(dge, DragSource.DefaultCopyDrop, new FileTransferable(files), this);
 	}
-
 	@Override
-	public void dragEnter(DragSourceDragEvent dsde) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void dragEnter(DragSourceDragEvent dsde) {}
 	@Override
-	public void dragOver(DragSourceDragEvent dsde) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void dragOver(DragSourceDragEvent dsde) {}
 	@Override
-	public void dropActionChanged(DragSourceDragEvent dsde) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dragExit(DragSourceEvent dse) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void dropActionChanged(DragSourceDragEvent dsde) {}
+	public void dragExit(DragSourceEvent dse) {}
 	@Override
 	public void dragDropEnd(DragSourceDropEvent dsde) {
 	    if (dsde.getDropSuccess()) {
