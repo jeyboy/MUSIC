@@ -76,6 +76,11 @@ public class ListItem {
         }
 	}
 	
+	public void OpenFolder() {
+		try { IOOperations.open(file.getParentFile()); }
+		catch (IOException e) { Errorist.printLog(e); }
+	}
+	
 	public void SetState(STATUS newstate) {
     	state = newstate;
     	for(String tstr : media_info.Titles)

@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -117,7 +119,18 @@ public class MainWnd {
 		catch (Exception e) {
 			Common.drop_manager.CloseAll();
 			Errorist.printLog(e);
-		} 
+		}
+		
+//	       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//	        GraphicsDevice[] gds = ge.getScreenDevices();
+//	        for (GraphicsDevice gd : gds) {
+//	            GraphicsConfiguration gc = gd.getDefaultConfiguration();
+//	            System.out.println("Bounds = " + gc.getBounds());
+//	            System.out.println("Insets = " + Toolkit.getDefaultToolkit().getScreenInsets(gc));
+//	        }
+
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		wnd.setLocation(new Point(dim.width - wnd.getWidth(), dim.height - wnd.getHeight() - 40));
 	}
 	static private void Save() {
 	    Common.tabber.Save();
