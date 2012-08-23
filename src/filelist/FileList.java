@@ -59,6 +59,7 @@ public class FileList extends JList {
     	super.setCellRenderer(listrender);
     	super.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     	new FileListEvents(this);
+    	
 	}
 
 //    private void ProceedElem(String elem) {	ProceedElem(new ListItem(elem)); }

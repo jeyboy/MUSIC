@@ -1,6 +1,7 @@
 package tabber;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import filelist.FileList;
@@ -25,6 +26,8 @@ public class Tab extends JScrollPane {
 	    tabber.setBackgroundAt(tabber.getTabCount() - 1, Color.black);
 	    tabber.setForegroundAt(tabber.getTabCount() - 1, Color.white);
 	    UpdateCounter();
+	    getVerticalScrollBar().setPreferredSize(new Dimension(12, 0));
+	    getHorizontalScrollBar().setPreferredSize(new Dimension(0, 12));
 	}
 	
 	public Tab(Tabber parent, String title, TabOptions opts, ListItem [] items) { Init(parent, title, opts, items);	}
