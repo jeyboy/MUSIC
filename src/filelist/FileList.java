@@ -203,7 +203,8 @@ public class FileList extends JList {
 			return;
 		}
 		if (parent.options.delete_files)
-			IOOperations.deleteFile(((ListItem)getSelectedValue()).file);
+			Common._trash.AddPath(((ListItem)getSelectedValue()).file);
+//			IOOperations.deleteFile(((ListItem)getSelectedValue()).file);
 		model.remove(selected);
 		if ((selected = CheckRange(selected)) == -1) return;
 		setSelectedIndex(selected);
