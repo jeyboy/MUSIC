@@ -1,25 +1,26 @@
 package components;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import service.ActionBind;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+
 import service.Common;
 import service.Errorist;
 import service.IOOperations;
@@ -28,15 +29,13 @@ import tabber.Tab;
 import tabber.TabOptions;
 import tabber.Tabber;
 
-public class MenuBar extends JMenuBar {
-	private static final long serialVersionUID = 5651526930411426260L;
+public class MenuBar {
 	private JTextField title;
 	private JCheckBox delete_with_file;
 	private JCheckBox interactive;
 	private JCheckBox delete_empty_folders;
 	private JCheckBox remote_source;
 	JFileChooser fileChooser = new JFileChooser(".");
-	private Color default_item_color;
 	
 	void prepareGUI(String tit, boolean del, boolean inter, boolean del_ef, boolean remote) {
 		title = new JTextField(tit);
@@ -47,31 +46,36 @@ public class MenuBar extends JMenuBar {
 	}
 	void prepareGUI() { prepareGUI("", false, false, false, false); }
 	
-	public MenuBar(final Tabber tab) {
-		setBackground(Color.black);
+	public MenuBar() {}
+	public ToolBar PrepareToolBar(Composite wnd, Tabber tab) {
+		ToolBar res = new ToolBar(wnd, SWT.HORIZONTAL | SWT.WRAP);
+		res.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		
+		res.setBackground(new Color(Display.getCurrent(), 0, 0, 0));
 		ActionBind [] actions = {
-				new ActionBind("add_tab", new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				new ActionBind("add_tab", new Listener() {
+					public void handleEvent(Event arg0) {
 						prepareGUI();
-					    Object complexMsg[] = { "Create tab with title", title, new JCheckBox[] {delete_with_file, delete_empty_folders, interactive, remote_source} };		
+					    Object complexMsg[] = { "Create tab with title", title, new JCheckBox[] {delete_with_file, delete_empty_folders, interactive, remote_source} };
+					    
 						int option = JOptionPane.showOptionDialog(  
-								MenuBar.this,  
+								null,  
 								complexMsg,  
 								"Creating drop elem", JOptionPane.OK_CANCEL_OPTION,  
 								JOptionPane.PLAIN_MESSAGE, null, null,  
 								null 
 				        );
-						if( option == JOptionPane.OK_OPTION ) Common.tabber.AddTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected()));							
-				    }
+						if( option == JOptionPane.OK_OPTION ) Common.tabber.AddTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected()));
+					}
 				}),
-				new ActionBind("settings", new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				new ActionBind("settings", new Listener() {
+					public void handleEvent(Event arg0) {
 						Tab tab = Common.tabber.GetCurrentTab();
 						if (tab == null) return; 
 						prepareGUI(tab.GetTitle(), tab.options.delete_files, tab.options.interactive, tab.options.delete_empty_folders, tab.options.remote_source);
 					    Object complexMsg[] = { "Modify tab title", title, delete_with_file, delete_empty_folders, interactive, remote_source };		
 						int option = JOptionPane.showOptionDialog(  
-								MenuBar.this,  
+								null,  
 								complexMsg,  
 								"Modify drop elem", JOptionPane.OK_CANCEL_OPTION,  
 								JOptionPane.PLAIN_MESSAGE, null, null,  
@@ -85,52 +89,33 @@ public class MenuBar extends JMenuBar {
 						}						
 				    }
 				}),
-				new ActionBind("start_play", new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				new ActionBind("start_play", new Listener() {
+					public void handleEvent(Event arg0) {
 						
 				    }
 				}),					
-				new ActionBind("include_base", new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
+				new ActionBind("include_base", new Listener() {
+					public void handleEvent(Event arg0) {
 					    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION)
+					    if (fileChooser.showDialog(null, "Choose") == JFileChooser.APPROVE_OPTION)
 					    	ParseBase(fileChooser.getSelectedFile().getAbsolutePath());
 					}
 				})
 			};
 		
 		for(int loop1 = 0; loop1 < actions.length; loop1++) {
-			ImageIcon n = null;
-			try {
-				n = new ImageIcon(
-						ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(service.Settings.imagepath + "menubar/" + actions[loop1].name + ".png"))
-						);
-			} 
-			catch (IOException e) {Errorist.printLog(e);}
-			final JMenuItem item = new JMenuItem(n);
-			item.setBackground(Color.black);
-			item.addActionListener(actions[loop1].action);
-			item.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {}
-				@Override
-				public void mouseEntered(MouseEvent arg0) {
-					default_item_color = item.getBackground();
-					item.setBackground(Color.WHITE);
-				}
-				@Override
-				public void mouseExited(MouseEvent arg0) {
-					item.setBackground(default_item_color);
-				}
-				@Override
-				public void mousePressed(MouseEvent arg0) {}
-				@Override
-				public void mouseReleased(MouseEvent arg0) {}
-			});
-			this.add(item);
+			Image n = new Image(
+					Display.getCurrent(),
+					Thread.currentThread().getContextClassLoader().getResourceAsStream(service.Settings.imagepath + "menubar/" + actions[loop1].name + ".png")
+			);
+			ToolItem item = new ToolItem(res, SWT.PUSH);
+			item.setImage(n);
+
+//			item.setBackground(Color.black);
+			item.addListener(SWT.Selection, actions[loop1].action);
 		}
-		this.setVisible(true);
+//		res.setVisible(true);
+		return res;
 	}
 	
 	void ParseBase(String path) {
@@ -161,4 +146,14 @@ public class MenuBar extends JMenuBar {
 		} 
 		catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
 	}
+	
+	public class ActionBind {
+		public Listener action = null;
+		public String name = null;
+		
+		public ActionBind(String name, Listener action) {
+			this.action = action;
+			this.name = name;
+		}
+	}	
 }

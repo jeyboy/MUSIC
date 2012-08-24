@@ -125,7 +125,7 @@ public class NamesLibrary {
 			for(String title : item.media_info.Titles)
 				if (Contains(title)) {
 					item.state = Get(title) ? STATUS.LIKED : STATUS.LISTENED;
-					MainWnd.wnd.repaint();
+//					MainWnd.wnd.repaint();
 					break;
 				} 
 	//			else Set(title, false);		

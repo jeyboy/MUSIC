@@ -18,9 +18,6 @@ public class DropPanel extends JScrollPane {
 	DropPanelMenus panel_menus; 
 	
 	private void commonInit(int axis_orient) {
-//		Method add = null;
-//		try { add = DropPanel.class.getMethod("AddItem", new Class [] {String.class, String.class}); }
-//		catch (NoSuchMethodException | SecurityException e) { Errorist.printLog(e); }
 		panel_menus = new DropPanelMenus(new DropPanelDialogs(this));
 		
 		setViewportView(content_pane);

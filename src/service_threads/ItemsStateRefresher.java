@@ -38,7 +38,7 @@ public class ItemsStateRefresher extends BaseThread {
     }
     
     void cycle(String [] examples) {
-        for(int loop = 0; loop < Common.tabber.getTabCount(); loop++) {
+        for(int loop = 0; loop < Common.tabber.getItemCount(); loop++) {
         	if (closeRequest()) return;
         	procTab(Common.tabber.GetTab(loop), examples);
         }

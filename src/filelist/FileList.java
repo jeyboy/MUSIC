@@ -211,6 +211,4 @@ public class FileList extends JList {
 		ensureIndexIsVisible(selected);
 		model.elementAt(selected).Exec();
 	}
-	
-	public void SetStatus(String status) {parent.SetStatus(status);}
 }

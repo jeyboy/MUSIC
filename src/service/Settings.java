@@ -12,8 +12,6 @@ public class Settings {
 	
 	
 	final static String droppannelspath = apppath + "/drops";
-	final static public String drop_left_path = droppannelspath + "_left";
-	final static public String drop_right_path = droppannelspath + "_right";
 	final static public String drop_top_path = droppannelspath + "_top";
 	final static public String drop_bottom_path = droppannelspath + "_bottom";
 }

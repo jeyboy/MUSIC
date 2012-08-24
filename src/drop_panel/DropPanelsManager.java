@@ -1,89 +1,62 @@
 package drop_panel;
 
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import components.ArrowButton;
-import components.ArrowButton.Turn;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 
 public class DropPanelsManager {
-	public Container wnd;
+	public Shell wnd;
 	
-	public DropPanel drop_left = new DropPanel(true);
 	public DropPanel drop_top = new DropPanel(false);
 	public DropPanel drop_bottom = new DropPanel(false);
-	public DropPanel drop_right = new DropPanel(true);
 	
-	public ArrowButton arrow_left = new ArrowButton(Turn.LEFT);
-	public ArrowButton arrow_top = new ArrowButton(Turn.TOP);
-	public ArrowButton arrow_bottom = new ArrowButton(Turn.BOTTOM);
-	public ArrowButton arrow_right = new ArrowButton(Turn.RIGHT);		
+	public Button arrow_top;
+	public Button arrow_bottom;	
 	
-	public DropPanelsManager(Container parent) {
+	public DropPanelsManager(Shell parent) {
 		wnd = parent;
 		initializeArrowButtons();
 		LoadDropPanels();
 	}
 	
 	public void LoadDropPanels() {
-		drop_left.Load(service.Settings.drop_left_path);
 		drop_top.Load(service.Settings.drop_top_path);
 		drop_bottom.Load(service.Settings.drop_bottom_path);
-		drop_right.Load(service.Settings.drop_right_path);	
 	}
 	
 	public void saveDropPanels() {
-		drop_left.Save(service.Settings.drop_left_path);
 		drop_top.Save(service.Settings.drop_top_path);
-		drop_bottom.Save(service.Settings.drop_bottom_path);
-		drop_right.Save(service.Settings.drop_right_path);		
+		drop_bottom.Save(service.Settings.drop_bottom_path);	
 	}
-	
-	public void ToogleLeftDrop() {
-		drop_left.setVisible(!drop_left.isVisible());
-		wnd.revalidate();
-	}
-	public void ToogleRightDrop() {
-		drop_right.setVisible(!drop_right.isVisible());
-		wnd.revalidate();
-	}
+
 	public void ToogleTopDrop() {
 		drop_top.setVisible(!drop_top.isVisible());
-		wnd.revalidate();
+//		wnd.redraw();
 	}
 	public void ToogleBottomDrop() {
 		drop_bottom.setVisible(!drop_bottom.isVisible());
-		wnd.revalidate();
+//		wnd.redraw();
 	}
 	
 	public void CloseAll() {
-		drop_left.setVisible(false);
 		drop_top.setVisible(false);
 		drop_bottom.setVisible(false);
-		drop_right.setVisible(false);
-		wnd.revalidate();
+//		wnd.redraw();
 	}
 	
 	void initializeArrowButtons() {
-		arrow_left.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) { ToogleLeftDrop(); }
-		});
+		arrow_top = new Button(wnd, SWT.ARROW);
 		
-		arrow_right.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) { ToogleRightDrop(); }
-		});		
+		arrow_top.addListener(SWT.Selection, new Listener() {
+					public void handleEvent(Event arg0) { ToogleTopDrop(); }
+				});
 		
-		arrow_top.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) { ToogleTopDrop(); }
-		});
+		arrow_bottom = new Button(wnd, SWT.ARROW);
 		
-		arrow_bottom.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) { ToogleBottomDrop(); }
+		arrow_top.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event arg0) { ToogleBottomDrop(); }
 		});		
 	}	
 }
