@@ -13,7 +13,7 @@ import service.IOOperations;
 import service.Settings;
 
 public class Trasher extends BaseThread {
-	ArrayList<File> path_collection = new ArrayList<File>();
+	ArrayList<TrashCell> path_collection = new ArrayList<TrashCell>();
 	
     public Trasher() {
 //		this.setDaemon(true);
@@ -23,21 +23,29 @@ public class Trasher extends BaseThread {
 
     synchronized public void run() { routing(); }
     
-    public void AddPath(File f) {
+    public void AddElem(File f, boolean delete_folder) {
     	if (f.exists())
-    		path_collection.add(f);
+    		path_collection.add(new TrashCell(f, delete_folder));
     }
 
     void routing() {
     	load();
+    	TrashCell temp;
     	while(!closeRequest()) {
             while(path_collection.size() > 0) {
-            	if (closeRequest()) return;
-            	try {
-            		if (IOOperations.deleteFile(path_collection.get(0)))
-            			path_collection.remove(0);
+            	for(int loop1 = path_collection.size() - 1; loop1 >= 0 ; loop1--) {
+	            	if (closeRequest()) return;
+	            	temp = path_collection.get(loop1);
+	            	try {
+	            		File parent = temp.file.getParentFile();
+	            		if (IOOperations.deleteFile(temp.file)) {
+	            			if (temp.delete_folder && parent.list().length == 0)
+	            				IOOperations.deleteFile(parent);
+	            			path_collection.remove(loop1);
+	            		}
+	            	}
+	                catch(Exception e) {}
             	}
-                catch(Exception e) {}
             }
             
 	        try { wait(sleep_time); }
@@ -53,7 +61,7 @@ public class Trasher extends BaseThread {
     		String temp;
     		
     		while((temp = reader.readLine()) != null)
-    			AddPath(new File(temp));
+    			AddElem(new File(temp.substring(1)), temp.charAt(0) == '1');
 		}
     	
     	catch (IOException e) { Errorist.printLog(e); }
@@ -67,11 +75,23 @@ public class Trasher extends BaseThread {
     	PrintWriter wri = null;
 		try {
 			wri = IOOperations.GetWriter(Settings.trashpath, true);
-			for(File f : path_collection)
-				wri.println(f.getAbsolutePath());
+			for(TrashCell f : path_collection)
+				wri.println(f.ToString());
 		} 
 		catch (FileNotFoundException | UnsupportedEncodingException e) { Errorist.printLog(e); }
 		
 		if (wri != null) wri.close();
+    }
+    
+    class TrashCell {
+    	File file;
+    	boolean delete_folder;
+    	
+    	public TrashCell(File del_file, boolean check_folder) {
+    		file = del_file;
+    		delete_folder = check_folder;
+    	}
+    	
+    	public String ToString() { return (delete_folder ? "1" : "0") + file.getAbsolutePath();	}
     }
 }
