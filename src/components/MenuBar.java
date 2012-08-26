@@ -19,7 +19,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import service.ActionBind;
 import service.Common;
 import service.Errorist;
 import service.IOOperations;
@@ -161,4 +160,14 @@ public class MenuBar extends JMenuBar {
 		} 
 		catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
 	}
+	
+	class ActionBind {
+		public ActionListener action = null;
+		public String name = null;
+		
+		public ActionBind(String name, ActionListener action) {
+			this.action = action;
+			this.name = name;
+		}
+	}	
 }

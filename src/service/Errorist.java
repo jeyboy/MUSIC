@@ -10,7 +10,6 @@ public class Errorist {
 	static PrintWriter err_writer = null;
 	static boolean print_local = true;
 	
-//	this.getClass().getName()+"."+ new Exception().getStackTrace()[0].getMethodName();
 	public static void printLog(Exception e) {
 		printLog(e.getStackTrace()[0].getClassName() + "." + e.getStackTrace()[0].getMethodName(), e.getMessage());
 	}	
