@@ -31,7 +31,8 @@ public class MainWnd {
         return layout;
 	}
 	
-	static private void Load() {
+	static private boolean Load() {
+		boolean res = true;
 		Tabber.Load(wnd);
 		
 		try {
@@ -53,12 +54,13 @@ public class MainWnd {
 	  		wnd.pack();
 		} 
 		catch (Exception e) {
-			Common.drop_manager.CloseAll();
 			Errorist.printLog(e);
+			res = false;
 		}
 
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		wnd.setLocation(dim.width - wnd.getSize().x, dim.height - wnd.getSize().y - 40);
+		return res;
 	}
 	static private void Save() {
 	    Common.tabber.Save();
@@ -90,8 +92,10 @@ public class MainWnd {
 		new MenuBar().PrepareToolBar(wnd, Common.tabber);		
 		
 		Common.drop_manager = new DropPanelsManager(wnd);
-		Load();
-       
+		Common.drop_manager.initializeUpArrowButtons();
+		boolean close_all = Load();
+		Common.drop_manager.initializeDownArrowButtons();
+		if (close_all) Common.drop_manager.CloseAll();
 		wnd.setVisible(true);	
 	}
 	

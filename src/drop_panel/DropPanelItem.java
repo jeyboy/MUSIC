@@ -1,33 +1,32 @@
 package drop_panel;
 
-import java.awt.Dimension;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.swing.JButton;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.DropTargetListener;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import service.Common;
 import service.Errorist;
 import service.IOOperations;
 
-public class DropPanelItem extends JButton implements DropTargetListener {
-	private static final long serialVersionUID = 7946767162934576766L;
+public class DropPanelItem implements DropTargetListener {
 	protected DropTarget dropTarget;
 	public File folder = null;
+	public Button button; 
 	
 	public void setPath(String new_path) {
 		try {
 			folder = new File(new_path);
-			dropTarget = folder.exists() ? new DropTarget(this, this) : null;
+			dropTarget = folder.exists() ? new DropTarget(button, DND.DROP_COPY) : null;
+//			dropTarget.setTransfer(types);
 		}
 		catch(Exception e) {
 			Errorist.printLog(e);
@@ -35,51 +34,47 @@ public class DropPanelItem extends JButton implements DropTargetListener {
 			folder = null;
 		}
 		
-		setEnabled(dropTarget != null);
+		button.setEnabled(dropTarget != null);
 	}
 	
-	public DropPanelItem(String text, String path) {
-//		setBorder(BorderFactory.createEmptyBorder());
+	public DropPanelItem(Composite wnd, String text, String path) {
+		button = new Button(wnd, SWT.CENTER);
+		button.setText(text);
+		button.setSize(20, 20);
 		setPath(path);
-		super.setText(text);
-		setPreferredSize(new Dimension(getPreferredSize().width, 15));
-		addActionListener(new ActionListener() {          
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		
+		button.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event arg0) { 
 				try { IOOperations.open(folder); } 
-				catch (IOException ee) { Errorist.printLog(ee); }
+				catch (IOException ee) { Errorist.printLog(ee); }				
 			}
-		}); 
+		});
 	}
-	
+
 	@Override
-	public void dragEnter(DropTargetDragEvent dtde) {}
+	public void dragEnter(DropTargetEvent arg0) {}
 	@Override
-	public void dragOver(DropTargetDragEvent dtde) 	{}
+	public void dragLeave(DropTargetEvent arg0) {}
 	@Override
-	public void dropActionChanged(DropTargetDragEvent dtde) {}
+	public void dragOperationChanged(DropTargetEvent arg0) {}
 	@Override
-	public void dragExit(DropTargetEvent dte) {}
-	@SuppressWarnings("unchecked")
+	public void dragOver(DropTargetEvent arg0) {}
 	@Override
-	public void drop(DropTargetDropEvent evt) {
-      int action = evt.getDropAction();
-      evt.acceptDrop(action);
-      try {
-          Transferable data = evt.getTransferable();
-          if (data.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-              List<File> files = (List<File>) data.getTransferData(DataFlavor.javaFileListFlavor);
-              for(File file:files) {
-            	  if (!IOOperations.copyFile(file, folder)) break;
-            	  if (!evt.isLocalTransfer())
-            		  Common.library.ProceedFile(file);
-              }
-          }
-          evt.dropComplete(true);
-      }
-      catch (Exception e) { evt.dropComplete(false); Errorist.printLog(e); }
-//      catch (UnsupportedFlavorException e) { Errorist.printLog(e); }
-//      catch (IOException e) { Errorist.printLog(e); } 
-      finally {  }		
-	} 
+	public void drop(DropTargetEvent arg0) {
+        if (arg0.data == null) {
+        	arg0.detail = DND.DROP_NONE;
+	        return;
+	    }
+        
+        boolean is_local = arg0.getSource() != null;
+        List<File> files = (List<File>)arg0.data;
+        for(File file:files) {
+      	  try { if (!IOOperations.copyFile(file, folder)) break;  } 
+      	  catch (IOException e) {Errorist.printLog(e);}
+      	  if (is_local)
+      		  Common.library.ProceedFile(file);
+        }        
+	}
+	@Override
+	public void dropAccept(DropTargetEvent arg0) {}
 }

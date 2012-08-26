@@ -1,59 +1,55 @@
 package drop_panel;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
 public class DropPanelMenus {
 	DropPanelDialogs dialogs;
 	
-	public DropPanelMenus(DropPanelDialogs panel_dialogs) {
-		dialogs = panel_dialogs;
-	}
+	public DropPanelMenus(DropPanelDialogs panel_dialogs) { dialogs = panel_dialogs; }
 	
 	public void SetContainerMenu(DropPanel panel) {
-		JPopupMenu menu = new JPopupMenu();
-		menu.add(AddMenuItem("Add item"));
-		panel.setComponentPopupMenu(menu);
+	    final Menu menu = new Menu(panel);
+		AddMenuItem(menu, "Add item");
+		panel.addListener(SWT.MouseDown, new Listener() {
+			public void handleEvent(Event arg0) { menu.setVisible(true); }
+		});
 	}
 	
 	public void SetItemMenu(DropPanelItem item) {
-		JPopupMenu menu = new JPopupMenu();
-		menu.add(AddMenuItem("Create new item"));
-		menu.add(DeleteMenuItem(item, "Delete current"));
-		menu.add(ModifyMenuItem(item, "Change current"));
-		item.setComponentPopupMenu(menu);
+		final Menu menu = new Menu(item.button);
+		AddMenuItem(menu, "Create new item");
+		DeleteMenuItem(menu, item, "Delete current");
+		ModifyMenuItem(menu, item, "Change current");
+		item.button.addListener(SWT.MouseDown, new Listener() {
+			public void handleEvent(Event arg0) { menu.setVisible(true); }
+		});		
 	}
 	
-	JMenuItem AddMenuItem(String text) {
-	    JMenuItem m = new JMenuItem(text);
-	    m.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		dialogs.addDropItemDialog();
-	        }
-	    });
-	    return m;
+	void AddMenuItem(Menu menu, String text) {
+		MenuItem newItem = new MenuItem(menu, SWT.NONE); //SWT.CASCADE
+		newItem.setText(text);
+	    newItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event arg0) { dialogs.addDropItemDialog(); }
+		});
 	}
 	
-	JMenuItem DeleteMenuItem(final DropPanelItem item, String text) {
-	    JMenuItem m = new JMenuItem(text);
-	    m.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		dialogs.container.DropItem(item);
-	        }
-	    });
-	    return m;
+	void DeleteMenuItem(Menu menu, final DropPanelItem item, String text) {
+		MenuItem newItem = new MenuItem(menu, SWT.NONE);
+		newItem.setText(text);
+	    newItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event arg0) { dialogs.container.DropItem(item); }
+		});		
 	}
 	
-	JMenuItem ModifyMenuItem(final DropPanelItem item, String text) {
-	    JMenuItem m = new JMenuItem(text);
-	    m.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		dialogs.modDropItemDialog(item);
-	        }
-	    });
-	    return m;
+	void ModifyMenuItem(Menu menu, final DropPanelItem item, String text) {
+		MenuItem newItem = new MenuItem(menu, SWT.NONE);
+		newItem.setText(text);
+	    newItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event arg0) { dialogs.modDropItemDialog(item); }
+		});				
 	}	
 }

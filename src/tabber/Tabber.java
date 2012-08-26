@@ -1,19 +1,12 @@
 package tabber;
 
 import java.io.PrintWriter;
-import javax.swing.JTabbedPane;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
-
 import service.Common;
 import service.Errorist;
 import service.IOOperations;
@@ -40,7 +33,7 @@ public class Tabber extends CTabFolder {
 	static public void Load(Composite container) {
 		Common.tabber = new Tabber(container, SWT.CLOSE);
 		Common.tabber.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 0));		
-		
+		Common.tabber.setBorderVisible(true);
 		
 		Common.tabber.setUnselectedCloseVisible(false);
 		Common.tabber.setSimple(false);

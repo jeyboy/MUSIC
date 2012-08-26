@@ -1,7 +1,6 @@
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import service.Errorist;
 
 public class UserLocal {
 	public static void main(String[] args) {
@@ -9,6 +8,7 @@ public class UserLocal {
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		components.MainWnd.init(shell);
+		shell.setBackground(new Color(Display.getCurrent(), 0,0,0));
 		 
 		shell.pack ();
 		shell.open ();

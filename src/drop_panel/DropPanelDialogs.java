@@ -24,14 +24,14 @@ public class DropPanelDialogs {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			    if (fileChooser.showDialog(container, "Choose") == JFileChooser.APPROVE_OPTION) {
+			    if (fileChooser.showDialog(null, "Choose") == JFileChooser.APPROVE_OPTION) {
 			    	pathLabel.setText(fileChooser.getSelectedFile().getAbsolutePath());
 			    }
 			}
 		});
 	    Object complexMsg[] = { "Create pane with title", title, "and drop path", pathLabel, folderDialogButton };		
 		int option = JOptionPane.showOptionDialog(  
-				container,  
+				null,  
 				complexMsg,  
 				"Creating drop elem", JOptionPane.OK_CANCEL_OPTION,  
 				JOptionPane.PLAIN_MESSAGE, null, null,  
@@ -43,21 +43,21 @@ public class DropPanelDialogs {
 	}
 	
 	public void modDropItemDialog(DropPanelItem item) {
-		JTextField title = new JTextField(item.getText());
+		JTextField title = new JTextField(item.button.getText());
 		final JLabel pathLabel = new JLabel(item.folder.getAbsolutePath());
 		JButton folderDialogButton = new JButton("Choose folder");
 		folderDialogButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			    if (fileChooser.showDialog(container, "Choose") == JFileChooser.APPROVE_OPTION) {
+			    if (fileChooser.showDialog(null, "Choose") == JFileChooser.APPROVE_OPTION) {
 			    	pathLabel.setText(fileChooser.getSelectedFile().getAbsolutePath());
 			    }
 			}
 		});
 	    Object complexMsg[] = { "Change title to", title, "and drop path", pathLabel, folderDialogButton };		
 		int option = JOptionPane.showOptionDialog(  
-				container,  
+				null,  
 				complexMsg,  
 				"Modify drop elem", JOptionPane.OK_CANCEL_OPTION,  
 				JOptionPane.PLAIN_MESSAGE, null, null,  
@@ -65,7 +65,7 @@ public class DropPanelDialogs {
         );  
 		if( option == JOptionPane.OK_OPTION ) {
 			item.setPath(pathLabel.getText());
-			item.setText(title.getText()); 
+			item.button.setText(title.getText()); 
 		}
 	}	
 }
