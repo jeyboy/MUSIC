@@ -42,10 +42,12 @@ public class DropPanelsManager {
 	public void initializeUpArrowButtons() {
 		drop_top = new DropPanel(wnd);
 		drop_top.Load(service.Settings.drop_top_path);
-		drop_top.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 0));
+		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 0);
+		gridData.heightHint = 15;
+		drop_top.setLayoutData(gridData);
 		
 		arrow_top = new Button(wnd, SWT.ARROW | SWT.UP);
-		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 0);
+		gridData = new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 0);
 		gridData.heightHint = 10;
 		arrow_top.setLayoutData(gridData);
 		
@@ -66,6 +68,8 @@ public class DropPanelsManager {
 		
 		drop_bottom = new DropPanel(wnd);
 		drop_bottom.Load(service.Settings.drop_bottom_path);
-		drop_bottom.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 0));
+		gridData = new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 0);
+		gridData.heightHint = 15;
+		drop_bottom.setLayoutData(gridData);
 	}	
 }

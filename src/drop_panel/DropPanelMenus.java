@@ -12,10 +12,13 @@ public class DropPanelMenus {
 	public DropPanelMenus(DropPanelDialogs panel_dialogs) { dialogs = panel_dialogs; }
 	
 	public void SetContainerMenu(DropPanel panel) {
-	    final Menu menu = new Menu(panel);
+	    final Menu menu = new Menu(panel.container);
 		AddMenuItem(menu, "Add item");
-		panel.addListener(SWT.MouseDown, new Listener() {
-			public void handleEvent(Event arg0) { menu.setVisible(true); }
+		panel.container.addListener(SWT.MouseDown, new Listener() {
+			public void handleEvent(Event arg0) {
+				if ( arg0.button == 3)
+					menu.setVisible(true); 
+			}
 		});
 	}
 	
@@ -25,7 +28,10 @@ public class DropPanelMenus {
 		DeleteMenuItem(menu, item, "Delete current");
 		ModifyMenuItem(menu, item, "Change current");
 		item.button.addListener(SWT.MouseDown, new Listener() {
-			public void handleEvent(Event arg0) { menu.setVisible(true); }
+			public void handleEvent(Event arg0) {
+				if ( arg0.button == 3)
+					menu.setVisible(true); 
+			}
 		});		
 	}
 	

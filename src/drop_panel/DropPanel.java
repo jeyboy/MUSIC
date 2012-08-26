@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -14,11 +16,19 @@ import service.IOOperations;
 
 public class DropPanel extends ScrolledComposite {
 	DropPanelMenus panel_menus;
+	Composite container;
 	
 	private void commonInit() {
 	    setBackground(new Color(Display.getCurrent(), 0,0,0));
-//	    setSize(0, 10);
-		
+	    setExpandHorizontal(true);
+	    setExpandVertical(true);
+	    
+	    container = new Composite(this, SWT.NONE);
+	    setContent(container);
+	    container.setBackground(new Color(Display.getCurrent(), 0, 0, 0));
+	    container.setLayout(new RowLayout());
+	    
+	    
 		panel_menus = new DropPanelMenus(new DropPanelDialogs(this));
 		panel_menus.SetContainerMenu(this);
 	}
@@ -30,15 +40,16 @@ public class DropPanel extends ScrolledComposite {
 	
 	public void AddItem(String text, String path) {
 		if (text.length() == 0 || path.length() == 0) return;
-		DropPanelItem b = new DropPanelItem(this, text, path);
+		DropPanelItem b = new DropPanelItem(container, text, path);
 		panel_menus.SetItemMenu(b);
-//		revalidate();
+		setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        container.layout();
 	}
 	
 	public void DropItem(DropPanelItem b) {
-		
-//		content_pane.remove(b);
-//		revalidate();
+		b.button.dispose();
+		setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        container.layout(true);		
 	}
 	
 	public void Load(String path) {
