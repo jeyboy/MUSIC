@@ -101,16 +101,8 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
 	
     private class FileTransferHandler extends TransferHandler {
 		private static final long serialVersionUID = 1873106934925755472L;
-
 		@Override
-    	protected Transferable createTransferable(JComponent c) {
-    		JList<?> list = (JList<?>)c;
-    		List<File> files = new ArrayList<File>();
-    		for (Object obj: list.getSelectedValuesList()) {
-    			files.add(((ListItem)obj).file);
-    		}
-    		return new FileTransferable(files);
-    	}
+    	protected Transferable createTransferable(JComponent c) { return null; 	}
     	@Override
     	public int getSourceActions(JComponent c) {
     		return COPY; //MOVE
@@ -140,7 +132,17 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
     }
 
 	@Override
-	public void dragGestureRecognized(DragGestureEvent dge) {}
+	public void dragGestureRecognized(DragGestureEvent dge) {
+		List<File> files = new ArrayList<File>();
+		ListItem temp;
+		for (Object obj: filelist.getSelectedValuesList()) {
+			temp = (ListItem)obj;
+			droped_items.add(temp);
+			files.add(temp.file);
+		}
+
+		ds.startDrag(dge, DragSource.DefaultCopyDrop, new FileTransferable(files), this);
+	}
 	@Override
 	public void dragEnter(DragSourceDragEvent dsde) {}
 	@Override
