@@ -78,8 +78,6 @@ public class DropPanelItem extends JButton  implements DropTargetListener {
           evt.dropComplete(true);
       }
       catch (Exception e) { evt.dropComplete(false); Errorist.printLog(e); }
-//      catch (UnsupportedFlavorException e) { Errorist.printLog(e); }
-//      catch (IOException e) { Errorist.printLog(e); } 
       finally {  }		
-	} 
+	}
 }

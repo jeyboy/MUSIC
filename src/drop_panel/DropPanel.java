@@ -15,12 +15,10 @@ public class DropPanel extends JScrollPane {
 	private static final long serialVersionUID = -9051505855046492589L;
 	private int width = 30;
 	public JPanel content_pane = new JPanel();
-	DropPanelMenus panel_menus; 
+	DropPanelMenus panel_menus;
+	boolean vertical = false;
 	
 	private void commonInit(int axis_orient) {
-//		Method add = null;
-//		try { add = DropPanel.class.getMethod("AddItem", new Class [] {String.class, String.class}); }
-//		catch (NoSuchMethodException | SecurityException e) { Errorist.printLog(e); }
 		panel_menus = new DropPanelMenus(new DropPanelDialogs(this));
 		
 		setViewportView(content_pane);
@@ -31,28 +29,25 @@ public class DropPanel extends JScrollPane {
 	}
 	
 	private void initYGUI() {
+		vertical = true;
 		commonInit(BoxLayout.Y_AXIS);
 		setPreferredSize(new Dimension(width, getPreferredSize().height));
-//		setMaximumSize(new Dimension(width, 100000));
-//		setMinimumSize(new Dimension(width, 10));
 	}
 	
 	private void initXGUI() {
 		commonInit(BoxLayout.X_AXIS);
 		setPreferredSize(new Dimension(getPreferredSize().width, width));
-//		setMaximumSize(new Dimension(100000, width));
-//		setMinimumSize(new Dimension(10, width));
 	}
 	
     public DropPanel(boolean vertical) { if (vertical) initYGUI(); else initXGUI(); }
 	
 	public void AddItem(String text, String path) {
 		//if (text.length() == 0 || path.length() == 0) return;
-//		DropPanelItem b = new DropPanelItem(text, icon, path);
 		DropPanelItem b = new DropPanelItem(text, path);
 		content_pane.add(b);
 		panel_menus.SetItemMenu(b);
-//		Box.createHorizontalStrut(5);
+		if (vertical)
+			b.setUI(new VerticalButtonUI(270));
 		revalidate();
 	}
 	
