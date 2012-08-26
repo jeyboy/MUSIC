@@ -23,16 +23,9 @@ public class Tray {
 	static Image image; 
 	static TrayIcon trayIcon;
 	
-	static ActionListener actions =
-		new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("In here");
-				trayIcon.displayMessage("Tester!", "Some action performed", TrayIcon.MessageType.INFO);
-			}
-		};
 	static MouseListener mouse_listens = 
 		new MouseListener() {
-	        public void mouseClicked(MouseEvent e) 	{}
+	        public void mouseClicked(MouseEvent e) 	{ MainWnd.wnd.setVisible(true); }
 	        public void mouseEntered(MouseEvent e) 	{}
 	        public void mouseExited(MouseEvent e) 	{}
 	        public void mousePressed(MouseEvent e)  {}
@@ -79,7 +72,6 @@ public class Tray {
 			trayIcon = new TrayIcon(image, "(O_o)");
 			
 			trayIcon.setImageAutoSize(true);
-			trayIcon.addActionListener(actions);
 			trayIcon.addMouseListener(mouse_listens);
 			trayIcon.addMouseMotionListener(mouse_motion_listens);
 			trayIcon.setPopupMenu(BuildMenu());
