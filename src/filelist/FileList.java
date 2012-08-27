@@ -10,6 +10,8 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileSystemView;
 
+import components.MainWnd;
+
 import service.Common;
 import tabber.Tab;
 
@@ -72,6 +74,7 @@ public class FileList extends JList {
 			played.SetStatusPlayed();
 			played.Exec();
 		}
+		MainWnd.wnd.repaint();
 	}
 	public ListItem GetPlayed() { return played; }
 	public int GetPlayedIndex() { return model.indexOf(played); }
