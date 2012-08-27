@@ -10,52 +10,40 @@ import service.MediaInfo;
 import service.ServiceAgent;
 
 public class ListItem {
-	public enum STATUS { LISTENED, LIKED, PLAYED, NONE }
+	byte status = (byte)128;
 	
-	public int status_to_str() {
-		switch(state) {
-			case LISTENED 	: return 0 ;
-			case LIKED 	 	: return 1 ;
-			case NONE 	 	: return 2 ;
-//			case PLAYED 	: return 3 ;
-			default			: return 2 ;
-		}
-	}
+	public void SetStatusNone() 		{	status |= 0 << 0;	}
+	public boolean StatusIsNone()		{	return (status & 1) == 0; }
 	
-	static STATUS str_to_status(char r) {
-		switch(r) {
-			case '0' 		: return ListItem.STATUS.LISTENED ;
-			case '1' 	 	: return ListItem.STATUS.LIKED ;
-			case '2' 	 	: return ListItem.STATUS.NONE ;
-	//		case '3' 		: return ListItem.STATUS.PLAYED ;
-			default			: return ListItem.STATUS.NONE ;
-		}			
-	}
+	public void SetStatusListened() 	{	status |= 1 << 0;	}		
+	public boolean StatusIsListened()	{	return (status & 1) == 1; }
 	
-	public static ListItem Load(String info) {
-		return new ListItem(info.substring(2), str_to_status(info.charAt(1)));
-	}
-	public String SaveInfo() {
-		return "f" + status_to_str() + file.getAbsolutePath();
-	} 
+	public void SetStatusLiked() 		{	status |= 1 << 1;	}
+	public boolean StatusIsLiked()		{	return (status >> 1 & 1) == 1; }
+	
+	public void SetStatusPlayed() 		{	status |= 1 << 2; }
+	public void SetStatusUnPlayed() 	{	status &= ~(1 << 2); }	
+	public boolean StatusIsPlayed()		{	return (status >> 2 & 1) == 1; }	
+	
+	public static ListItem Load(String info) 	{	return new ListItem(info.substring(2), (byte)info.charAt(1));	}
+	public String SaveInfo() 					{	return "f" + ((char)status) + "" + file.getAbsolutePath();	} 
 	
 	public String title;
 	public String ext;
 	public File file;
-	public STATUS state = STATUS.NONE;
 	public MediaInfo media_info = null;
 
 	public ListItem(String path) { this(new File(path)); }
-	public ListItem(String path, STATUS state) { this(new File(path), state); }
+	public ListItem(String path, byte state) { this(new File(path), state); }
 
-	public ListItem(File file) { this(file, STATUS.NONE); }
-	public ListItem(File file, STATUS state) { this(file, IOOperations.extension(file.getName()), state); }
-	public ListItem(File file, String ext) { this(file, ext, STATUS.NONE); }	
-	public ListItem(File file, String ext, STATUS state) {
+	public ListItem(File file) { this(file, (byte)128); }
+	public ListItem(File file, byte state) { this(file, IOOperations.extension(file.getName()), state); }
+	public ListItem(File file, String ext) { this(file, ext, (byte)128); }	
+	public ListItem(File file, String ext, byte state) {
 		this.file = file;
 		this.ext = ext;
 		this.title = file.getName();
-		this.state = state;
+		this.status = state;
 	}	
 	
 	@Override
@@ -66,7 +54,7 @@ public class ListItem {
 	public void Exec() {
         try { 
         	IOOperations.open(file);
-        	SetState(STATUS.LISTENED);
+        	SetStatusListened();
         }
         catch (IOException e) { Errorist.printLog(e); }
         catch (UnsupportedOperationException e) 
@@ -81,11 +69,11 @@ public class ListItem {
 		catch (IOException e) { Errorist.printLog(e); }
 	}
 	
-	public void SetState(STATUS newstate) {
-    	state = newstate;
-    	for(String tstr : media_info.Titles)
-    		Common.library.Set(tstr, newstate == STATUS.LIKED);		
-	} 
+//	public void SetState(STATUS newstate) {
+//    	state = newstate;
+//    	for(String tstr : media_info.Titles)
+//    		Common.library.Set(tstr, newstate == STATUS.LIKED);		
+//	} 
 
 	public void InitMedia() { Common.library.ProceedItem(this); }
 }

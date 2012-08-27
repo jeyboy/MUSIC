@@ -22,9 +22,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.TransferHandler;
-import filelist.ListItem.STATUS;
 
 import service.Common;
 import service.Dropper;
@@ -59,10 +57,9 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
         	@Override
             public void mouseClicked(MouseEvent mouseEvent) {
         		if (mouseEvent.getClickCount() == 2) {
-        			JList<?> theList = (JList<?>) mouseEvent.getSource();
-        			int index = theList.locationToIndex(mouseEvent.getPoint());
+        			int index = filelist.locationToIndex(mouseEvent.getPoint());
         			if (index >= 0)
-        				((ListItem) theList.getModel().getElementAt(index)).Exec();
+        				filelist.SetPlayed((ListItem) filelist.model.getElementAt(index));
         		}
             }
     		@Override
@@ -90,8 +87,7 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
     				filelist.CalcSelect(last_pos, true);
     			}
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-    				for(int index:filelist.getSelectedIndices())
-    					filelist.model.elementAt(index).Exec();
+    				filelist.SetPlayed(filelist.model.elementAt(filelist.getSelectedIndex()));
     			}
     		}
     		@Override
@@ -154,7 +150,7 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
 	public void dragDropEnd(DragSourceDropEvent dsde) {
 	    if (dsde.getDropSuccess()) {
 	        for(ListItem li : droped_items)
-	        	li.SetState(STATUS.LIKED);
+	        	li.SetStatusLiked();
 	    }
 	    droped_items.clear();
 	} 	

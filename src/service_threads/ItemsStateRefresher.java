@@ -3,7 +3,6 @@ package service_threads;
 import java.util.ArrayList;
 
 import filelist.ListItem;
-import filelist.ListItem.STATUS;
 
 import service.Common;
 import service.Errorist;
@@ -56,7 +55,7 @@ public class ItemsStateRefresher extends BaseThread {
 			if (closeRequest()) return;
 			for(String coll_item : examples)
 				if (title == coll_item) {
-					item.state = STATUS.LIKED;
+					item.SetStatusLiked();
 					return;
 				}
 		}

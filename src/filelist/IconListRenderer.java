@@ -1,5 +1,6 @@
 package filelist;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -63,97 +64,38 @@ public class IconListRenderer extends DefaultListCellRenderer {
 //			label.setBorder(BorderFactory.createEmptyBorder(among_space + 1, 0, among_space + 1, 0));
 		return label;
 	}
-//	
-//	private void SetAsListened() { setBackground(Color.RED); }
-//	private void SetAsLiked() { setBackground(Color.ORANGE); }	
-	
 	
 	protected void paintComponent( Graphics g ) 
 	{
 		Graphics2D g2d = (Graphics2D)g.create(label.getX(), 0, label.getWidth(), label.getHeight());
 		Rectangle r = new Rectangle(label.getX(), 0, label.getWidth(), label.getHeight());//g.getClipBounds(); //label.getBounds();//
 		GradientPaint gp = null;
-		
-		if (selected) {
-			gp = new GradientPaint(
-				    0, 0, FileListConst.selected_grad[0],
-				    0, r.height, FileListConst.selected_grad[1] );			
-			
-//			switch (curr_item.state) {
-//				case LIKED :
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.droped_grad[0],
-//						    0, r.height, FileListConst.droped_grad[1] );
-//					break;
-//				case LISTENED :
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.listened_grad[0],
-//						    0, r.height, FileListConst.listened_grad[1] );
-//					break;
-//				case PLAYED:
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.played_grad[0],
-//						    0, r.height, FileListConst.played_grad[1] );
-//					break;
-//				case NONE:
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.usual_grad[0],
-//						    0, r.height, FileListConst.usual_grad[1] );
-//					break;					
-//			}
-		}
-		else if (focused) {
-			gp = new GradientPaint(
-				    0, 0, FileListConst.focused_grad[0],
-				    0, r.height, FileListConst.focused_grad[1] );			
-			
-//			switch (curr_item.state) {
-//				case LIKED :
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.droped_grad[0],
-//						    0, r.height, FileListConst.droped_grad[1] );
-//					break;
-//				case LISTENED :
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.listened_grad[0],
-//						    0, r.height, FileListConst.listened_grad[1] );
-//					break;
-//				case PLAYED:
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.played_grad[0],
-//						    0, r.height, FileListConst.played_grad[1] );
-//					break;
-//				case NONE:
-//					gp = new GradientPaint(
-//						    0, 0, FileListConst.usual_grad[0],
-//						    0, r.height, FileListConst.usual_grad[1] );
-//					break;					
-//			}
-		}
+		Color [] color_set;
+
+		if (curr_item.StatusIsPlayed())
+			color_set = FileListConst.played_grad;
 		else {
-			switch (curr_item.state) {
-				case LIKED :
-					gp = new GradientPaint(
-						    0, 0, FileListConst.droped_grad[0],
-						    0, r.height, FileListConst.droped_grad[1] );
-					break;
-				case LISTENED :
-					gp = new GradientPaint(
-						    0, 0, FileListConst.listened_grad[0],
-						    0, r.height, FileListConst.listened_grad[1] );
-					break;
-				case PLAYED:
-					gp = new GradientPaint(
-						    0, 0, FileListConst.played_grad[0],
-						    0, r.height, FileListConst.played_grad[1] );
-					break;
-				case NONE:
-					gp = new GradientPaint(
-						    0, 0, FileListConst.usual_grad[0],
-						    0, r.height, FileListConst.usual_grad[1] );
-					break;										
+			if (selected || focused) {
+				color_set = FileListConst.selected_grad;
+		
+	//			if (curr_item.StatusIsNone())
+	//				color_set = FileListConst.usual_grad;
+	//			else if (curr_item.StatusIsListened())
+	//				color_set = FileListConst.listened_grad;
+	//			else color_set = FileListConst.droped_grad;
 			}
-		}		
+			else {
+				if (curr_item.StatusIsNone())
+					color_set = FileListConst.usual_grad;
+				else if (curr_item.StatusIsListened())
+					color_set = FileListConst.listened_grad;
+				else color_set = FileListConst.droped_grad;
+			}
+		}
+		
+		gp = new GradientPaint(
+			    0, 0, color_set[0],
+			    0, r.height, color_set[1] );
 		
 		if (gp != null) {
 			g2d.setPaint(gp);

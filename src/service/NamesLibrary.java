@@ -10,7 +10,6 @@ import java.util.Map;
 import components.MainWnd;
 
 import filelist.ListItem;
-import filelist.ListItem.STATUS;
 
 public class NamesLibrary {
 	Map<String, LibraryCatalog> library = new HashMap<String, LibraryCatalog>();
@@ -124,7 +123,8 @@ public class NamesLibrary {
 //		if (item.state == STATUS.NONE)
 			for(String title : item.media_info.Titles)
 				if (Contains(title)) {
-					item.state = Get(title) ? STATUS.LIKED : STATUS.LISTENED;
+					if (Get(title)) item.SetStatusLiked();
+					else item.SetStatusListened();
 					MainWnd.wnd.repaint();
 					break;
 				} 

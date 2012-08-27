@@ -49,10 +49,10 @@ public class Errorist {
 		for(int loop1 = 2; loop1 < elems.length; loop1++) {
 			StackTraceElement curr = elems[loop1];
 			if (curr.getClassName() != curr_class)
-				PrintTreeItem((indent += "\t") + curr);
+				PrintTreeItem((indent += "  ") + curr);
 		}
 		
-		PrintTreeItem((indent += "\t") + message);
+		PrintTreeItem((indent += "  ") + message);
 	}
 	
 	public static void close() {

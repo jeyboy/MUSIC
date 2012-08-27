@@ -48,6 +48,7 @@ public class Tabber extends JTabbedPane {
 	        	        
 	        for(int loop = 0; loop < getTabCount(); loop++) {
 	        	curr_tab = GetTab(loop);
+	        	curr_tab.Files.SetPlayed(null);
 	        	
 	        	pw.println('*' + curr_tab.options.Serialize() + curr_tab.GetTitle());
 	        	

@@ -37,6 +37,7 @@ public class FileList extends JList {
 	
 	private static final long serialVersionUID = 2216859386306446869L;
 	Tab parent;
+	ListItem played = null;
 	
     //Alter = Vector, ArrayList
 	public MyListModel<ListItem> model = new MyListModel<ListItem>(this);
@@ -61,8 +62,20 @@ public class FileList extends JList {
     	new FileListEvents(this);
     	setComponentPopupMenu(new ListPopUp(this));
 	}
+	
+	public void SetPlayed(ListItem item) 
+	{
+		if (played != null)
+			played.SetStatusUnPlayed();
+		
+		if ((played = item) != null) {
+			played.SetStatusPlayed();
+			played.Exec();
+		}
+	}
+	public ListItem GetPlayed() { return played; }
+	public int GetPlayedIndex() { return model.indexOf(played); }
 
-//    private void ProceedElem(String elem) {	ProceedElem(new ListItem(elem)); }
 	private void ProceedElem(File elem) { ProceedElem(new ListItem(elem)); }
     private void ProceedElem(ListItem elem) {
         AddAssocIcon(elem.ext, FileSystemView.getFileSystemView().getSystemIcon(elem.file));
@@ -192,9 +205,9 @@ public class FileList extends JList {
 		return index;
 	}	
 	
-	public int MoveSelect(boolean next) { return CalcSelect(getSelectedIndex(), next); }
+	public int MoveSelect(int index, boolean next) { return CalcSelect(index, next); }
 	
-	public void MoveSelectAndInit(boolean next) { model.elementAt(MoveSelect(next)).Exec();	}
+	public void MoveSelectAndInit(boolean next) { model.elementAt(MoveSelect(GetPlayedIndex(), next)).Exec();	}
 	
 	public void DeleteSelectAndInit() {
 		int selected = getSelectedIndex();
@@ -204,12 +217,10 @@ public class FileList extends JList {
 		}
 		if (parent.options.delete_files)
 			Common._trash.AddElem(((ListItem)getSelectedValue()).file, parent.options.delete_empty_folders);
-//			IOOperations.deleteFile(((ListItem)getSelectedValue()).file);
 		model.remove(selected);
 		if ((selected = CheckRange(selected)) == -1) return;
-		setSelectedIndex(selected);
 		ensureIndexIsVisible(selected);
-		model.elementAt(selected).Exec();
+		SetPlayed(model.elementAt(selected));
 	}
 	
 	public void SetStatus(String status) {parent.SetStatus(status);}
