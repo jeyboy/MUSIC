@@ -208,10 +208,8 @@ public class FileList extends JList {
 		return index;
 	}	
 	
-	public int MoveSelect(int index, boolean next) { return CalcSelect(index, next); }
-	
-	public void MoveSelectAndInit(boolean next) { model.elementAt(MoveSelect(GetPlayedIndex(), next)).Exec();	}
-	
+	public int MoveSelect(int index, boolean next) 	{ 	return CalcSelect(index, next); }
+	public void MoveSelectAndInit(boolean next) 	{	SetPlayed(model.elementAt(MoveSelect(GetPlayedIndex(), next)));	}
 	public void DeleteSelectAndInit() {
 		int selected = getSelectedIndex();
 		if (selected == -1) {
