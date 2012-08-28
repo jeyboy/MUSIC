@@ -211,13 +211,13 @@ public class FileList extends JList {
 	public int MoveSelect(int index, boolean next) 	{ 	return CalcSelect(index, next); }
 	public void MoveSelectAndInit(boolean next) 	{	SetPlayed(model.elementAt(MoveSelect(GetPlayedIndex(), next)));	}
 	public void DeleteSelectAndInit() {
-		int selected = getSelectedIndex();
+		int selected = GetPlayedIndex();
 		if (selected == -1) {
 			MoveSelectAndInit(true);
 			return;
 		}
 		if (parent.options.delete_files)
-			Common._trash.AddElem(((ListItem)getSelectedValue()).file, parent.options.delete_empty_folders);
+			Common._trash.AddElem(played.file, parent.options.delete_empty_folders);
 		model.remove(selected);
 		if ((selected = CheckRange(selected)) == -1) return;
 		ensureIndexIsVisible(selected);
