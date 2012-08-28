@@ -1,6 +1,7 @@
 package drop_panel;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -23,7 +24,6 @@ import service.IOOperations;
 
 public class DropPanel extends JScrollPane {
 	private static final long serialVersionUID = -9051505855046492589L;
-	private int width = 30;
 	public JPanel content_pane = new JPanel();
 	DropPanelMenus panel_menus;
 	boolean vertical = false;
@@ -73,12 +73,18 @@ public class DropPanel extends JScrollPane {
 		button_angle = angle;
 		vertical = true;
 		commonInit(BoxLayout.Y_AXIS);
-		setPreferredSize(new Dimension(width, getPreferredSize().height));
+		
+		if (angle == 270)
+			setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		
+		this.getVerticalScrollBar().setPreferredSize(new Dimension(10, 0));
+		this.getHorizontalScrollBar().setVisible(false);
 	}
 	
 	private void initXGUI() {
 		commonInit(BoxLayout.X_AXIS);
-		setPreferredSize(new Dimension(getPreferredSize().width, width));
+		this.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 10));
+		this.getVerticalScrollBar().setVisible(false);
 	}
 	
     public DropPanel() 					{ initXGUI(); }

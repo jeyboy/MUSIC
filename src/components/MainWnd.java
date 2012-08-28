@@ -61,12 +61,17 @@ public class MainWnd {
 	static private void initLayout() {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
-		
+        
+        c.weightx = c.weighty = 0;
+        c.ipadx = 15;
+        
 		c.gridheight = 5; c.gridwidth = 1; c.gridx = 0; c.gridy = 0;
 		gridbag.setConstraints(Common.drop_manager.drop_left, c);	wnd.add(Common.drop_manager.drop_left);
         
 		c.gridheight = 5; c.gridwidth = 1; c.gridy = 0; c.gridx = 4;
-        gridbag.setConstraints(Common.drop_manager.drop_right, c);	wnd.add(Common.drop_manager.drop_right);               
+        gridbag.setConstraints(Common.drop_manager.drop_right, c);	wnd.add(Common.drop_manager.drop_right);
+        
+        c.ipady = 15;
         
 		c.gridheight = 1; c.gridwidth = 3; c.gridy = 0; c.gridx = 1;
         gridbag.setConstraints(Common.drop_manager.drop_top, c);	wnd.add(Common.drop_manager.drop_top);
@@ -74,9 +79,9 @@ public class MainWnd {
 		c.gridheight = 1; c.gridwidth = 3; c.gridy = 4; c.gridx = 1;
         gridbag.setConstraints(Common.drop_manager.drop_bottom, c);	wnd.add(Common.drop_manager.drop_bottom);
         
-        
-        
-		c.gridheight = 3; c.gridwidth = 1; c.gridy = 1; c.gridx = 1;
+        c.ipady = c.ipadx = 0;
+      
+		c.gridheight = 3; c.gridwidth = 1; c.gridy = 1; c.gridx = 1; 
 		gridbag.setConstraints(Common.drop_manager.arrow_left, c); wnd.add(Common.drop_manager.arrow_left);
         
 		c.gridheight = 1; c.gridwidth = 1; c.gridy = 1; c.gridx = 2;

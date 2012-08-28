@@ -1,6 +1,5 @@
 package drop_panel;
 
-import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTarget;
@@ -42,14 +41,13 @@ public class DropPanelItem extends JButton implements DropTargetListener {
 //		setBorder(BorderFactory.createEmptyBorder());
 		setPath(path);
 		super.setText(text);
-		setPreferredSize(new Dimension(getPreferredSize().width, 15));
 		addActionListener(new ActionListener() {          
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try { IOOperations.open(folder); } 
 				catch (IOException ee) { Errorist.printLog(ee); }
 			}
-		}); 
+		});
 	}
 	
 	@Override
