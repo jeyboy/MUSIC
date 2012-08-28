@@ -27,6 +27,7 @@ public class DropPanel extends JScrollPane {
 	public JPanel content_pane = new JPanel();
 	DropPanelMenus panel_menus;
 	boolean vertical = false;
+	int button_angle = 0;
 	
 	private void commonInit(int axis_orient) {
 		panel_menus = new DropPanelMenus(new DropPanelDialogs(this));
@@ -68,7 +69,8 @@ public class DropPanel extends JScrollPane {
 		});		
 	}
 	
-	private void initYGUI() {
+	private void initYGUI(int angle) {
+		button_angle = angle;
 		vertical = true;
 		commonInit(BoxLayout.Y_AXIS);
 		setPreferredSize(new Dimension(width, getPreferredSize().height));
@@ -79,7 +81,8 @@ public class DropPanel extends JScrollPane {
 		setPreferredSize(new Dimension(getPreferredSize().width, width));
 	}
 	
-    public DropPanel(boolean vertical) { if (vertical) initYGUI(); else initXGUI(); }
+    public DropPanel() 					{ initXGUI(); }
+    public DropPanel(int angle) 		{ initYGUI(angle); }
 	
 	public void AddItem(String text, String path) {
 		//if (text.length() == 0 || path.length() == 0) return;
@@ -87,7 +90,7 @@ public class DropPanel extends JScrollPane {
 		content_pane.add(b);
 		panel_menus.SetItemMenu(b);
 		if (vertical)
-			b.setUI(new VerticalButtonUI(270));
+			b.setUI(new VerticalButtonUI(button_angle));
 		revalidate();
 	}
 	

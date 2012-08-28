@@ -10,10 +10,10 @@ import components.ArrowButton.Turn;
 public class DropPanelsManager {
 	public Container wnd;
 	
-	public DropPanel drop_left = new DropPanel(true);
-	public DropPanel drop_top = new DropPanel(false);
-	public DropPanel drop_bottom = new DropPanel(false);
-	public DropPanel drop_right = new DropPanel(true);
+	public DropPanel drop_left = new DropPanel(270);
+	public DropPanel drop_top = new DropPanel();
+	public DropPanel drop_bottom = new DropPanel();
+	public DropPanel drop_right = new DropPanel(90);
 	
 	public ArrowButton arrow_left = new ArrowButton(Turn.LEFT);
 	public ArrowButton arrow_top = new ArrowButton(Turn.TOP);
