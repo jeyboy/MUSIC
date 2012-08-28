@@ -2,8 +2,18 @@ package drop_panel;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.PrintWriter;
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,6 +36,36 @@ public class DropPanel extends JScrollPane {
 		BoxLayout box = new BoxLayout(content_pane, axis_orient);
 		content_pane.setLayout(box);
 		panel_menus.SetContainerMenu(this);
+		
+		new DropTarget(content_pane, new DropTargetListener() {
+			@Override
+			public void dropActionChanged(DropTargetDragEvent dtde) {}
+			@SuppressWarnings("unchecked")
+			@Override
+			public void drop(DropTargetDropEvent evt) {
+			      int action = evt.getDropAction();
+			      evt.acceptDrop(action);
+			      try {
+			          Transferable data = evt.getTransferable();
+			          if (data.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+			              List<File> files = (List<File>) data.getTransferData(DataFlavor.javaFileListFlavor);
+			              for(File file:files) {
+			            	  if (!evt.isLocalTransfer())
+			            		  if (file.isDirectory())
+			            			  DropPanel.this.AddItem(file.getName(), file.getAbsolutePath());
+			              }
+			          }
+			          evt.dropComplete(true);
+			      }
+			      catch (Exception e) { evt.dropComplete(false); Errorist.printLog(e); }
+			}
+			@Override
+			public void dragOver(DropTargetDragEvent dtde) {}
+			@Override
+			public void dragExit(DropTargetEvent dte) {}
+			@Override
+			public void dragEnter(DropTargetDragEvent dtde) {}
+		});		
 	}
 	
 	private void initYGUI() {

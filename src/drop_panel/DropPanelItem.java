@@ -19,7 +19,7 @@ import service.Common;
 import service.Errorist;
 import service.IOOperations;
 
-public class DropPanelItem extends JButton  implements DropTargetListener {
+public class DropPanelItem extends JButton implements DropTargetListener {
 	private static final long serialVersionUID = 7946767162934576766L;
 	protected DropTarget dropTarget;
 	public File folder = null;
