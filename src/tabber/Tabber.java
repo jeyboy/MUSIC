@@ -30,6 +30,7 @@ public class Tabber extends JTabbedPane {
 	
 	static public void Load() {
 		Common.tabber = new Tabber();
+		Common.tabber.setUI(new TabberUI());
 		Common.tabber.setBackground(Color.black);
 		new TabberLoader();
 	}

@@ -1,5 +1,6 @@
 package tabber;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,15 +57,14 @@ public class TabHead {
 	    JButton tabCloseButton = GenerateCloseButton(parent);
 	    tabCloseButton.setBorder(null);
 	    JPanel p = new JPanel();
-//	    p.setMaximumSize(new Dimension(500, 20));
 	    p.setOpaque(false);
 	    this.counter = new JLabel();
-//	    this.title = new JLabel(prepareTitle(title));
 	    this.title = new JLabel(title);
 	    p.add(this.counter);
 	    p.add(this.title);
 	    p.add(tabCloseButton);
 	    parent.tabber.setTabComponentAt(parent.tabber.getTabCount()-1, p);
+	    SetTitleForeground(Color.white);
 	}
 	
 	public TabHead(Tab parent, String title) {	Init(parent, title);	}
@@ -88,5 +88,9 @@ public class TabHead {
 		        }
 		    });
 		}		
+	}
+	public void SetTitleForeground(Color color) {
+		counter.setForeground(color);
+		title.setForeground(color);
 	}
 }
