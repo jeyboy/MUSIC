@@ -30,18 +30,21 @@ public class TabHead {
 	}
 	
 	JLabel GenerateCloseButton(final Tab tab) {
-		JLabel tabCloseButton = new JLabel(GetIcon());
+		final JLabel tabCloseButton = new JLabel(GetIcon());
 	    tabCloseButton.setPreferredSize(new Dimension(18, 18));
+	    tabCloseButton.setVisible(false);
 	    
 	    tabCloseButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) { tab.tabber.removeTabAt(tab.tabber.getTabCount()-1); }  
+            public void mousePressed(MouseEvent e) { tab.tabber.removeTabAt(tab.tabber.getTabCount()-1); }
+            public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
+            public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }            
         });
 	    return tabCloseButton;
 	}	
 	
 	void Init(Tab tab, String title) {
 		parent = tab;
-	    JLabel tabCloseButton = GenerateCloseButton(parent);
+	    final JLabel tabCloseButton = GenerateCloseButton(parent);
 	    JPanel p = new JPanel();
 	    p.setOpaque(false);
 	    p.setBackground(null);
@@ -50,6 +53,13 @@ public class TabHead {
 	    p.add(this.counter);
 	    p.add(this.title);
 	    p.add(tabCloseButton);
+	    
+	    p.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
+            public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }            
+        });
+	    
+	    
 	    parent.tabber.setTabComponentAt(parent.tabber.getTabCount()-1, p);
 	    SetTitleForeground(Color.white);
 	}
