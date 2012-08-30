@@ -54,14 +54,15 @@ public class TabHead {
 	    p.add(this.title);
 	    p.add(tabCloseButton);
 	    
-	    p.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
-            public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }            
-        });
-	    
-	    
 	    parent.tabber.setTabComponentAt(parent.tabber.getTabCount()-1, p);
 	    SetTitleForeground(Color.white);
+	    
+	    p.addMouseListener(new MouseAdapter() {
+	    	public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
+		    public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }
+		    //temp fix - when add mouse listeners tab not selected at click
+		    public void mouseClicked(MouseEvent e) 	{ parent.tabber.SetCurrentTab(parent); }
+		});	    
 	}
 	
 	public TabHead(Tab parent, String title) {	Init(parent, title);	}

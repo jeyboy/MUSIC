@@ -58,6 +58,7 @@ public class NamesLibrary {
 	}
 	
 	public void Save() {
+		Errorist.printMessage("Library::Save", "Start");
 	    PrintWriter pw = null;
 	    int counter;
 	    
@@ -66,6 +67,7 @@ public class NamesLibrary {
 	    	f.mkdirs();
 	    
 	    for (Map.Entry<String, LibraryCatalog> catalog : library.entrySet()) {
+	    	Errorist.printMessage("Library::Save", catalog.getKey() + " - " + catalog.getValue().updated);
 	    	if (catalog.getValue().updated) {
 			    try {
 			    	counter = 0;
@@ -85,6 +87,8 @@ public class NamesLibrary {
 			    finally { if (pw != null) pw.close(); }
 	    	}
 	    }
+	    
+	    Errorist.printMessage("Library::Save", "End save");
 	}
 	
 	void Put(String title, Integer down) {
@@ -92,6 +96,7 @@ public class NamesLibrary {
 	}
 	
 	public void Set(String title, Boolean down) {
+		Errorist.printMessage("Library::Set", title);
 		if (title.length() == 0) return;
 		Put(title, down ? 1 : 0);
 	}
@@ -111,24 +116,36 @@ public class NamesLibrary {
 		MediaInfo info = new MediaInfo(file);
 		
 		for(String title : info.Titles)
-			if (Contains(title))
+			if (Contains(title)) {
+				Errorist.printMessage("Library::ProceedFile", file.getAbsolutePath() + " - Find");
 				return true;
-			else Set(title, false);
+			}
+			else {
+				Set(title, false);
+				Errorist.printMessage("Library::ProceedFile", file.getAbsolutePath() + " - Not find");
+			}
 		return false;
 	}
 	
 	public void ProceedItem(ListItem item) {
 		item.media_info = new MediaInfo(item.file);
-		System.out.println("*******Library proceed item*****" + item.title);
+		
 //		if (item.state == STATUS.NONE)
 			for(String title : item.media_info.Titles)
 				if (Contains(title)) {
-					if (Get(title)) item.SetStatusLiked();
-					else item.SetStatusListened();
+					if (Get(title)) {
+						item.SetStatusLiked();
+						Errorist.printMessage("Library::ProceedItem", item.title + " - Liked");
+					}
+					else {
+						item.SetStatusListened();
+						Errorist.printMessage("Library::ProceedItem", item.title + " - Listened");
+					}
 					MainWnd.wnd.repaint();
 					break;
 				} 
-	//			else Set(title, false);		
+	//			else Set(title, false);
+			Errorist.printMessage("Library::ProceedItem", item.title + " - Not Find");
 	}
 	
 //	public void SetListItemState(ListItem item) {

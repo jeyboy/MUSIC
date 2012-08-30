@@ -26,7 +26,7 @@ import drop_panel.DropPanelsManager;
 public class MainWnd {
 	static public Container wnd;
 	static public GridBagLayout gridbag = new GridBagLayout();
-	static public void init(Container window) 	{ wnd = window; initializeWnd(); }
+	static public void init(Container window) 	{ wnd = window; Common.Initialize(); initializeWnd(); }
 	static public void Toggle() 				{ wnd.setVisible(!wnd.isVisible());	}
 	
 //	static void initializeFrame0() {

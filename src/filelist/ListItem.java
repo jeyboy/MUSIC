@@ -15,10 +15,18 @@ public class ListItem {
 	public void SetStatusNone() 		{	status |= 0 << 0;	}
 	public boolean StatusIsNone()		{	return (status & 1) == 0; }
 	
-	public void SetStatusListened() 	{	status |= 1 << 0;	}		
+	public void SetStatusListened() 	{
+		status |= 1 << 0;
+		for(String name : media_info.Titles)
+			Common.library.Set(name, false);
+	}		
 	public boolean StatusIsListened()	{	return (status & 1) == 1; }
 	
-	public void SetStatusLiked() 		{	status |= 1 << 1;	}
+	public void SetStatusLiked() 		{	
+		status |= 1 << 1;
+		for(String name : media_info.Titles)
+			Common.library.Set(name, true);		
+	}
 	public boolean StatusIsLiked()		{	return (status >> 1 & 1) == 1; }
 	
 	public void SetStatusPlayed() 		{	status |= 1 << 2; }

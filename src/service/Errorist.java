@@ -10,6 +10,22 @@ public class Errorist {
 	static PrintWriter err_writer = null;
 	static boolean print_local = true;
 	
+	static void checkWriter() {
+		if (err_writer == null) {
+			try { err_writer = IOOperations.GetWriter(Settings.logpath, true);	} 
+			catch (FileNotFoundException | UnsupportedEncodingException e) { e.printStackTrace(); }
+		}
+	}
+	
+	public static void printMessage(String object, String message) {
+		checkWriter();
+
+		if (err_writer != null) {
+			err_writer.println("***" + object + "*** " + message);
+			err_writer.flush();
+		}
+	}
+	
 	public static void printLog(Exception e) {
 		printLog(e.getStackTrace()[0].getClassName() + "." + e.getStackTrace()[0].getMethodName(), e.getMessage());
 	}	
@@ -19,13 +35,12 @@ public class Errorist {
 	}
 	
 	public static void printLog(String objName, String error) {
-		if (err_writer == null) {
-			try { err_writer = IOOperations.GetWriter(Settings.logpath, true);	} 
-			catch (FileNotFoundException | UnsupportedEncodingException e) { e.printStackTrace(); }
-		}
+		checkWriter();
 
-		if (err_writer != null)
+		if (err_writer != null) {
 			ProceedTree(new SimpleDateFormat("[yyyy/MM/dd HH:mm:ss]").format(new Date()), objName + "   **   " + error);
+			err_writer.flush();
+		}
 	}
 	
 	static void PrintDate(String date) {

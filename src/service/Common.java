@@ -46,6 +46,12 @@ public class Common {
 	static public DropIniter _drop_initer = new DropIniter();
 	static public Trasher _trash = new Trasher();
 	
+	static public void Initialize() {
+//		System.setErr(outputFile(args(2));
+//		try { System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(Settings.outpath))));	}
+//		catch (FileNotFoundException e) { e.printStackTrace();	}
+	}
+	
 	static public void Shutdown() {
 		_trash.close();
 		hotkey_manager.Shutdown();
