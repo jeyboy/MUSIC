@@ -2,13 +2,12 @@ package tabber;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -20,17 +19,6 @@ public class TabHead {
 	JLabel title, counter;
 	Tab parent;
 	
-//	String prepareTitle(String title) {
-//		int add = 15 - title.length();
-//		if (add <= 0) return title;
-//		
-//		for(int loop1=0; loop1<add; loop1++)
-//			if(loop1%2 == 0)
-//				title = " "+ title;
-//			else title += " ";
-//		return title;
-//	}
-	
 	ImageIcon GetIcon() {
 		try {
 			return new ImageIcon(
@@ -41,23 +29,22 @@ public class TabHead {
 		return null; 
 	}
 	
-	JButton GenerateCloseButton(final Tab tab) {
-	    JButton tabCloseButton = new JButton(GetIcon());
+	JLabel GenerateCloseButton(final Tab tab) {
+		JLabel tabCloseButton = new JLabel(GetIcon());
 	    tabCloseButton.setPreferredSize(new Dimension(18, 18));
-	    tabCloseButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-		          tab.tabber.removeTabAt(tab.tabber.getTabCount()-1);
-		      }
-		});
+	    
+	    tabCloseButton.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) { tab.tabber.removeTabAt(tab.tabber.getTabCount()-1); }  
+        });
 	    return tabCloseButton;
 	}	
 	
 	void Init(Tab tab, String title) {
 		parent = tab;
-	    JButton tabCloseButton = GenerateCloseButton(parent);
-	    tabCloseButton.setBorder(null);
+	    JLabel tabCloseButton = GenerateCloseButton(parent);
 	    JPanel p = new JPanel();
 	    p.setOpaque(false);
+	    p.setBackground(null);
 	    this.counter = new JLabel();
 	    this.title = new JLabel(title);
 	    p.add(this.counter);

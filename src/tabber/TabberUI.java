@@ -16,8 +16,8 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public class TabberUI extends BasicTabbedPaneUI {
 
-    private Color selectColor;
-    private Color deSelectColor;
+    private Color selectColor, selectColor2;
+    private Color deSelectColor, deSelectColor2;
     private int inclTab = 4;
     private int anchoFocoV = -12;
     private int anchoFocoH = -12;
@@ -31,14 +31,19 @@ public class TabberUI extends BasicTabbedPaneUI {
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        selectColor = new Color(250, 192, 192);
-        deSelectColor = new Color(197, 193, 168);
+        selectColor = new Color(0, 191, 255);
+        selectColor2 = new Color(228, 228, 228);
+        
+        deSelectColor = new Color(96, 123, 139);
+        deSelectColor2 = new Color(128, 128, 128);
+        
         tabAreaInsets.right = anchoCarpetas;
     }
 
     @Override
     protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
         if (runCount > 1) {
+        	
             int lines[] = new int[runCount];
             for (int i = 0; i < runCount; i++) {
                 lines[i] = rects[tabRuns[i]].y + (tabPlacement == TOP ? maxTabHeight : 0);
@@ -86,7 +91,8 @@ public class TabberUI extends BasicTabbedPaneUI {
 
     @Override
     protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-//    	((Tab)tabPane.getComponentAt(tabIndex)).tabhead.SetTitleForeground(isSelected ? Color.black : Color.white);
+    	((Tab)tabPane.getComponentAt(tabIndex)).tabhead.SetTitleForeground(isSelected ? Color.black : Color.white);
+    	int xw = x + w, yh = y + h;
     	
         Graphics2D g2D = (Graphics2D) g;
         GradientPaint gradientShadow;
@@ -94,25 +100,25 @@ public class TabberUI extends BasicTabbedPaneUI {
         int yp[] = null;
         switch (tabPlacement) {
             case LEFT:
-                xp = new int[]{x, x, x + w, x + w, x};
-                yp = new int[]{y, y + h - 3, y + h - 3, y, y};
-                gradientShadow = new GradientPaint(x, y, new Color(100, 100, 255), x, y + h, Color.ORANGE);
+                xp = new int[]{x, x, xw, xw, x};
+                yp = new int[]{y, yh - 3, yh - 3, y, y};
+                gradientShadow = new GradientPaint(x, y, selectColor, x, yh, selectColor2);
                 break;
             case RIGHT:
-                xp = new int[]{x, x, x + w - 2, x + w - 2, x};
-                yp = new int[]{y, y + h - 3, y + h - 3, y, y};
-                gradientShadow = new GradientPaint(x, y, new Color(100, 100, 255), x, y + h, new Color(153, 186, 243));
+                xp = new int[]{x, x, xw - 2, xw - 2, x};
+                yp = new int[]{y, yh - 3, yh - 3, y, y};
+                gradientShadow = new GradientPaint(x, y, selectColor, x, yh, selectColor2);
                 break;
             case BOTTOM:
-                xp = new int[]{x, x, x + 3, x + w - inclTab - 6, x + w - inclTab - 2, x + w - inclTab, x + w - 3, x};
-                yp = new int[]{y, y + h - 3, y + h, y + h, y + h - 1, y + h - 3, y, y};
-                gradientShadow = new GradientPaint(x, y, new Color(100, 100, 255), x, y + h, Color.BLUE);
+                xp = new int[]{x, x, x + 3, xw - inclTab - 6, xw - inclTab - 2, xw - inclTab, xw - 3, x};
+                yp = new int[]{y, yh - 3, yh, yh, y + h - 1, yh - 3, y, y};
+                gradientShadow = new GradientPaint(x, y, selectColor, x, yh, selectColor2);
                 break;
             case TOP:
             default:
-                xp = new int[]{x, x, x + 3, x + w - inclTab - 6, x + w - inclTab - 2, x + w - inclTab, x + w - inclTab, x};
-                yp = new int[]{y + h, y + 3, y, y, y + 1, y + 3, y + h, y + h};
-                gradientShadow = new GradientPaint(0, 0, new Color(228, 228, 228), 0, y + h / 2, new Color(28, 134, 238));
+                xp = new int[]{x, x, x + 3, xw - inclTab - 6, xw - inclTab - 2, xw - inclTab, xw - inclTab, x};
+                yp = new int[]{yh, y + 3, y, y, y + 1, y + 3, yh, yh};
+                gradientShadow = new GradientPaint(0, 0, selectColor2, 0, y + h / 2, selectColor);
                 break;
         }
 
@@ -124,10 +130,10 @@ public class TabberUI extends BasicTabbedPaneUI {
         } else {
             if (tabPane.isEnabled() && tabPane.isEnabledAt(tabIndex)) {
                 g2D.setColor(deSelectColor);
-                GradientPaint gradientShadowTmp = new GradientPaint(0, 0, new Color(128, 128, 128), 0, y + h / 2, new Color(0, 0, 0));
+                GradientPaint gradientShadowTmp = new GradientPaint(0, 0, deSelectColor, 0, y + h / 2, deSelectColor2);
                 g2D.setPaint(gradientShadowTmp);
             } else {
-                GradientPaint gradientShadowTmp = new GradientPaint(0, 0, new Color(240, 255, 210), 0, y + 15 + h / 2, new Color(204, 204, 204));
+                GradientPaint gradientShadowTmp = new GradientPaint(0, 0, deSelectColor, 0, y + 15 + h / 2, deSelectColor2);
                 g2D.setPaint(gradientShadowTmp);
             }
         }

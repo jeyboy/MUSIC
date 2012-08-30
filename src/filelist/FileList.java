@@ -114,7 +114,7 @@ public class FileList extends JList {
       int index = locationToIndex(evt.getPoint());
       if (index > -1) {
 	      ListItem item = (ListItem)getModel().getElementAt(index);
-	      return item.media_info.toString();
+	      return item == null ? "" : item.media_info.toString();
       }
       return null;
     }	
