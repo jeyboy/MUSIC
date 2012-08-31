@@ -39,11 +39,7 @@ public class IconListRenderer extends DefaultListCellRenderer {
 		curr_item = (ListItem) value;
 		selected = isSelected;
 		focused = cellHasFocus;
-//		switch (curr_item.state) {
-//			case LIKED : SetAsLiked(); break;
-//			case LISTENED : SetAsListened(); break;
-//		}
-		
+
 		Icon icon = icons.get(curr_item.ext);
 		if (icon == null) icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(service.Settings.imagepath + "items/default.png"));
 		label.setIcon(icon);
@@ -68,34 +64,33 @@ public class IconListRenderer extends DefaultListCellRenderer {
 	protected void paintComponent( Graphics g ) 
 	{
 		Graphics2D g2d = (Graphics2D)g.create(label.getX(), 0, label.getWidth(), label.getHeight());
-		Rectangle r = new Rectangle(label.getX(), 0, label.getWidth(), label.getHeight());//g.getClipBounds(); //label.getBounds();//
+		Rectangle r = new Rectangle(label.getX(), 0, label.getWidth(), label.getHeight());
 		GradientPaint gp = null;
 		Color [] color_set;
 
-		if (curr_item.StatusIsPlayed())
-			color_set = FileListConst.played_grad;
-		else {
-			if (selected || focused) {
-				color_set = FileListConst.selected_grad;
-		
-	//			if (curr_item.StatusIsNone())
-	//				color_set = FileListConst.usual_grad;
-	//			else if (curr_item.StatusIsListened())
-	//				color_set = FileListConst.listened_grad;
-	//			else color_set = FileListConst.droped_grad;
-			}
-			else {
-				if (curr_item.StatusIsNone())
-					color_set = FileListConst.usual_grad;
-				else if (curr_item.StatusIsListened())
-					color_set = FileListConst.listened_grad;
-				else color_set = FileListConst.droped_grad;
-			}
+
+		if (selected || focused) {
+			if (curr_item.StatusIsPlayed())
+				color_set = FileListConst.played_grad_select;
+			else if (curr_item.StatusIsNone())
+				color_set = FileListConst.usual_grad_select;
+			else if (curr_item.StatusIsListened())
+				color_set = FileListConst.listened_grad_select;
+			else color_set = FileListConst.droped_grad_select;
 		}
-		
+		else {
+			if (curr_item.StatusIsPlayed())
+				color_set = FileListConst.played_grad;
+			else if (curr_item.StatusIsNone())
+				color_set = FileListConst.usual_grad;
+			else if (curr_item.StatusIsListened())
+				color_set = FileListConst.listened_grad;
+			else color_set = FileListConst.droped_grad;
+		}
+	
 		gp = new GradientPaint(
-			    0, 0, color_set[0],
-			    0, r.height, color_set[1] );
+			    0, 0, color_set[1],
+			    0, r.height, color_set[0] );
 		
 		if (gp != null) {
 			g2d.setPaint(gp);

@@ -145,7 +145,9 @@ public class NamesLibrary {
 					break;
 				} 
 	//			else Set(title, false);
-			Errorist.printMessage("Library::ProceedItem", item.title + " - Not Find");
+				else {
+					Errorist.printMessage("Library::ProceedItem", item.title + " - Not Find");
+				}
 	}
 	
 //	public void SetListItemState(ListItem item) {

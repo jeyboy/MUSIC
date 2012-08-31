@@ -63,6 +63,8 @@ public class FileList extends JList {
     	super.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     	new FileListEvents(this);
     	setComponentPopupMenu(new ListPopUp(this));
+    	setSelectionForeground(Color.white);
+    	setSelectionBackground(Color.white);
 	}
 	
 	public void SetPlayed(ListItem item) 
