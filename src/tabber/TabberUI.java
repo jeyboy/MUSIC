@@ -205,7 +205,7 @@ public class TabberUI extends BasicTabbedPaneUI {
 
     @Override
     protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-        return anchoFocoH + super.calculateTabWidth(tabPlacement, tabIndex, metrics);
+        return super.calculateTabWidth(tabPlacement, tabIndex, metrics);
     }
 
     @Override

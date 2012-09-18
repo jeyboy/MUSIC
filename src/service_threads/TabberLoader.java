@@ -31,7 +31,7 @@ public class TabberLoader extends BaseThread {
     	ArrayList<ListItem> files = new ArrayList<ListItem>(limit);
 		
 		try {
-			BufferedReader bin = IOOperations.GetReader(service.Settings.tabspath);
+			BufferedReader bin = IOOperations.GetReader(service.Settings.tabspath());
 	  		String strLine;
 	  		Tab curr_tab = null;
 	  		

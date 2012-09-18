@@ -27,17 +27,17 @@ public class DropPanelsManager {
 	}
 	
 	public void LoadDropPanels() {
-		drop_left.Load(service.Settings.drop_left_path);
-		drop_top.Load(service.Settings.drop_top_path);
-		drop_bottom.Load(service.Settings.drop_bottom_path);
-		drop_right.Load(service.Settings.drop_right_path);	
+		drop_left.Load(service.Settings.drop_left_path());
+		drop_top.Load(service.Settings.drop_top_path());
+		drop_bottom.Load(service.Settings.drop_bottom_path());
+		drop_right.Load(service.Settings.drop_right_path());	
 	}
 	
 	public void saveDropPanels() {
-		drop_left.Save(service.Settings.drop_left_path);
-		drop_top.Save(service.Settings.drop_top_path);
-		drop_bottom.Save(service.Settings.drop_bottom_path);
-		drop_right.Save(service.Settings.drop_right_path);		
+		drop_left.Save(service.Settings.drop_left_path());
+		drop_top.Save(service.Settings.drop_top_path());
+		drop_bottom.Save(service.Settings.drop_bottom_path());
+		drop_right.Save(service.Settings.drop_right_path());		
 	}
 	
 	public void ToogleLeftDrop() {

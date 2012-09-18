@@ -1,9 +1,11 @@
 import javax.swing.JFrame;
 
 import service.Errorist;
+import service.Settings;
 
 public class UserLocal {
 	public static void main(String[] args) {
+		Settings.init();
 		JFrame frame = new JFrame("(O_o)");
 		frame.addWindowListener(new service.CloseDialog(frame));
 		components.MainWnd.init(frame);

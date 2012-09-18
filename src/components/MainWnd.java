@@ -103,7 +103,7 @@ public class MainWnd {
 		Tabber.Load();
 		
 		try {
-	  		BufferedReader br = IOOperations.GetReader(service.Settings.settingspath);
+	  		BufferedReader br = IOOperations.GetReader(service.Settings.settingspath());
 	  		String strLine;
 	  		int wi = 200, he = 400;
 	  		
@@ -143,7 +143,7 @@ public class MainWnd {
 	    Common.drop_manager.saveDropPanels();		
 		
 	    PrintWriter pw = null;
-	    File f = new File(Settings.settingspath);
+	    File f = new File(Settings.settingspath());
 
 	    try {
 	    	pw = new PrintWriter(new FileWriter(f));

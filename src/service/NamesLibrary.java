@@ -36,7 +36,7 @@ public class NamesLibrary {
 		try {
 			res = new LibraryCatalog(new HashMap<String, Integer>());
 			String strLine;
-			BufferedReader reader = IOOperations.GetReader(service.Settings.librarypath + letter);
+			BufferedReader reader = IOOperations.GetReader(service.Settings.librarypath() + letter);
 	  		while ((strLine = reader.readLine()) != null) {
 	  			if (strLine.length() == 0) continue;
 	  			res.catalog.put(strLine.substring(1), Integer.parseInt(strLine.charAt(0) + ""));
@@ -62,7 +62,7 @@ public class NamesLibrary {
 	    PrintWriter pw = null;
 	    int counter;
 	    
-	    File f = new File(service.Settings.libraryroot);
+	    File f = new File(service.Settings.libraryroot());
 	    if (!f.exists())
 	    	f.mkdirs();
 	    
@@ -71,7 +71,7 @@ public class NamesLibrary {
 	    	if (catalog.getValue().updated) {
 			    try {
 			    	counter = 0;
-			        pw = IOOperations.GetWriter(service.Settings.librarypath + catalog.getKey(), false);
+			        pw = IOOperations.GetWriter(service.Settings.librarypath() + catalog.getKey(), false);
 			        	        
 					for (Map.Entry<String, Integer> entry : catalog.getValue().catalog.entrySet()) {
 						pw.println(("" + entry.getValue()) + entry.getKey());
