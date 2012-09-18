@@ -10,16 +10,22 @@ import service.MediaInfo;
 import service.ServiceAgent;
 
 public class ListItem {
-	byte status = (byte)128;
+	final static byte default_status = (byte)128;
 	
-	public void SetStatusNone() 		{	status |= 0 << 0;	}
+	byte status = default_status;
+	
+	public void SetStatusNone() 		{
+		SetStatusUnListened();
+		SetStatusUnLiked();
+	}
 	public boolean StatusIsNone()		{	return (status & 1) == 0; }
 	
 	public void SetStatusListened() 	{
 		status |= 1 << 0;
 		for(String name : media_info.Titles)
 			Common.library.Set(name, false);
-	}		
+	}
+	public void SetStatusUnListened() 	{	status &= ~(1 << 0); }
 	public boolean StatusIsListened()	{	return (status & 1) == 1; }
 	
 	public void SetStatusLiked() 		{	
@@ -27,6 +33,7 @@ public class ListItem {
 		for(String name : media_info.Titles)
 			Common.library.Set(name, true);		
 	}
+	public void SetStatusUnLiked() 		{	status &= ~(1 << 1); }
 	public boolean StatusIsLiked()		{	return (status >> 1 & 1) == 1; }
 	
 	public void SetStatusPlayed() 		{	status |= 1 << 2; }
@@ -44,9 +51,9 @@ public class ListItem {
 	public ListItem(String path) { this(new File(path)); }
 	public ListItem(String path, byte state) { this(new File(path), state); }
 
-	public ListItem(File file) { this(file, (byte)128); }
+	public ListItem(File file) { this(file, default_status); }
 	public ListItem(File file, byte state) { this(file, IOOperations.extension(file.getName()), state); }
-	public ListItem(File file, String ext) { this(file, ext, (byte)128); }	
+	public ListItem(File file, String ext) { this(file, ext, default_status); }	
 	public ListItem(File file, String ext, byte state) {
 		this.file = file;
 		this.ext = ext;
@@ -60,7 +67,7 @@ public class ListItem {
 	public long MemorySize() { return ServiceAgent.getObjectSize(this); }
 	
 	public void Exec() {
-        try { 
+        try {
         	IOOperations.open(file);
         	SetStatusListened();
         }

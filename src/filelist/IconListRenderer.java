@@ -39,6 +39,8 @@ public class IconListRenderer extends DefaultListCellRenderer {
 		curr_item = (ListItem) value;
 		selected = isSelected;
 		focused = cellHasFocus;
+		
+		setForeground(selected || focused ? Color.white : Color.black);
 
 		Icon icon = icons.get(curr_item.ext);
 		if (icon == null) icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(service.Settings.imagepath + "items/default.png"));

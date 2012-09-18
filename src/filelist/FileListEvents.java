@@ -24,6 +24,8 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
+import components.MainWnd;
+
 import service.Common;
 import service.Dropper;
 
@@ -151,6 +153,7 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
 	    if (dsde.getDropSuccess()) {
 	        for(ListItem li : droped_items)
 	        	li.SetStatusLiked();
+	        MainWnd.wnd.repaint();
 	    }
 	    droped_items.clear();
 	} 	

@@ -63,8 +63,7 @@ public class FileList extends JList {
     	super.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     	new FileListEvents(this);
     	setComponentPopupMenu(new ListPopUp(this));
-    	setSelectionForeground(Color.white);
-    	setSelectionBackground(Color.white);
+//    	setSelectionForeground(Color.white);
 	}
 	
 	public void SetPlayed(ListItem item) 
@@ -75,6 +74,7 @@ public class FileList extends JList {
 		if ((played = item) != null) {
 			played.SetStatusPlayed();
 			played.Exec();
+			setSelectedValue(played, false);
 		}
 		MainWnd.wnd.repaint();
 	}

@@ -168,6 +168,7 @@ public class NamesLibrary {
 		}
 		
 		public void put(String key, Integer val) {
+			val = (val == 1 ? val : get(key) ? 1 : val); 
 			catalog.put(key, val);
 			updated = true;
 		}
