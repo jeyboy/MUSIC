@@ -74,20 +74,20 @@ public class IconListRenderer extends DefaultListCellRenderer {
 		if (selected || focused) {
 			if (curr_item.StatusIsPlayed())
 				color_set = FileListConst.played_grad_select;
-			else if (curr_item.StatusIsNone())
-				color_set = FileListConst.usual_grad_select;
+			else if (curr_item.StatusIsLiked())
+				color_set = FileListConst.droped_grad_select;
 			else if (curr_item.StatusIsListened())
-				color_set = FileListConst.listened_grad_select;
-			else color_set = FileListConst.droped_grad_select;
+				color_set = FileListConst.listened_grad_select;			
+			else color_set = FileListConst.usual_grad_select;
 		}
 		else {
 			if (curr_item.StatusIsPlayed())
 				color_set = FileListConst.played_grad;
-			else if (curr_item.StatusIsNone())
-				color_set = FileListConst.usual_grad;
+			else if (curr_item.StatusIsLiked())
+				color_set = FileListConst.droped_grad;
 			else if (curr_item.StatusIsListened())
 				color_set = FileListConst.listened_grad;
-			else color_set = FileListConst.droped_grad;
+			else color_set = FileListConst.usual_grad;
 		}
 	
 		gp = new GradientPaint(
