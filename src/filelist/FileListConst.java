@@ -19,5 +19,7 @@ public class FileListConst {
 
 	public static Color played = new Color(144, 238, 144);	
 	public static Color [] played_grad = {Color.green, played};
-	public static Color [] played_grad_select = {selected, played};		
+	public static Color [] played_grad_select = {selected, played};
+	
+	public static Color [] disabled = {Color.darkGray, Color.gray};
 }
