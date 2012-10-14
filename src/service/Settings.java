@@ -2,14 +2,28 @@ package service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 public class Settings {
 	static public String imagepath = "files/images/";
 	static public String apppath;
 	
+	static String Linux() {
+		String path = Settings.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		int sep = path.lastIndexOf('/');
+		path = path.substring(0, sep);		
+		try { path = URLDecoder.decode(path, "UTF-8");}
+		catch (UnsupportedEncodingException e1) { e1.printStackTrace();}
+		return path;
+	}
+	
+	static String Windows() {
+		return System.getProperty("user.dir");
+	}
+	
 	public static void init() {
-		try { apppath = new File(".").getCanonicalPath();	}
-		catch (IOException e) {}
+		apppath = OSInfo.isWindows() ? Windows() : Linux(); 
 	}
 	
 	

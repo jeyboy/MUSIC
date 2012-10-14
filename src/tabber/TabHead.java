@@ -32,12 +32,12 @@ public class TabHead {
 	JLabel GenerateCloseButton(final Tab tab) {
 		final JLabel tabCloseButton = new JLabel(GetIcon());
 	    tabCloseButton.setPreferredSize(new Dimension(18, 18));
-	    tabCloseButton.setVisible(false);
-	    
+//	    tabCloseButton.setVisible(false);
+//	    
 	    tabCloseButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) { tab.tabber.removeTabAt(tab.tabber.getTabCount()-1); }
-            public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
-            public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }            
+            public void mousePressed(MouseEvent e) 		{ tab.tabber.remove(parent); }
+//            public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
+//            public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }            
         });
 	    return tabCloseButton;
 	}	
@@ -57,12 +57,12 @@ public class TabHead {
 	    parent.tabber.setTabComponentAt(parent.tabber.getTabCount()-1, p);
 	    SetTitleForeground(Color.white);
 	    
-	    p.addMouseListener(new MouseAdapter() {
-	    	public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
-		    public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }
-		    //temp fix - when add mouse listeners tab not selected at click
-		    public void mouseClicked(MouseEvent e) 	{ parent.tabber.SetCurrentTab(parent); }
-		});	    
+//	    p.addMouseListener(new MouseAdapter() {
+//	    	public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
+//		    public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }
+//		    //temp fix - when add mouse listeners tab not selected at click
+//		    public void mouseClicked(MouseEvent e) 	{ parent.tabber.SetCurrentTab(parent); }
+//		});	    
 	}
 	
 	public TabHead(Tab parent, String title) {	Init(parent, title);	}
