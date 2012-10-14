@@ -179,7 +179,8 @@ public class NamesLibrary {
 		}
 		
 		public Boolean get(String title) {
-			return catalog.get(title) == 1 ? true : false;
+			Object o = catalog.get(title); 
+			return o == null ? false : (int)o == 1;
 		}		
 	}
 }

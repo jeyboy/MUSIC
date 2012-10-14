@@ -6,9 +6,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -92,9 +94,12 @@ public class MenuBar extends JMenuBar {
 				new ActionBind("include_base", new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION)
-					    	ParseBase(fileChooser.getSelectedFile().getAbsolutePath());
+					    fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+					    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION) {
+					    	if (fileChooser.getSelectedFile().isDirectory())
+					    		ParseLibrary(fileChooser.getSelectedFile());	
+					    	else ParseBase(fileChooser.getSelectedFile().getAbsolutePath());
+					    }
 					}
 				})
 			};
@@ -160,6 +165,27 @@ public class MenuBar extends JMenuBar {
 		} 
 		catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
 	}
+	void ParseLibrary(File path) {
+		Collection<File> files = IOOperations.ScanDirectoriesF(new File [] {path});
+		for(File f : files) {
+			try {
+				BufferedReader reader = IOOperations.GetReader(f.getAbsolutePath());
+		  		String strLine;
+		  		
+		  		try {
+					while ((strLine = reader.readLine()) != null) {
+						if (strLine.length() == 0) continue;
+						
+						Common.library.Set(strLine.substring(1), strLine.charAt(0) == '1');
+					}
+					reader.close();
+				}
+		  		catch (IOException e) { Errorist.printLog(e); }
+			} 
+			catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
+		}
+	}	
+	
 	
 	class ActionBind {
 		public ActionListener action = null;
