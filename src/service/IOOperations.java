@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -177,5 +178,13 @@ public class IOOperations {
 	public static String path(String fullPath) {
 		int sep = fullPath.lastIndexOf(File.separatorChar);
 		return fullPath.substring(0, sep);
+	}
+	
+	public static String path(String fullPath, Character separator) {
+		int sep = fullPath.lastIndexOf('/');
+		fullPath = fullPath.substring(0, sep);		
+		try { fullPath = URLDecoder.decode(fullPath, "UTF-8");}
+		catch (UnsupportedEncodingException e1) { e1.printStackTrace();}
+		return fullPath;
 	}	
 }
