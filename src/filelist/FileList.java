@@ -18,25 +18,6 @@ import tabber.Tab;
 
 @SuppressWarnings("rawtypes")
 public class FileList extends JList {
-	//Customization
-//	Property String	Object Type
-//	List.actionMap	ActionMap
-//	List.background	Color
-//	List.border	Border
-//	List.cellHeight	Integer
-//	List.cellRenderer	ListCellRenderer
-//	List.focusCellHighlightBorder	Border
-//	List.focusInputMap	InputMap
-//	List.focusInputMap.RightToLeft	InputMap
-//	List.font	Font
-//	List.foreground	Color
-//	List.lockToPositionOnScroll	Boolean
-//	List.rendererUseListColors Boolean	List.rendererUseUIBorder Boolean
-//	List.selectionBackground	Color
-//	List.selectionForeground	Color
-//	List.timeFactor	Long
-//	ListUI	String		
-	
 	private static final long serialVersionUID = 2216859386306446869L;
 	Tab parent;
 	ListItem played = null;

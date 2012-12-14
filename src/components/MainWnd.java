@@ -29,35 +29,6 @@ public class MainWnd {
 	static public void init(Container window) 	{ wnd = window; Common.Initialize(); initializeWnd(); }
 	static public void Toggle() 				{ wnd.setVisible(!wnd.isVisible());	}
 	
-//	static void initializeFrame0() {
-//	    JFrame frame = new JFrame("(O_o)");
-//	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//	    JDesktopPane desktop = new JDesktopPane();
-//	    JInternalFrame internalFrame = new JInternalFrame("Can Do All", true, true, true, true);
-//
-//	    desktop.add(internalFrame);
-//
-//	    internalFrame.setBounds(0, 0, 200, 100);
-//
-//	    JLabel label = new JLabel(internalFrame.getTitle(), JLabel.CENTER);
-//	    internalFrame.add(label, BorderLayout.CENTER);
-//
-//	    internalFrame.setVisible(true);
-//	    internalFrame.setDoubleBuffered(true);
-//	    
-//
-//	    frame.add(desktop, BorderLayout.CENTER);
-//	    frame.setSize(500, 300);
-//	    frame.setVisible(true);				
-//	}
-	
-//	static private JPanel initLayout() {
-//		JPanel p = new JPanel(true);
-//		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-//		return p;
-//	}
-	
 	static private void initLayout() {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -125,14 +96,6 @@ public class MainWnd {
 			Common.drop_manager.CloseAll();
 			Errorist.printLog(e);
 		}
-		
-//	       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//	        GraphicsDevice[] gds = ge.getScreenDevices();
-//	        for (GraphicsDevice gd : gds) {
-//	            GraphicsConfiguration gc = gd.getDefaultConfiguration();
-//	            System.out.println("Bounds = " + gc.getBounds());
-//	            System.out.println("Insets = " + Toolkit.getDefaultToolkit().getScreenInsets(gc));
-//	        }
 
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		wnd.setLocation(new Point(dim.width - wnd.getWidth(), dim.height - wnd.getHeight() - 40));
@@ -170,9 +133,7 @@ public class MainWnd {
 		frame.setUndecorated(true);
 		frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 	}
-	static void initApplet(Applet applet) {
-		applet.setLayout(gridbag);
-	}
+	static void initApplet(Applet applet) { applet.setLayout(gridbag);	}
 	
 	static void initializeWnd() {
 		wnd.setSize(240, 400);
@@ -194,7 +155,5 @@ public class MainWnd {
 		Save();
 	}
 	
-	static public void SetTitle(String title) {
-		((JFrame)wnd).setTitle(title);
-	}
+	static public void SetTitle(String title) { ((JFrame)wnd).setTitle(title);	}
 }

@@ -11,7 +11,7 @@ import service.ServiceAgent;
 
 public class ListItem {
 	final static byte default_status = (byte)128;
-	
+
 	byte status = default_status;
 	
 	public void SetStatusNone() 		{
@@ -93,12 +93,6 @@ public class ListItem {
 		try { IOOperations.open(file.getParentFile()); }
 		catch (IOException e) { Errorist.printLog(e); }
 	}
-	
-//	public void SetState(STATUS newstate) {
-//    	state = newstate;
-//    	for(String tstr : media_info.Titles)
-//    		Common.library.Set(tstr, newstate == STATUS.LIKED);		
-//	} 
 
 	public void InitMedia() { Common.library.ProceedItem(this); }
 }

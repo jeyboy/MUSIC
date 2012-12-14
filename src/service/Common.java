@@ -36,6 +36,7 @@ public class Common {
 	
 	static public boolean save_flag = false;
 	static public boolean raw_flag = false;
+	static public boolean rand_play_flag = false;
 	
 	static public Tabber tabber;
 	static public NamesLibrary library = new NamesLibrary();

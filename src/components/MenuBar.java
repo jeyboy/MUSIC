@@ -90,6 +90,7 @@ public class MenuBar extends JMenuBar {
 				}),
 				new ActionBind("start_play", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						Common.rand_play_flag = false;
 						if (!Common.mp3.isPlayed())
 							Common.raw_flag = !Common.raw_flag;
 						else {
@@ -99,6 +100,11 @@ public class MenuBar extends JMenuBar {
 						
 						if (Common.raw_flag)
 							Common.tabber.MoveSelectAndInit(true);
+				    }
+				}),
+				new ActionBind("mixer", new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Common.tabber.GetCurrentTab().Shuffle();
 				    }
 				}),					
 				new ActionBind("include_base", new ActionListener() {

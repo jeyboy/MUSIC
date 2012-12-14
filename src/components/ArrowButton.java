@@ -18,13 +18,7 @@ public class ArrowButton extends BasicArrowButton {
 	}
 	
 	public ArrowButton(Turn direction) { this(getDirection(direction)); }	
-	public ArrowButton(int direction) { 
-		super(direction);
-//		Dimension dim = getPreferredSize();
-//		if (direction == SwingConstants.SOUTH || direction == SwingConstants.NORTH)
-//			setPreferredSize(new Dimension(dim.width, 10));
-//		else setPreferredSize(new Dimension(10, dim.height));	
-	}
+	public ArrowButton(int direction) { super(direction); }
 
 	public void Toogle() {
 		switch (getDirection()) {

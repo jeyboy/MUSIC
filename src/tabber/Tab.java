@@ -2,6 +2,7 @@ package tabber;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Random;
 
 import javax.swing.JScrollPane;
 import filelist.FileList;
@@ -34,9 +35,17 @@ public class Tab extends JScrollPane {
 	
 	public Integer FilesCount() { return Files.model.getSize(); }
 	public ListItem File(int index)	{	return Files.model.getElementAt(index); }
-//	public void AddFlles() {
-//		
-//	}
+	public void Shuffle() {
+//		Collections.shuffle((List<?>)Files.model);
+		Random rgen = new Random();
+		for (int i=0; i < FilesCount(); i++) {
+			int randomPosition = rgen.nextInt(FilesCount());
+			ListItem temp = File(i);
+			Files.model.set(i, File(randomPosition));
+			Files.model.set(randomPosition, temp);
+		}
+	}
+
 	public FileList Files() 			{	return (FileList) getViewport().getView(); }
 	
 	public String GetTitle() 			{	return tabhead.GetTitle(); }

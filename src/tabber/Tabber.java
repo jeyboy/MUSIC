@@ -63,65 +63,7 @@ public class Tabber extends JTabbedPane {
 	    catch (Exception e) { Errorist.printLog(e); }
 	    finally { if (pw != null) pw.close(); }
 	}		
-// Customizzation
-//	Property String	Object Type
-//	TabbedPane.actionMap	ActionMap
-//	TabbedPane.ancestorInputMap	InputMap
-//	TabbedPane.background	Color
-//	TabbedPane.borderHightlightColor	Color
-//	TabbedPane.contentAreaColor	Color
-//	TabbedPane.contentBorderInsets	Insets
-//	TabbedPane.contentOpaque	Boolean
-//	TabbedPane.darkShadow	Color
-//	TabbedPane.focus	Color
-//	TabbedPane.focusInputMap	InputMap
-//	TabbedPane.font	Font
-//	TabbedPane.foreground	Color
-//	TabbedPane.highlight	Color
-//	TabbedPane.light	Color
-//	TabbedPane.opaque	Boolean
-//	TabbedPane.selected	Color
-//	TabbedPane.selectedForeground	Color
-//	TabbedPane.selectedTabPadInsets	Insets
-//	TabbedPane.selectHighlight	Color
-//	TabbedPane.selectionFollowsFocus	Boolean
-//	TabbedPane.shadow	Color
-//	TabbedPane.tabAreaBackground	Color
-//	TabbedPane.tabAreaInsets	Insets
-//	TabbedPane.tabInsets	Insets
-//	TabbedPane.tabRunOverlay	Integer
-//	TabbedPane.tabsOpaque	Boolean
-//	TabbedPane.tabsOverlapBorder	Boolean
-//	TabbedPane.textIconGap	Integer
-//	TabbedPane.unselectedBackground	Color
-//	TabbedPane.unselectedTabBackground	Color
-//	TabbedPane.unselectedTabForeground	Color
-//	TabbedPane.unselectedTabHighlight	Color
-//	TabbedPane.unselectedTabShadow	Color
-//	TabbedPaneUI	String	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	//    public void setIconAt(int index, Icon icon)
-//    public void setMnemonicAt(int index, int mnemonic)
-//    public void setDisplayedMnemonicIndexAt(int index, int mnemonicIndex)
-//    public void setToolTipTextAt(int index, String text)
-//    public void setComponentAt(int index, Component component)	
-//    public void setBackgroundAt(int index, Color background)
-//    public void setForegroundAt(int index, Color foreground)
-//    public void setEnabledAt(int index, boolean enabled)
-//    public void setDisabledIconAt(int index, Icon disabledIcon)
-//	removeTabAt(int index)
-//	remove(int index)
-//	remove(Component component)	
-//	removeAll()	
 	/**
 	 * @param style = JTabbedPane.BOTTOM or JTabbedPane.TOP or ...
 	 */
@@ -142,54 +84,4 @@ public class Tabber extends JTabbedPane {
 	 * @param key =  KeyEvent.VK_C or ...
 	 */
 	public void SetHotKey(int index, int key) { super.setMnemonicAt(index, key); }
-
-//	   ChangeListener changeListener = new ChangeListener() {
-//		      public void stateChanged(ChangeEvent changeEvent) {
-//		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-//		        int index = sourceTabbedPane.getSelectedIndex();
-//		        System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
-//		      }
-//		    };
-//      tabbedPane.addChangeListener(changeListener);
-	
-	
-	
-//    JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftComponent, rightComponent);
-//    int size = pane.getDividerSize();
-//    size = 1;
-//    pane.setDividerSize(size);
-	
-	//get index by child component
-//	int index = pane.indexOfComponent(component);
-	
-	
-	
-	//move tab in container
-//	  public static void main(String[] argv) throws Exception {
-//		    JTabbedPane pane = new JTabbedPane();
-//		    int src = pane.getTabCount() - 1;
-//		    int dst = 0;
-//
-//		    Component comp = pane.getComponentAt(src);
-//		    String label = pane.getTitleAt(src);
-//		    Icon icon = pane.getIconAt(src);
-//		    Icon iconDis = pane.getDisabledIconAt(src);
-//		    String tooltip = pane.getToolTipTextAt(src);
-//		    boolean enabled = pane.isEnabledAt(src);
-//		    int keycode = pane.getMnemonicAt(src);
-//		    int mnemonicLoc = pane.getDisplayedMnemonicIndexAt(src);
-//		    Color fg = pane.getForegroundAt(src);
-//		    Color bg = pane.getBackgroundAt(src);
-//
-//		    pane.remove(src);
-//
-//		    pane.insertTab(label, icon, comp, tooltip, dst);
-//
-//		    pane.setDisabledIconAt(dst, iconDis);
-//		    pane.setEnabledAt(dst, enabled);
-//		    pane.setMnemonicAt(dst, keycode);
-//		    pane.setDisplayedMnemonicIndexAt(dst, mnemonicLoc);
-//		    pane.setForegroundAt(dst, fg);
-//		    pane.setBackgroundAt(dst, bg);
-//		  }	
 }
