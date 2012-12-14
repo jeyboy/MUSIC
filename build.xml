@@ -10,6 +10,7 @@
             </manifest>
             <fileset dir="F:/Programing/JAVA/MUSIC/bin"/>
             <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/jna/dist/jna.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/jl1.0.1.jar"/>
         </jar>
     </target>
 </project>

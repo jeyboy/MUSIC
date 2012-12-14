@@ -193,4 +193,8 @@ public class MainWnd {
 		Common.Shutdown();
 		Save();
 	}
+	
+	static public void SetTitle(String title) {
+		((JFrame)wnd).setTitle(title);
+	}
 }

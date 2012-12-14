@@ -6,5 +6,6 @@
 	<classpathentry kind="src" path="jkeymaster/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="F:/Programing/JAVA/jna/dist/jna.jar"/>
+	<classpathentry kind="lib" path="jl1.0.1.jar" sourcepath="C:/Users/JB/Desktop/javazoom/jl"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

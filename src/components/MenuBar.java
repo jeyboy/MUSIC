@@ -38,6 +38,8 @@ public class MenuBar extends JMenuBar {
 	private JCheckBox remote_source;
 	JFileChooser fileChooser = new JFileChooser(".");
 	private Color default_item_color;
+	static JMenuItem play_item;
+	
 	
 	void prepareGUI(String tit, boolean del, boolean inter, boolean del_ef, boolean remote) {
 		title = new JTextField(tit);
@@ -88,7 +90,15 @@ public class MenuBar extends JMenuBar {
 				}),
 				new ActionBind("start_play", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						if (!Common.mp3.isPlayed())
+							Common.raw_flag = !Common.raw_flag;
+						else {
+							Common.raw_flag = false;
+							Common.mp3.stop();
+						}
 						
+						if (Common.raw_flag)
+							Common.tabber.MoveSelectAndInit(true);
 				    }
 				}),					
 				new ActionBind("include_base", new ActionListener() {
@@ -105,14 +115,13 @@ public class MenuBar extends JMenuBar {
 			};
 		
 		for(int loop1 = 0; loop1 < actions.length; loop1++) {
-			ImageIcon n = null;
-			try {
-				n = new ImageIcon(
-						ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(service.Settings.imagepath + "menubar/" + actions[loop1].name + ".png"))
-						);
-			} 
-			catch (IOException e) {Errorist.printLog(e);}
+			ImageIcon n = GetIcon(service.Settings.imagepath + "menubar/" + actions[loop1].name + ".png");
 			final JMenuItem item = new JMenuItem(n);
+			if (actions[loop1].name == "start_play") {
+				play_item = item;
+				item.setPressedIcon(GetIcon(service.Settings.imagepath + "menubar/stop_play.png"));
+				item.setDisabledIcon(n);
+			}
 			item.setBackground(Color.black);
 			item.addActionListener(actions[loop1].action);
 			item.addMouseListener(new MouseListener() {
@@ -166,6 +175,7 @@ public class MenuBar extends JMenuBar {
 		catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
 	}
 	void ParseLibrary(File path) {
+		int proceed_count = 0;
 		Collection<File> files = IOOperations.ScanDirectoriesF(new File [] {path});
 		for(File f : files) {
 			try {
@@ -177,6 +187,7 @@ public class MenuBar extends JMenuBar {
 						if (strLine.length() == 0) continue;
 						
 						Common.library.Set(strLine.substring(1), strLine.charAt(0) == '1');
+						proceed_count++;
 					}
 					reader.close();
 				}
@@ -184,7 +195,24 @@ public class MenuBar extends JMenuBar {
 			} 
 			catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
 		}
-	}	
+		
+		Errorist.printMessage("Library Parse", "Proceed " + proceed_count + " items");
+		MainWnd.SetTitle("Proceed " + proceed_count + " items");
+	}
+	
+	public static void SetPlay() { play_item.setIcon(play_item.getPressedIcon()); }
+	public static void SetStop() { play_item.setIcon(play_item.getDisabledIcon()); }
+	
+	ImageIcon GetIcon(String path) {
+		ImageIcon n = null;
+		try {
+			n = new ImageIcon(
+					ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(path))
+					);
+		} 
+		catch (IOException e) {Errorist.printLog(e);}
+		return n;
+	}
 	
 	
 	class ActionBind {

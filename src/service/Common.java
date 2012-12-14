@@ -35,6 +35,7 @@ public class Common {
 		"A capella", "Euro-House", "Dance Hall" };		
 	
 	static public boolean save_flag = false;
+	static public boolean raw_flag = false;
 	
 	static public Tabber tabber;
 	static public NamesLibrary library = new NamesLibrary();
@@ -45,6 +46,8 @@ public class Common {
 	static public ItemsStateRefresher _refresher = new ItemsStateRefresher();
 	static public DropIniter _drop_initer = new DropIniter();
 	static public Trasher _trash = new Trasher();
+	
+	static public MP3 mp3 = new MP3();
 	
 	static public void Initialize() {
 //		System.setErr(outputFile(args(2));

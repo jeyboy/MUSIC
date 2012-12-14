@@ -67,16 +67,26 @@ public class ListItem {
 	public long MemorySize() { return ServiceAgent.getObjectSize(this); }
 	
 	public void Exec() {
-        try {
-        	IOOperations.open(file);
-        	SetStatusListened();
-        }
-        catch (IOException e) { Errorist.printLog(e); }
-        catch (UnsupportedOperationException e) 
-        {
-        	Errorist.printLog(e);
-      	   //alt try open the file
-        }
+		if (Common.raw_flag) InnerExec();
+		else {
+	        try {
+	        	IOOperations.open(file);
+	        	SetStatusListened();
+	        }
+	        catch (Exception e) { InnerExec(); }
+		}
+	}
+	
+	void InnerExec() {
+    	if (ext.equals("mp3")) {
+    		try {
+    			Common.mp3.play(file);
+    			SetStatusListened();
+    		}
+    		
+    		catch (Exception e2) { Errorist.printLog(e2); }
+    	} 
+    	else Common.tabber.MoveSelectAndInit(true); 
 	}
 	
 	public void OpenFolder() {
