@@ -72,7 +72,8 @@ public class MediaInfo {
 		String ext = IOOperations.extension(title);
 		
 		if (ext.length() == 0) AddTitleHelper(title);
-		else AddTitleHelper(title.substring(0, title.length() - (ext.length() + 1)));
+		else AddTitleHelper(IOOperations.name_without_extension(title, ext));
+//		else AddTitleHelper(title.substring(0, title.length() - (ext.length() + 1)));
 		
 		if (CheckFormat(f.getName(), ext))
 			InitInfo(f);

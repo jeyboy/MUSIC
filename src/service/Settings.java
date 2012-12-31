@@ -15,6 +15,8 @@ public class Settings {
 	public static void init() {
 		apppath = OSInfo.isWindows() ? Windows() : Unux();
 		
+		default_torrent_path = apppath + File.separator + "download" + File.separator;
+		
 		libraryroot = apppath + File.separator + "library";
 		librarypath = libraryroot + File.separator + "cat_";
 		settingspath = apppath + File.separator + "settings";
@@ -31,6 +33,7 @@ public class Settings {
 		drop_bottom_path = droppannelspath + "_bottom";		
 	}
 	
+	static public String default_torrent_path;
 	static public String libraryroot;
 	static public String librarypath;
 	static public String settingspath;

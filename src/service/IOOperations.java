@@ -168,6 +168,13 @@ public class IOOperations {
 		int dot = fullPath.toLowerCase().lastIndexOf(extensionSeparator);
 		return dot == -1 ? "" : fullPath.substring(dot + 1);
 	}
+	public static String name_without_extension(String title, String ext) {
+		return title.substring(0, title.length() - (ext.length() + 1));
+	}
+	public static String name_without_extension(String title) {
+		return title.substring(0, title.length() - (extension(title).length() + 1));
+	}	
+	
 
 	public static String filename(String fullPath) { // gets filename without extension
 		int dot = fullPath.lastIndexOf(extensionSeparator);

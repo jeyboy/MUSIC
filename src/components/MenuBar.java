@@ -14,20 +14,25 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import service.Common;
+import service.Settings; 
+import service.FileDialogFilter;
 import service.Errorist;
 import service.IOOperations;
 import service.MediaInfo;
 import tabber.Tab;
 import tabber.TabOptions;
 import tabber.Tabber;
+import torrent_window.TorrentRow;
 
 public class MenuBar extends JMenuBar {
 	private static final long serialVersionUID = 5651526930411426260L;
@@ -39,6 +44,7 @@ public class MenuBar extends JMenuBar {
 	JFileChooser fileChooser = new JFileChooser(".");
 	private Color default_item_color;
 	static JMenuItem play_item;
+	FileDialogFilter dialog_filter = new FileDialogFilter("torrent", "torrent file");
 	
 	
 	void prepareGUI(String tit, boolean del, boolean inter, boolean del_ef, boolean remote) {
@@ -117,6 +123,53 @@ public class MenuBar extends JMenuBar {
 					    	else ParseBase(fileChooser.getSelectedFile().getAbsolutePath());
 					    }
 					}
+				}),
+				new ActionBind("torrent", new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						final JLabel pathLabel = new JLabel("Torrent not set");
+						
+						JButton torrentDialogButton = new JButton("Choose torrent file");
+						torrentDialogButton.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								fileChooser.setFileFilter(dialog_filter);
+							    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+							    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION) {
+							    	pathLabel.setText(fileChooser.getSelectedFile().getAbsolutePath());
+							    }
+							}
+						});
+						
+						final JLabel savePathLabel = new JLabel(Settings.default_torrent_path);
+						
+						JButton savePathDialogButton = new JButton("Choose save path");
+						savePathDialogButton.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								fileChooser.removeChoosableFileFilter(dialog_filter); 
+							    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+							    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION) {
+							    	savePathLabel.setText(fileChooser.getSelectedFile().getAbsolutePath());
+							    }
+							}
+						});										
+						
+					    Object complexMsg[] = { "Choose torrent file", new Object[] {pathLabel, torrentDialogButton}, "Choose save path", new Object[] {savePathLabel, savePathDialogButton} };		
+						int option = JOptionPane.showOptionDialog(  
+								MenuBar.this,  
+								complexMsg,  
+								"Start download", JOptionPane.OK_CANCEL_OPTION,  
+								JOptionPane.PLAIN_MESSAGE, null, null,  
+								null 
+				        );
+						
+						if( option == JOptionPane.OK_OPTION ) {
+							Common.torrent_window.AddTorrent(pathLabel.getText(), savePathLabel.getText());
+						}						
+						
+						
+						Common.torrent_window.Show();
+				    }
 				})
 			};
 		

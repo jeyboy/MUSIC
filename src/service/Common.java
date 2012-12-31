@@ -1,4 +1,7 @@
 package service;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import drop_panel.DropPanelsManager;
 import hot_keys.HotKeyManager;
 import service_threads.DropIniter;
@@ -6,6 +9,7 @@ import service_threads.ItemsStateIniter;
 import service_threads.ItemsStateRefresher;
 import service_threads.Trasher;
 import tabber.Tabber;
+import torrent_window.TorrentWindow;
 
 public class Common {
 	public static final String[] DEFAULT_GENRES = { "Blues", "Classic Rock",
@@ -49,6 +53,8 @@ public class Common {
 	static public Trasher _trash = new Trasher();
 	
 	static public MP3 mp3 = new MP3();
+	static public TorrentWindow torrent_window = new TorrentWindow();
+	static public NumberFormat formatter = new DecimalFormat("#0.00");
 	
 	static public void Initialize() {
 //		System.setErr(outputFile(args(2));
