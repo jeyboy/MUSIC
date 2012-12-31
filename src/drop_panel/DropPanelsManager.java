@@ -4,8 +4,9 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.SwingConstants;
+
 import components.ArrowButton;
-import components.ArrowButton.Turn;
 
 import service.Constants;
 
@@ -17,16 +18,34 @@ public class DropPanelsManager {
 	public DropPanel drop_bottom = new DropPanel();
 	public DropPanel drop_right = new DropPanel(90);
 	
-	public ArrowButton arrow_left = new ArrowButton(Turn.LEFT);
-	public ArrowButton arrow_top = new ArrowButton(Turn.TOP);
-	public ArrowButton arrow_bottom = new ArrowButton(Turn.BOTTOM);
-	public ArrowButton arrow_right = new ArrowButton(Turn.RIGHT);		
+	public ArrowButton arrow_left = new ArrowButton(SwingConstants.WEST); //LEFT
+	public ArrowButton arrow_top = new ArrowButton(SwingConstants.NORTH); //TOP
+	public ArrowButton arrow_bottom = new ArrowButton(SwingConstants.SOUTH); //BOTTOM
+	public ArrowButton arrow_right = new ArrowButton(SwingConstants.EAST); // RIGHT
 	
 	public DropPanelsManager(Container parent) {
 		wnd = parent;
 		initializeArrowButtons();
 		LoadDropPanels();
 	}
+	
+	void initializeArrowButtons() {
+		arrow_left.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) { ToogleDrop(drop_left); }
+		});
+		
+		arrow_right.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) { ToogleDrop(drop_right); }
+		});		
+		
+		arrow_top.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) { ToogleDrop(drop_top); }
+		});
+		
+		arrow_bottom.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) { ToogleDrop(drop_bottom); }
+		});		
+	}		
 	
 	public void LoadDropPanels() {
 		drop_left.Load(Constants.drop_left_path);
@@ -42,21 +61,9 @@ public class DropPanelsManager {
 		drop_right.Save(Constants.drop_right_path);		
 	}
 	
-	public void ToogleLeftDrop() {
-		drop_left.setVisible(!drop_left.isVisible());
-		wnd.revalidate();
-	}
-	public void ToogleRightDrop() {
-		drop_right.setVisible(!drop_right.isVisible());
-		wnd.revalidate();
-	}
-	public void ToogleTopDrop() {
-		drop_top.setVisible(!drop_top.isVisible());
-		wnd.revalidate();
-	}
-	public void ToogleBottomDrop() {
-		drop_bottom.setVisible(!drop_bottom.isVisible());
-		wnd.revalidate();
+	void ToogleDrop(DropPanel pan) {
+		pan.setVisible(!pan.isVisible());
+		wnd.revalidate();		
 	}
 	
 	public void CloseAll() {
@@ -66,26 +73,4 @@ public class DropPanelsManager {
 		drop_right.setVisible(false);
 		wnd.revalidate();
 	}
-	
-	void initializeArrowButtons() {
-		arrow_left.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) { ToogleLeftDrop(); }
-		});
-		
-		arrow_right.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) { ToogleRightDrop(); }
-		});		
-		
-		arrow_top.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) { ToogleTopDrop(); }
-		});
-		
-		arrow_bottom.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) { ToogleBottomDrop(); }
-		});		
-	}	
 }
