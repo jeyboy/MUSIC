@@ -7,6 +7,7 @@ import hot_keys.HotKeyManager;
 import service_threads.DropIniter;
 import service_threads.ItemsStateIniter;
 import service_threads.ItemsStateRefresher;
+import service_threads.LibraryDumper;
 import service_threads.Trasher;
 import tabber.Tabber;
 import torrent_window.TorrentWindow;
@@ -51,6 +52,7 @@ public class Common {
 	static public ItemsStateRefresher _refresher = new ItemsStateRefresher();
 	static public DropIniter _drop_initer = new DropIniter();
 	static public Trasher _trash = new Trasher();
+	static public LibraryDumper _library_dumper = new LibraryDumper();
 	
 	static public MP3 mp3 = new MP3();
 	static public TorrentWindow torrent_window = new TorrentWindow();
@@ -67,6 +69,7 @@ public class Common {
 		hotkey_manager.Shutdown();
 		_initer.close();
 		_refresher.close();
+		_library_dumper.close();
 		Errorist.close();
 	} 
 }

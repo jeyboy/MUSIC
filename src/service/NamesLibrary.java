@@ -57,10 +57,10 @@ public class NamesLibrary {
 		return res;
 	}
 	
-	public void Save() {
+	public int Save() {
 		Errorist.printMessage("Library::Save", "Start");
 	    PrintWriter pw = null;
-	    int counter;
+	    int counter, total = 0;
 	    
 	    File f = new File(service.Settings.libraryroot);
 	    if (!f.exists())
@@ -75,6 +75,7 @@ public class NamesLibrary {
 			        	        
 					for (Map.Entry<String, Integer> entry : catalog.getValue().catalog.entrySet()) {
 						pw.println(("" + entry.getValue()) + entry.getKey());
+						total++;
 						if(counter++ >= 100) {
 							counter=0;
 							pw.flush();
@@ -82,6 +83,7 @@ public class NamesLibrary {
 			        }
 			        
 			        pw.flush();
+			        catalog.getValue().updated = false;
 			    }
 			    catch (Exception e) { Errorist.printLog(e); }
 			    finally { if (pw != null) pw.close(); }
@@ -89,6 +91,7 @@ public class NamesLibrary {
 	    }
 	    
 	    Errorist.printMessage("Library::Save", "End save");
+	    return total;
 	}
 	
 	void Put(String title, Integer down) {

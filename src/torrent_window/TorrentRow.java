@@ -51,10 +51,7 @@ public class TorrentRow extends Thread {
     	
 
         dm.stopTrackerUpdate();
-        dm.closeTempFiles();
-       
-        // проверка, куда были сохранены скачанные данные (то поле, которое задается в TorrentProcessor.setName())
-//        String torrentSavedTo = tp.getTorrentFile(tp.parseTorrent(torrentPath)).saveAs;			
+        dm.closeTempFiles();	
 	}
 	
 	public void UpdateInfo(float progress, float speed) {
