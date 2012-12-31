@@ -74,7 +74,7 @@ public class Trasher extends BaseThread {
     public void save() {
     	PrintWriter wri = null;
 		try {
-			wri = IOOperations.GetWriter(Settings.trashpath, true);
+			wri = IOOperations.GetWriter(Settings.trashpath, true, false);
 			for(TrashCell f : path_collection)
 				wri.println(f.ToString());
 		} 

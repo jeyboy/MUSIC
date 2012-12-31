@@ -1,5 +1,6 @@
 package service_threads;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import components.MainWnd;
@@ -21,7 +22,7 @@ public class LibraryDumper extends BaseThread {
     		synchronized(Common.library) {
     			System.out.println("Try dump library at " + new Date());
     			int res = Common.library.Save();
-    			MainWnd.SetTitle(new Date() + ": Saved - " + res);
+    			MainWnd.SetTitle(new SimpleDateFormat("HH:mm").format(new Date()) + ": Saved - " + res);
     		}	            		
     		
 	        try { wait(60000); }

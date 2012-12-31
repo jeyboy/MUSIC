@@ -20,9 +20,9 @@ import java.util.Collection;
 import javax.swing.JOptionPane;
 
 public class IOOperations {
-	public static PrintWriter GetWriter(String path, boolean autoflush) throws FileNotFoundException, UnsupportedEncodingException {
+	public static PrintWriter GetWriter(String path, boolean autoflush, boolean append) throws FileNotFoundException, UnsupportedEncodingException {
     	File f = new File(path);
-		FileOutputStream fis = new FileOutputStream(f);
+		FileOutputStream fis = new FileOutputStream(f, append);
 		OutputStreamWriter in = new OutputStreamWriter(fis, "UTF-8");
 		return new PrintWriter(in, autoflush);
 	}

@@ -67,11 +67,10 @@ public class NamesLibrary {
 	    	f.mkdirs();
 	    
 	    for (Map.Entry<String, LibraryCatalog> catalog : library.entrySet()) {
-	    	Errorist.printMessage("Library::Save", catalog.getKey() + " - " + catalog.getValue().updated);
 	    	if (catalog.getValue().updated) {
 			    try {
 			    	counter = 0;
-			        pw = IOOperations.GetWriter(service.Settings.librarypath + catalog.getKey(), false);
+			        pw = IOOperations.GetWriter(service.Settings.librarypath + catalog.getKey(), false, false);
 			        	        
 					for (Map.Entry<String, Integer> entry : catalog.getValue().catalog.entrySet()) {
 						pw.println(("" + entry.getValue()) + entry.getKey());
@@ -87,10 +86,24 @@ public class NamesLibrary {
 			    }
 			    catch (Exception e) { Errorist.printLog(e); }
 			    finally { if (pw != null) pw.close(); }
+	    	} else {
+		    	if (!catalog.getValue().added.isEmpty()) {
+				    try {
+				        pw = IOOperations.GetWriter(service.Settings.librarypath + catalog.getKey(), false, true);
+				        	        
+						for (Map.Entry<String, Integer> entry : catalog.getValue().added.entrySet()) {
+							pw.println(("" + entry.getValue()) + entry.getKey());
+							total++;
+				        }
+						pw.flush();
+				        catalog.getValue().added.clear();
+				    }
+				    catch (Exception e) { Errorist.printLog(e); }
+				    finally { if (pw != null) pw.close(); }
+		    	}	    		
 	    	}
 	    }
 	    
-	    Errorist.printMessage("Library::Save", "End save");
 	    return total;
 	}
 	
@@ -153,27 +166,25 @@ public class NamesLibrary {
 				}
 	}
 	
-//	public void SetListItemState(ListItem item) {
-//    	if (Common.library.Contains(item.title)) {
-//    		if (Common.library.Get(item.title))
-//    			item.state = ListItem.STATUS.LIKED;
-//    		else item.state = ListItem.STATUS.LISTENED;
-//    	}
-//	}
-	
 	class LibraryCatalog {
-		public boolean updated = false;
-		
+		boolean updated = false;
+		Map<String, Integer> added = new HashMap<String, Integer>();
 		Map<String, Integer> catalog;
 		
-		public LibraryCatalog(Map<String, Integer> cat) {
-			catalog = cat;
-		}
+		public LibraryCatalog(Map<String, Integer> cat) { catalog = cat; }
 		
 		public void put(String key, Integer val) {
-			val = (val == 1 ? val : get(key) ? 1 : val); 
-			catalog.put(key, val);
-			updated = true;
+			if (containsKey(key)) {
+				boolean old_val = get(key);
+				val = (val == 1 ? val : old_val ? 1 : val); 
+				catalog.put(key, val);
+				
+				if (updated == false)
+					updated = old_val != (val == 1);				
+			} else {
+				added.put(key, val);
+				catalog.put(key, val);
+			}
 		}
 		
 		public Boolean containsKey(String title) {

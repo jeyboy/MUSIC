@@ -12,7 +12,7 @@ public class Errorist {
 	
 	static void checkWriter() {
 		if (err_writer == null) {
-			try { err_writer = IOOperations.GetWriter(Settings.logpath, true);	} 
+			try { err_writer = IOOperations.GetWriter(Settings.logpath, true, false);	} 
 			catch (FileNotFoundException | UnsupportedEncodingException e) { e.printStackTrace(); }
 		}
 	}

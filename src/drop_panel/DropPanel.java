@@ -125,7 +125,7 @@ public class DropPanel extends JScrollPane {
 		PrintWriter pw;
 		try {
 			DropPanelItem item;
-			pw = IOOperations.GetWriter(path, true);
+			pw = IOOperations.GetWriter(path, true, false);
 			for(int loop1 = 0; loop1 < content_pane.getComponentCount(); loop1++)
 			{
 				item = (DropPanelItem)content_pane.getComponent(loop1);
