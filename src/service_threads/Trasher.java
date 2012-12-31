@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import service.Errorist;
 import service.IOOperations;
-import service.Settings;
+import service.Constants;
 
 public class Trasher extends BaseThread {
 	ArrayList<TrashCell> path_collection = new ArrayList<TrashCell>();
@@ -57,7 +57,7 @@ public class Trasher extends BaseThread {
     	BufferedReader reader = null;
     	
     	try {
-    		reader = IOOperations.GetReader(Settings.trashpath);
+    		reader = IOOperations.GetReader(Constants.trashpath);
     		String temp;
     		
     		while((temp = reader.readLine()) != null)
@@ -74,7 +74,7 @@ public class Trasher extends BaseThread {
     public void save() {
     	PrintWriter wri = null;
 		try {
-			wri = IOOperations.GetWriter(Settings.trashpath, true, false);
+			wri = IOOperations.GetWriter(Constants.trashpath, true, false);
 			for(TrashCell f : path_collection)
 				wri.println(f.ToString());
 		} 

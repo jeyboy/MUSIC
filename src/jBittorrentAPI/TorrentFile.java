@@ -40,8 +40,6 @@ package jBittorrentAPI;
 import java.util.ArrayList;
 import java.util.Date;
 
-import service.Settings;
-
 /**
  * Representation of a torrent file
 
@@ -83,7 +81,7 @@ public class TorrentFile {
         createdBy = new String();
         encoding = new String();
         saveAs = new String();
-        saveTo = Settings.default_torrent_path;
+        saveTo = new String();
         creationDate = -1;
         total_length = -1;
         pieceLength = -1;

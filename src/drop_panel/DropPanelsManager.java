@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import components.ArrowButton;
 import components.ArrowButton.Turn;
 
+import service.Constants;
+
 public class DropPanelsManager {
 	public Container wnd;
 	
@@ -27,17 +29,17 @@ public class DropPanelsManager {
 	}
 	
 	public void LoadDropPanels() {
-		drop_left.Load(service.Settings.drop_left_path);
-		drop_top.Load(service.Settings.drop_top_path);
-		drop_bottom.Load(service.Settings.drop_bottom_path);
-		drop_right.Load(service.Settings.drop_right_path);	
+		drop_left.Load(Constants.drop_left_path);
+		drop_top.Load(Constants.drop_top_path);
+		drop_bottom.Load(Constants.drop_bottom_path);
+		drop_right.Load(Constants.drop_right_path);	
 	}
 	
 	public void saveDropPanels() {
-		drop_left.Save(service.Settings.drop_left_path);
-		drop_top.Save(service.Settings.drop_top_path);
-		drop_bottom.Save(service.Settings.drop_bottom_path);
-		drop_right.Save(service.Settings.drop_right_path);		
+		drop_left.Save(Constants.drop_left_path);
+		drop_top.Save(Constants.drop_top_path);
+		drop_bottom.Save(Constants.drop_bottom_path);
+		drop_right.Save(Constants.drop_right_path);		
 	}
 	
 	public void ToogleLeftDrop() {

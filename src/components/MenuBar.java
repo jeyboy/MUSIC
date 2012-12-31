@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -24,15 +23,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import service.Common;
-import service.Settings; 
+import service.Constants; 
 import service.FileDialogFilter;
 import service.Errorist;
 import service.IOOperations;
 import service.MediaInfo;
+import service.Utils;
 import tabber.Tab;
 import tabber.TabOptions;
 import tabber.Tabber;
-import torrent_window.TorrentRow;
 
 public class MenuBar extends JMenuBar {
 	private static final long serialVersionUID = 5651526930411426260L;
@@ -140,7 +139,7 @@ public class MenuBar extends JMenuBar {
 							}
 						});
 						
-						final JLabel savePathLabel = new JLabel(Settings.default_torrent_path);
+						final JLabel savePathLabel = new JLabel(Constants.default_torrent_path);
 						
 						JButton savePathDialogButton = new JButton("Choose save path");
 						savePathDialogButton.addActionListener(new ActionListener() {
@@ -174,11 +173,11 @@ public class MenuBar extends JMenuBar {
 			};
 		
 		for(int loop1 = 0; loop1 < actions.length; loop1++) {
-			ImageIcon n = GetIcon(service.Settings.imagepath + "menubar/" + actions[loop1].name + ".png");
+			ImageIcon n = Utils.GetIcon("menubar/" + actions[loop1].name + ".png");
 			final JMenuItem item = new JMenuItem(n);
 			if (actions[loop1].name == "start_play") {
 				play_item = item;
-				item.setPressedIcon(GetIcon(service.Settings.imagepath + "menubar/stop_play.png"));
+				item.setPressedIcon(Utils.GetIcon("menubar/stop_play.png"));
 				item.setDisabledIcon(n);
 			}
 			item.setBackground(Color.black);
@@ -261,18 +260,6 @@ public class MenuBar extends JMenuBar {
 	
 	public static void SetPlay() { play_item.setIcon(play_item.getPressedIcon()); }
 	public static void SetStop() { play_item.setIcon(play_item.getDisabledIcon()); }
-	
-	ImageIcon GetIcon(String path) {
-		ImageIcon n = null;
-		try {
-			n = new ImageIcon(
-					ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(path))
-					);
-		} 
-		catch (IOException e) {Errorist.printLog(e);}
-		return n;
-	}
-	
 	
 	class ActionBind {
 		public ActionListener action = null;

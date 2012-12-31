@@ -4,33 +4,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import service.Errorist;
+import service.Utils;
 
 public class TabHead {
 	JLabel title, counter;
 	Tab parent;
 	
-	ImageIcon GetIcon() {
-		try {
-			return new ImageIcon(
-					ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(service.Settings.imagepath + "menubar/delete_tab2.png"))
-					);
-		} 
-		catch (IOException e1) { Errorist.printLog(e1); }
-		return null; 
-	}
-	
 	JLabel GenerateCloseButton(final Tab tab) {
-		final JLabel tabCloseButton = new JLabel(GetIcon());
+		final JLabel tabCloseButton = new JLabel(Utils.GetIcon("menubar/delete_tab2.png"));
 	    tabCloseButton.setPreferredSize(new Dimension(18, 18));
 //	    tabCloseButton.setVisible(false);
 //	    

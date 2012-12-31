@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.PrintWriter;
 import javax.swing.JTabbedPane;
 import service.Common;
+import service.Constants;
 import service.Errorist;
 import service.IOOperations;
 import service_threads.TabberLoader;
@@ -45,7 +46,7 @@ public class Tabber extends JTabbedPane {
 	    Tab curr_tab;
 
 	    try {
-	        pw = IOOperations.GetWriter(service.Settings.tabspath, false, false);
+	        pw = IOOperations.GetWriter(Constants.tabspath, false, false);
 	        	        
 	        for(int loop = 0; loop < getTabCount(); loop++) {
 	        	curr_tab = GetTab(loop);

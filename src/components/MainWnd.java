@@ -18,7 +18,7 @@ import javax.swing.JRootPane;
 import service.Common;
 import service.Errorist;
 import service.IOOperations;
-import service.Settings;
+import service.Constants;
 import tabber.Tabber;
 
 import drop_panel.DropPanelsManager;
@@ -74,7 +74,7 @@ public class MainWnd {
 		Tabber.Load();
 		
 		try {
-	  		BufferedReader br = IOOperations.GetReader(service.Settings.settingspath);
+	  		BufferedReader br = IOOperations.GetReader(Constants.settingspath);
 	  		String strLine;
 	  		int wi = 200, he = 400;
 	  		
@@ -106,7 +106,7 @@ public class MainWnd {
 	    Common.drop_manager.saveDropPanels();		
 		
 	    PrintWriter pw = null;
-	    File f = new File(Settings.settingspath);
+	    File f = new File(Constants.settingspath);
 
 	    try {
 	    	pw = new PrintWriter(new FileWriter(f));

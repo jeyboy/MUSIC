@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import service.Common;
+import service.Constants;
 import service.Errorist;
 import service.IOOperations;
 import tabber.Tab;
@@ -31,7 +32,7 @@ public class TabberLoader extends BaseThread {
     	ArrayList<ListItem> files = new ArrayList<ListItem>(limit);
 		
 		try {
-			BufferedReader bin = IOOperations.GetReader(service.Settings.tabspath);
+			BufferedReader bin = IOOperations.GetReader(Constants.tabspath);
 	  		String strLine;
 	  		Tab curr_tab = null;
 	  		

@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import filelist.ListItem;
 
 import service.Common;
+import service.Constants;
 import service.Errorist;
 
 public class Tray {
@@ -67,7 +68,7 @@ public class Tray {
 	static boolean TrayIconInitialization()
 	{
 		if (SystemTray.isSupported()) {
-			try { image = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(service.Settings.imagepath + "tray.png")); }
+			try { image = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(Constants.imagepath + "tray.png")); }
 			catch (IOException e) { Errorist.printLog(e); }
 			trayIcon = new TrayIcon(image, "(O_o)");
 			

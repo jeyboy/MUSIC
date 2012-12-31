@@ -256,7 +256,7 @@ public class DownloadManager implements DTListener, PeerUpdateListener,
      * @todo Should return an integer representing some error message...
      */
     public synchronized int checkTempFiles() {
-        String saveas = this.torrent.saveTo + (this.nbOfFiles > 1 ? this.torrent.saveAs : "") + File.separator;       
+        String saveas = this.torrent.saveTo + (this.nbOfFiles > 1 ? File.separator + this.torrent.saveAs : "") + File.separator;       
         
         new File(saveas).mkdirs();
         for (int i = 0; i < this.nbOfFiles; i++) {

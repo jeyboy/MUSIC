@@ -1,12 +1,7 @@
 package torrent_window;
 
 import java.io.File;
-import java.util.LinkedHashMap;
-
-import components.MainWnd;
-
 import service.Common;
-import service.Errorist;
 import service.IOOperations;
 import jBittorrentAPI.DownloadManager;
 import jBittorrentAPI.TorrentFile;
