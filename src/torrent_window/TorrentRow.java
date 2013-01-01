@@ -4,11 +4,12 @@ import java.io.File;
 import service.Common;
 import service.IOOperations;
 import jBittorrentAPI.DownloadManager;
+import jBittorrentAPI.InfoObserver;
 import jBittorrentAPI.TorrentFile;
 import jBittorrentAPI.TorrentProcessor;
 import jBittorrentAPI.Utils;
 
-public class TorrentRow extends Thread {
+public class TorrentRow extends Thread implements InfoObserver {
 	public String savePath;
 	public String torrentPath;
 	public boolean seeding = false;
@@ -34,28 +35,31 @@ public class TorrentRow extends Thread {
         torrentName = IOOperations.name_without_extension(torrentFile.getName());
         
         DownloadManager dm = new DownloadManager(tf, Utils.generateID());
+        
         parentModel.AddTorrent(this);
-
+        dm.registerObserver(this);
+        
         dm.startListening(6882, 6889);
         dm.startTrackerUpdate();
 
         if (seeding)
-        	dm.blockUntilCompletion(this);
+        	dm.blockUntilCompletion();
         else
-        	dm.blockUntilDownload(this);
+        	dm.blockUntilDownload();
     	
 
         dm.stopTrackerUpdate();
         dm.closeTempFiles();	
 	}
 	
-	public void UpdateInfo(float progress, float speed) {
-		complete = Common.formatter.format(progress) + " %";
-		downSpeed = "" + speed;
-		parentModel.UpdateRow(this);
-	}
-	
 	public String Name() { return torrentName; }
 	public String Progress() { return complete; }
-	public String DownSpeed() { return downSpeed; }	
+	public String DownSpeed() { return downSpeed; }
+
+	@Override
+	public void notify(float done, float down_speed) {
+		complete = Common.formatter.format(done) + " %";
+		downSpeed = "" + down_speed;
+		parentModel.UpdateRow(this);		
+	}	
 }

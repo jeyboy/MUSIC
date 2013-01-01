@@ -65,7 +65,7 @@ class ExampleDownloadFiles {
                 DownloadManager dm = new DownloadManager(t, Utils.generateID());
                 dm.startListening(6881, 6889);
                 dm.startTrackerUpdate();
-                dm.blockUntilCompletion(null);
+                dm.blockUntilCompletion();
                 dm.stopTrackerUpdate();
                 dm.closeTempFiles();
             } else {

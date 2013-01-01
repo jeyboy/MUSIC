@@ -40,10 +40,6 @@ package jBittorrentAPI;
 import java.util.*;
 import java.io.*;
 import java.net.Socket;
-import java.net.InetAddress;
-
-import service.Errorist;
-import torrent_window.TorrentRow;
 
 /**
  * Object that manages all concurrent downloads. It chooses which piece to request
@@ -84,6 +80,14 @@ public class DownloadManager implements DTListener, PeerUpdateListener,
     private long lastUnchoking = 0;
     private short optimisticUnchoke = 3;
 
+    private ArrayList<InfoObserver> observers = new ArrayList<InfoObserver>();
+    
+    public void registerObserver(InfoObserver observer) { observers.add(observer); }
+    public void notifyListeners() {
+        for(InfoObserver observer : observers)
+            observer.notify(this.getCompleted(), 0);
+    }    
+    
     /**
      * Create a new manager according to the given torrent and using the client id provided
      * @param torrent TorrentFile
@@ -164,14 +168,15 @@ public class DownloadManager implements DTListener, PeerUpdateListener,
      * User have to exit with Ctrl+C, which is not good... Todo is change this
      * method...
      */
-    public void blockUntilCompletion(TorrentRow row) {
+    public void blockUntilCompletion() {
         byte[] b = new byte[0];
 
         while (true) {
             try {
                 synchronized (b) {
                     b.wait(10000);
-                    row.UpdateInfo(this.getCompleted(), 0);
+                    
+                    notifyListeners();
                     this.unchokePeers();
                     b.notifyAll();
                 }
@@ -182,14 +187,14 @@ public class DownloadManager implements DTListener, PeerUpdateListener,
         }
     }
     
-    public void blockUntilDownload(TorrentRow row) {
+    public void blockUntilDownload() {
         byte[] b = new byte[0];
 
         while (true) {
             try {
                 synchronized (b) {
                 	System.out.println("Done : " + this.getCompleted());
-                	row.UpdateInfo(this.getCompleted(), 0);
+                	notifyListeners();
                 	if(this.isComplete()) { break; }
                     b.wait(10000);
                 }

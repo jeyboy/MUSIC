@@ -29,7 +29,7 @@ import components.MainWnd;
 import service.Common;
 import service.Dropper;
 
-public class FileListEvents  implements DragSourceListener, DragGestureListener {
+public class FileListEvents implements DragSourceListener, DragGestureListener {
 	FileList filelist;
 	Dropper dropper;
 	DragSource ds;

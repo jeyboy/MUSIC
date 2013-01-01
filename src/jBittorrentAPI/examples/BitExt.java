@@ -199,7 +199,7 @@ public class BitExt {
                     System.out.println("Listening started...");
                     dm.startTrackerUpdate();
                     System.out.println("Updater started...");
-                    dm.blockUntilCompletion(null);
+                    dm.blockUntilCompletion();
                     dm.stopTrackerUpdate();
                     dm.closeTempFiles();
                 } else {
