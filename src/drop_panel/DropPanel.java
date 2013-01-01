@@ -1,7 +1,6 @@
 package drop_panel;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -31,7 +30,6 @@ public class DropPanel extends JScrollPane {
 	
 	private void commonInit(int axis_orient) {
 		panel_menus = new DropPanelMenus(new DropPanelDialogs(this));
-		
 		setViewportView(content_pane);
 		content_pane.setBackground(Color.black);
 		BoxLayout box = new BoxLayout(content_pane, axis_orient);
@@ -39,10 +37,7 @@ public class DropPanel extends JScrollPane {
 		panel_menus.SetContainerMenu(this);
 		
 		new DropTarget(content_pane, new DropTargetListener() {
-			@Override
 			public void dropActionChanged(DropTargetDragEvent dtde) {}
-			@SuppressWarnings("unchecked")
-			@Override
 			public void drop(DropTargetDropEvent evt) {
 			      int action = evt.getDropAction();
 			      evt.acceptDrop(action);
@@ -60,11 +55,8 @@ public class DropPanel extends JScrollPane {
 			      }
 			      catch (Exception e) { evt.dropComplete(false); Errorist.printLog(e); }
 			}
-			@Override
 			public void dragOver(DropTargetDragEvent dtde) {}
-			@Override
 			public void dragExit(DropTargetEvent dte) {}
-			@Override
 			public void dragEnter(DropTargetDragEvent dtde) {}
 		});		
 	}
@@ -74,8 +66,11 @@ public class DropPanel extends JScrollPane {
 		vertical = true;
 		commonInit(BoxLayout.Y_AXIS);
 		
-		if (angle == 270)
-			setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		if (angle == 270) {
+//			setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+//			setPreferredSize(new Dimension(30, 0));
+//			content_pane.setPreferredSize(new Dimension(50, 0));
+		}
 		
 		this.getVerticalScrollBar().setPreferredSize(new Dimension(10, 0));
 		this.getHorizontalScrollBar().setVisible(false);
