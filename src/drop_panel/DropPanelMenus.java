@@ -9,9 +9,7 @@ import javax.swing.JPopupMenu;
 public class DropPanelMenus {
 	DropPanelDialogs dialogs;
 	
-	public DropPanelMenus(DropPanelDialogs panel_dialogs) {
-		dialogs = panel_dialogs;
-	}
+	public DropPanelMenus(DropPanelDialogs panel_dialogs) { dialogs = panel_dialogs; }
 	
 	public void SetContainerMenu(DropPanel panel) {
 		JPopupMenu menu = new JPopupMenu();
@@ -30,9 +28,7 @@ public class DropPanelMenus {
 	JMenuItem AddMenuItem(String text) {
 	    JMenuItem m = new JMenuItem(text);
 	    m.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		dialogs.addDropItemDialog();
-	        }
+	    	public void actionPerformed(ActionEvent e) { dialogs.addDropItemDialog(); }
 	    });
 	    return m;
 	}
@@ -40,9 +36,7 @@ public class DropPanelMenus {
 	JMenuItem DeleteMenuItem(final DropPanelItem item, String text) {
 	    JMenuItem m = new JMenuItem(text);
 	    m.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		dialogs.container.DropItem(item);
-	        }
+	    	public void actionPerformed(ActionEvent e) { dialogs.container.DropItem(item); }
 	    });
 	    return m;
 	}
@@ -50,9 +44,7 @@ public class DropPanelMenus {
 	JMenuItem ModifyMenuItem(final DropPanelItem item, String text) {
 	    JMenuItem m = new JMenuItem(text);
 	    m.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		dialogs.modDropItemDialog(item);
-	        }
+	    	public void actionPerformed(ActionEvent e) { dialogs.modDropItemDialog(item); }
 	    });
 	    return m;
 	}	

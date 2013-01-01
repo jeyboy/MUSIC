@@ -42,7 +42,6 @@ public class DropPanelItem extends JButton implements DropTargetListener {
 		setPath(path);
 		super.setText(text);
 		addActionListener(new ActionListener() {          
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				try { IOOperations.open(folder); } 
 				catch (IOException ee) { Errorist.printLog(ee); }
@@ -50,16 +49,10 @@ public class DropPanelItem extends JButton implements DropTargetListener {
 		});
 	}
 	
-	@Override
 	public void dragEnter(DropTargetDragEvent dtde) {}
-	@Override
 	public void dragOver(DropTargetDragEvent dtde) 	{}
-	@Override
 	public void dropActionChanged(DropTargetDragEvent dtde) {}
-	@Override
 	public void dragExit(DropTargetEvent dte) {}
-	@SuppressWarnings("unchecked")
-	@Override
 	public void drop(DropTargetDropEvent evt) {
       int action = evt.getDropAction();
       evt.acceptDrop(action);
@@ -75,7 +68,6 @@ public class DropPanelItem extends JButton implements DropTargetListener {
           }
           evt.dropComplete(true);
       }
-      catch (Exception e) { evt.dropComplete(false); Errorist.printLog(e); }
-      finally {  }		
+      catch (Exception e) { evt.dropComplete(false); Errorist.printLog(e); }	
 	}
 }

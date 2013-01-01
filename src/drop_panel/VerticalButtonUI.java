@@ -27,11 +27,8 @@ public class VerticalButtonUI extends BasicButtonUI {
         Dimension dim = super.getPreferredSize(c);
         return new Dimension( dim.height, dim.width );
     }
- 
-    private static Rectangle paintIconR = new Rectangle();
-    private static Rectangle paintTextR = new Rectangle();
-    private static Rectangle paintViewR = new Rectangle();
-    private static Insets paintViewInsets = new Insets(0, 0, 0, 0);
+
+    private static Insets paintViewInsets;
  
     @Override
     public void paint(Graphics g, JComponent c) {
@@ -39,52 +36,35 @@ public class VerticalButtonUI extends BasicButtonUI {
         String text = button.getText();
         Icon icon = (button.isEnabled()) ? button.getIcon() : button.getDisabledIcon();
  
-        if ((icon == null) && (text == null)) {
-            return;
-        }
- 
-        FontMetrics fm = g.getFontMetrics();
-        paintViewInsets = c.getInsets(paintViewInsets);
- 
-        paintViewR.x = paintViewInsets.left;
-        paintViewR.y = paintViewInsets.top;
- 
-        // Use inverted height &amp; width
-        paintViewR.height = c.getWidth() - (paintViewInsets.left + paintViewInsets.right);
-        paintViewR.width = c.getHeight() - (paintViewInsets.top + paintViewInsets.bottom);
- 
-        paintIconR.x = paintIconR.y = paintIconR.width = paintIconR.height = 0;
-        paintTextR.x = paintTextR.y = paintTextR.width = paintTextR.height = 0;
- 
+        if ((icon == null) && (text == null)) return;
+  
         Graphics2D g2 = (Graphics2D) g;
         AffineTransform tr = g2.getTransform();
  
-        if (angle == 90) {
-            g2.rotate( Math.PI / 2 );
-            g2.translate( 0, - c.getWidth() );
-            paintViewR.x = c.getHeight()/2 - (int)fm.getStringBounds(text, g).getWidth()/2;
-            paintViewR.y = c.getWidth()/2 - (int)fm.getStringBounds(text, g).getHeight()/2;
-        }
-        else if (angle == 270) {
-            g2.rotate( - Math.PI / 2 );
-            g2.translate( - c.getHeight(), 0 );
-            paintViewR.x = c.getHeight()/2 - (int)fm.getStringBounds(text, g).getWidth()/2;
-            paintViewR.y = c.getWidth()/2 - (int)fm.getStringBounds(text, g).getHeight()/2;
-        }
- 
-        if (icon != null) {
-            icon.paintIcon(c, g, paintIconR.x, paintIconR.y);
-        }
+        if (icon != null)
+            icon.paintIcon(c, g, 0, 0);
  
         if (text != null) {
-            int textX = paintTextR.x;
-            int textY = paintTextR.y + fm.getAscent();
- 
-            if (button.isEnabled()) {
-                paintText(g,c,new Rectangle(paintViewR.x,paintViewR.y,textX,textY),text);
-            } else {
-                paintText(g,c,new Rectangle(paintViewR.x,paintViewR.y,textX,textY),text);
+        	FontMetrics fm = g.getFontMetrics();
+        	
+            if (angle == 90) {
+                g2.rotate( Math.PI / 2 );
+                g2.translate( 0, - c.getWidth() );
             }
+            else if (angle == 270) {
+                g2.rotate( - Math.PI / 2 );
+                g2.translate( - c.getHeight(), 0 );
+            }        	
+            
+            paintViewInsets = c.getInsets(paintViewInsets);
+            Rectangle paintViewR = new Rectangle(
+            		c.getHeight()/2 - (int)fm.getStringBounds(text, g).getWidth()/2,
+            		c.getWidth()/2 - (int)fm.getStringBounds(text, g).getHeight()/2,
+            		c.getHeight() - (paintViewInsets.top + paintViewInsets.bottom),
+            		c.getWidth() - (paintViewInsets.left + paintViewInsets.right)
+            );            
+        	
+            paintText(g, c, new Rectangle(paintViewR.x, paintViewR.y, 0, fm.getAscent()), text);
         }
  
         g2.setTransform( tr );
