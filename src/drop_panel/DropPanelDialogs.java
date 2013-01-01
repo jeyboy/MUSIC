@@ -8,64 +8,42 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import service.Utils;
+
 public class DropPanelDialogs {
 	private JFileChooser fileChooser = new JFileChooser(".");
 	public DropPanel container;
 	
-	public DropPanelDialogs(DropPanel parent) { 
-		container = parent;
-	}
-	
-	public void addDropItemDialog() {
-		JTextField title = new JTextField();
-		final JLabel pathLabel = new JLabel("Path not set");
+	public DropPanelDialogs(DropPanel parent) { container = parent; }
+
+	public String[] ShowDialog(String dialog_title, String item_title, String item_path) {
+		JTextField title = new JTextField(item_title);
+		final JLabel pathLabel = new JLabel(item_path);
 		JButton folderDialogButton = new JButton("Choose folder");
 		folderDialogButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 			    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			    if (fileChooser.showDialog(container, "Choose") == JFileChooser.APPROVE_OPTION) {
+			    if (fileChooser.showDialog(container, "Choose") == JFileChooser.APPROVE_OPTION)
 			    	pathLabel.setText(fileChooser.getSelectedFile().getAbsolutePath());
-			    }
 			}
 		});
-	    Object complexMsg[] = { "Create pane with title", title, "and drop path", pathLabel, folderDialogButton };		
-		int option = JOptionPane.showOptionDialog(  
-				container,  
-				complexMsg,  
-				"Creating drop elem", JOptionPane.OK_CANCEL_OPTION,  
-				JOptionPane.PLAIN_MESSAGE, null, null,  
-				null 
-        );  
-		if( option == JOptionPane.OK_OPTION ) {
-			container.AddItem(title.getText(), pathLabel.getText());
-		}
+	    Object complexMsg[] = { dialog_title, title, "and drop path", pathLabel, folderDialogButton };		
+		if( Utils.showDialog(container, "Modify drop elem", complexMsg) == JOptionPane.OK_OPTION )
+			return new String[] {title.getText(), pathLabel.getText()};
+		else return new String[0];
+	}	
+	
+	public void addDropItemDialog() {
+		String [] res = ShowDialog("Create pane with title", "", "Path not set");
+		if (res.length != 0)
+			container.AddItem(res[0], res[1]);
 	}
 	
 	public void modDropItemDialog(DropPanelItem item) {
-		JTextField title = new JTextField(item.getText());
-		final JLabel pathLabel = new JLabel(item.folder.getAbsolutePath());
-		JButton folderDialogButton = new JButton("Choose folder");
-		folderDialogButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			    if (fileChooser.showDialog(container, "Choose") == JFileChooser.APPROVE_OPTION) {
-			    	pathLabel.setText(fileChooser.getSelectedFile().getAbsolutePath());
-			    }
-			}
-		});
-	    Object complexMsg[] = { "Change title to", title, "and drop path", pathLabel, folderDialogButton };		
-		int option = JOptionPane.showOptionDialog(  
-				container,  
-				complexMsg,  
-				"Modify drop elem", JOptionPane.OK_CANCEL_OPTION,  
-				JOptionPane.PLAIN_MESSAGE, null, null,  
-				null 
-        );  
-		if( option == JOptionPane.OK_OPTION ) {
-			item.setPath(pathLabel.getText());
-			item.setText(title.getText()); 
+		String [] res = ShowDialog("Change title to", item.getText(), item.folder.getAbsolutePath());
+		if (res.length != 0) {
+			item.setText(res[0]);
+			item.setPath(res[1]);
 		}
 	}	
 }
