@@ -34,6 +34,7 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
 	Dropper dropper;
 	DragSource ds;
 	List<ListItem> droped_items = new Vector<ListItem>();
+	boolean drop_in = false;
 	
 	public FileListEvents(FileList flist) { 
 		filelist = flist;
@@ -43,7 +44,7 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
 	void Init() {
         dropper = new Dropper(filelist, new Dropper.Listener() {
         	public void filesDropped(Dropper.Event ev) {
-        		if (!(boolean)ev.getSource())
+        		if (!(drop_in = (boolean)ev.getSource()))
         			Common._drop_initer.ProceedDrop(filelist, ev.getFiles());
         	}
         });
@@ -150,11 +151,12 @@ public class FileListEvents  implements DragSourceListener, DragGestureListener 
 	public void dragExit(DragSourceEvent dse) {}
 	@Override
 	public void dragDropEnd(DragSourceDropEvent dsde) {
-	    if (dsde.getDropSuccess()) {
+	    if (dsde.getDropSuccess() && !drop_in) {
 	        for(ListItem li : droped_items)
 	        	li.SetStatusLiked();
 	        MainWnd.wnd.repaint();
 	    }
 	    droped_items.clear();
+	    drop_in = false;
 	} 	
 }
