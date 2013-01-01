@@ -4,8 +4,7 @@ import javax.swing.JFrame;
 
 public class TWindow {
 	public static JFrame create(String title) {
-		JFrame new_frame = new JFrame(title);
-		return new_frame;
+		return new JFrame(title);
 	}	
 	
 	public static JFrame create(String title, int width, int height) {

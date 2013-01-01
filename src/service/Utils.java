@@ -1,5 +1,6 @@
 package service;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class Utils {
 	
@@ -57,6 +59,14 @@ public class Utils {
 		
 	    return popup;   	
     }
+    
+	public static int showDialog(Component parent, String title, Object ... elems) {
+		return JOptionPane.showOptionDialog(  
+				parent, elems,  
+				title, JOptionPane.OK_CANCEL_OPTION,  
+				JOptionPane.PLAIN_MESSAGE, null, null, null 
+        );		
+	}    
     
     //////////////////////////////////////////////////    
     

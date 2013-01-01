@@ -5,13 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,9 +18,6 @@ import javax.swing.JTextField;
 import service.Common;
 import service.Constants; 
 import service.FileDialogFilter;
-import service.Errorist;
-import service.IOOperations;
-import service.MediaInfo;
 import service.Utils;
 import service.ActionBind;
 import tabber.Tab;
@@ -63,14 +53,8 @@ public class MenuBar extends JMenuBar {
 					public void actionPerformed(ActionEvent e) {
 						prepareGUI();
 					    Object complexMsg[] = { "Create tab with title", title, new JCheckBox[] {delete_with_file, delete_empty_folders, interactive, remote_source} };		
-						int option = JOptionPane.showOptionDialog(  
-								MenuBar.this,  
-								complexMsg,  
-								"Creating drop elem", JOptionPane.OK_CANCEL_OPTION,  
-								JOptionPane.PLAIN_MESSAGE, null, null,  
-								null 
-				        );
-						if( option == JOptionPane.OK_OPTION ) Common.tabber.AddTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected()));							
+						if( Utils.showDialog(MenuBar.this, "Creating drop elem", complexMsg) == JOptionPane.OK_OPTION )
+							Common.tabber.AddTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected()));							
 				    }
 				}),
 				new ActionBind("settings", new ActionListener() {
@@ -79,14 +63,7 @@ public class MenuBar extends JMenuBar {
 						if (tab == null) return; 
 						prepareGUI(tab.GetTitle(), tab.options.delete_files, tab.options.interactive, tab.options.delete_empty_folders, tab.options.remote_source);
 					    Object complexMsg[] = { "Modify tab title", title, delete_with_file, delete_empty_folders, interactive, remote_source };		
-						int option = JOptionPane.showOptionDialog(  
-								MenuBar.this,  
-								complexMsg,  
-								"Modify drop elem", JOptionPane.OK_CANCEL_OPTION,  
-								JOptionPane.PLAIN_MESSAGE, null, null,  
-								null 
-				        );
-						if( option == JOptionPane.OK_OPTION ) {
+						if( Utils.showDialog(MenuBar.this, "Modify drop elem", complexMsg) == JOptionPane.OK_OPTION ) {
 							if (title.getText().trim().length() > 0)
 								tab.SetTitle(title.getText());
 							tab.options = new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected());
@@ -119,8 +96,8 @@ public class MenuBar extends JMenuBar {
 					    fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 					    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION) {
 					    	if (fileChooser.getSelectedFile().isDirectory())
-					    		ParseLibrary(fileChooser.getSelectedFile());	
-					    	else ParseBase(fileChooser.getSelectedFile().getAbsolutePath());
+					    		Common.library.ParseLibrary(fileChooser.getSelectedFile());	
+					    	else Common.library.ParseBase(fileChooser.getSelectedFile().getAbsolutePath());
 					    }
 					}
 				}),
@@ -134,9 +111,8 @@ public class MenuBar extends JMenuBar {
 							public void actionPerformed(ActionEvent e) {
 								fileChooser.setFileFilter(dialog_filter);
 							    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-							    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION) {
+							    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION)
 							    	pathLabel.setText(fileChooser.getSelectedFile().getAbsolutePath());
-							    }
 							}
 						});
 						
@@ -148,25 +124,14 @@ public class MenuBar extends JMenuBar {
 							public void actionPerformed(ActionEvent e) {
 								fileChooser.removeChoosableFileFilter(dialog_filter); 
 							    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-							    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION) {
+							    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION)
 							    	savePathLabel.setText(fileChooser.getSelectedFile().getAbsolutePath());
-							    }
 							}
 						});										
 						
 					    Object complexMsg[] = { "Choose torrent file", new Object[] {pathLabel, torrentDialogButton}, "Choose save path", new Object[] {savePathLabel, savePathDialogButton} };		
-						int option = JOptionPane.showOptionDialog(  
-								MenuBar.this,  
-								complexMsg,  
-								"Start download", JOptionPane.OK_CANCEL_OPTION,  
-								JOptionPane.PLAIN_MESSAGE, null, null,  
-								null 
-				        );
-						
-						if( option == JOptionPane.OK_OPTION ) {
-							Common.torrent_window.AddTorrent(pathLabel.getText(), savePathLabel.getText());
-						}						
-						
+						if( Utils.showDialog(MenuBar.this, "Start download", complexMsg) == JOptionPane.OK_OPTION )
+							Common.torrent_window.AddTorrent(pathLabel.getText(), savePathLabel.getText());					
 						
 						Common.torrent_window.Show();
 				    }
@@ -184,79 +149,20 @@ public class MenuBar extends JMenuBar {
 			item.setBackground(Color.black);
 			item.addActionListener(actions[loop1].action);
 			item.addMouseListener(new MouseListener() {
-				@Override
 				public void mouseClicked(MouseEvent arg0) {}
-				@Override
 				public void mouseEntered(MouseEvent arg0) {
 					default_item_color = item.getBackground();
 					item.setBackground(Color.WHITE);
 				}
-				@Override
 				public void mouseExited(MouseEvent arg0) {
 					item.setBackground(default_item_color);
 				}
-				@Override
 				public void mousePressed(MouseEvent arg0) {}
-				@Override
 				public void mouseReleased(MouseEvent arg0) {}
 			});
 			this.add(item);
 		}
 		this.setVisible(true);
-	}
-	
-	void ParseBase(String path) {
-		try {
-			BufferedReader reader = IOOperations.GetReader(path);
-	  		String strLine, ext;
-	  		
-	  		try {
-				while ((strLine = reader.readLine()) != null) {
-					if (strLine.length() == 0) continue;
-					boolean flag = reader.readLine().charAt(0) == '1';
-					
-					strLine = strLine.toLowerCase();
-					ext = IOOperations.extension(strLine);
-					
-					if (ext.length() != 0)
-						strLine = strLine.substring(0, strLine.length() - (ext.length() + 1));				
-					
-					String temp = MediaInfo.SitesFilter(strLine);  
-					temp = MediaInfo.SpacesFilter(MediaInfo.ForwardNumberPreFilter(temp));
-					Common.library.Set(temp, flag);
-					temp = MediaInfo.ForwardNumberFilter(temp);
-					Common.library.Set(temp, flag);					
-				}
-				reader.close();
-			}
-	  		catch (IOException e) { Errorist.printLog(e); }
-		} 
-		catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
-	}
-	void ParseLibrary(File path) {
-		int proceed_count = 0;
-		Collection<File> files = IOOperations.ScanDirectoriesF(new File [] {path});
-		for(File f : files) {
-			try {
-				BufferedReader reader = IOOperations.GetReader(f.getAbsolutePath());
-		  		String strLine;
-		  		
-		  		try {
-					while ((strLine = reader.readLine()) != null) {
-						if (strLine.length() == 0) continue;
-						
-						Common.library.Set(strLine.substring(1), strLine.charAt(0) == '1');
-						proceed_count++;
-					}
-					reader.close();
-				}
-		  		catch (IOException e) { Errorist.printLog(e); }
-			} 
-			catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
-		}
-		
-		Errorist.printMessage("Library Parse", "Proceed " + proceed_count + " items");
-		MainWnd.SetTitle("Proceed " + proceed_count + " items");
 	}
 	
 	public static void SetPlay() { play_item.setIcon(play_item.getPressedIcon()); }

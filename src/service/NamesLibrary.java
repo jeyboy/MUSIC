@@ -3,7 +3,10 @@ package service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -165,6 +168,62 @@ public class NamesLibrary {
 					Errorist.printMessage("Library::ProceedItem", item.title + " - Not Find");
 				}
 	}
+	
+	///////////////////////////////////////////////////////////////////////////////////
+	
+	public void ParseBase(String path) {
+		try {
+			BufferedReader reader = IOOperations.GetReader(path);
+	  		String strLine, ext;
+	  		
+	  		try {
+				while ((strLine = reader.readLine()) != null) {
+					if (strLine.length() == 0) continue;
+					boolean flag = reader.readLine().charAt(0) == '1';
+					
+					strLine = strLine.toLowerCase();
+					ext = IOOperations.extension(strLine);
+					
+					if (ext.length() != 0)
+						strLine = strLine.substring(0, strLine.length() - (ext.length() + 1));				
+					
+					String temp = MediaInfo.SitesFilter(strLine);  
+					temp = MediaInfo.SpacesFilter(MediaInfo.ForwardNumberPreFilter(temp));
+					Set(temp, flag);
+					temp = MediaInfo.ForwardNumberFilter(temp);
+					Set(temp, flag);					
+				}
+				reader.close();
+			}
+	  		catch (IOException e) { Errorist.printLog(e); }
+		} 
+		catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
+	}
+	public void ParseLibrary(File path) {
+		int proceed_count = 0;
+		Collection<File> files = IOOperations.ScanDirectoriesF(new File [] {path});
+		for(File f : files) {
+			try {
+				BufferedReader reader = IOOperations.GetReader(f.getAbsolutePath());
+		  		String strLine;
+		  		
+		  		try {
+					while ((strLine = reader.readLine()) != null) {
+						if (strLine.length() == 0) continue;
+						
+						Set(strLine.substring(1), strLine.charAt(0) == '1');
+						proceed_count++;
+					}
+					reader.close();
+				}
+		  		catch (IOException e) { Errorist.printLog(e); }
+			} 
+			catch (UnsupportedEncodingException | FileNotFoundException e) { Errorist.printLog(e); }
+		}
+		
+		Errorist.printMessage("Library Parse", "Proceed " + proceed_count + " items");
+		MainWnd.SetTitle("Proceed " + proceed_count + " items");
+	}	
 	
 	class LibraryCatalog {
 		boolean updated = false;
