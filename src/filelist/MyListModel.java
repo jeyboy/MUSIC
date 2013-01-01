@@ -9,21 +9,10 @@ public class MyListModel<E> extends DefaultListModel<E> {
 	private int updatecount = 10;
 	
 	public MyListModel(final FileList list) { addListDataListener(new ListDataListener() {
-
-		@Override
-		public void intervalAdded(ListDataEvent e) {
-			list.parent.UpdateCounter();
-		}
-
-		@Override
-		public void intervalRemoved(ListDataEvent e) {
-			list.parent.UpdateCounter();
-		}
-
-		@Override
-		public void contentsChanged(ListDataEvent e) {
-			
-		}}); }
+		public void intervalAdded(ListDataEvent e) { list.parent.UpdateCounter(); }
+		public void intervalRemoved(ListDataEvent e) { list.parent.UpdateCounter();	}
+		public void contentsChanged(ListDataEvent e) {}}); 
+	}
 	
 	public void AddRangeOfElements(E [] items) {
 		int interval = 0;

@@ -15,37 +15,28 @@ import components.MainWnd;
 import service.Common;
 import tabber.Tab;
 
-
-@SuppressWarnings("rawtypes")
-public class FileList extends JList {
+public class FileList extends JList<ListItem> {
 	private static final long serialVersionUID = 2216859386306446869L;
 	Tab parent;
-	ListItem played = null;
+	private ListItem played = null;
 	
-    //Alter = Vector, ArrayList
 	public MyListModel<ListItem> model = new MyListModel<ListItem>(this);
 	private IconListRenderer listrender = new IconListRenderer();
 	
 	public FileList(Tab parent_tab) {
 		parent = parent_tab;
-		CommonInitPart();
-		setBackground(Color.black);
-	}
-    public FileList(Tab parent_tab, ListItem [] items) {
-    	parent = parent_tab;
-    	CommonInitPart();
-    	AddElems(items);
-    }	
-	
-	@SuppressWarnings("unchecked")
-	private void CommonInitPart() {
-		super.setModel(model);
-    	super.setCellRenderer(listrender);
-    	super.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		setModel(model);
+    	setCellRenderer(listrender);
+    	setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     	new FileListEvents(this);
     	setComponentPopupMenu(new ListPopUp(this));
     	setSelectionForeground(Color.white);
+		setBackground(Color.black);
 	}
+    public FileList(Tab parent_tab, ListItem [] items) {
+    	this(parent_tab);
+    	AddElems(items);
+    }	
 	
 	public void SetPlayed(ListItem item) 
 	{
@@ -61,6 +52,10 @@ public class FileList extends JList {
 	}
 	public ListItem GetPlayed() { return played; }
 	public int GetPlayedIndex() { return model.indexOf(played); }
+	public ListItem getItemFromCursor() {
+		int index = locationToIndex(getMousePosition());
+		return index < 0 ? null : model.get(index); 
+	}
 
 	private void ProceedElem(File elem) { ProceedElem(new ListItem(elem)); }
     private void ProceedElem(ListItem elem) {
@@ -102,82 +97,6 @@ public class FileList extends JList {
       return null;
     }	
 
-
-
-//interactive search
-//import javax.swing.DefaultListModel;
-//import javax.swing.JList;
-//import javax.swing.event.DocumentEvent;
-//import javax.swing.event.DocumentListener;
-//import javax.swing.text.BadLocationException;
-// 
-//public class SolarSystemSearchField extends JList implements DocumentListener {
-// 
-//    private SolarSystemCollection m_collection;
-//    private static DefaultListModel m_listModel = new DefaultListModel();
-//     
-//    /**
-//     * 
-//     */
-//    private static final long serialVersionUID = 1L;
-//     
-//    SolarSystemSearchField(SolarSystemCollection collection) {
-//        super(m_listModel);
-//         
-//        m_collection = collection;
-//         
-//        for (int i=0; i<m_collection.GetSize(); ++i)
-//            m_listModel.addElement(m_collection.systems.get(i));
-//    }
-//     
-//    public SolarSystem getTopmost() {
-//        if (m_listModel.size() > 0)
-//            return (SolarSystem) m_listModel.get(0);
-//        else
-//            return null;
-//    }
-// 
-//    @Override
-//    public void changedUpdate(DocumentEvent arg0) {
-//        searchForHit(getSearchString(arg0));
-//    }
-// 
-//    @Override
-//    public void insertUpdate(DocumentEvent arg0) {
-//        searchForHit(getSearchString(arg0));
-//    }
-// 
-//    @Override
-//    public void removeUpdate(DocumentEvent arg0) {
-//        searchForHit(getSearchString(arg0));
-//    }
-//     
-//    private String getSearchString(DocumentEvent arg0) {
-//        try {
-//            return arg0.getDocument().getText(0, arg0.getDocument().getLength());
-//        } catch (BadLocationException e) {
-//    		  Errorist.printLog(e);
-//            return "";
-//        }
-//    }
-//     
-//    private void searchForHit(String searchStr) {
-//        m_listModel.clear();
-//        m_listModel.ensureCapacity(m_collection.GetSize());
-// 
-//        for (int i=0; i<m_collection.GetSize(); ++i) {
-//            SolarSystem s = m_collection.systems.get(i);
-//            if (s.name.toLowerCase().contains(searchStr.toLowerCase()))
-//                m_listModel.addElement(s);
-//        }
-//        //if (m_listModel.getSize() > 0)
-//        //  setSelectedIndex(0);
-//    }
-// 
-//}
-
-
-
 	/// Helper methods
 	
 	private int CheckRange(int index) {
@@ -209,3 +128,76 @@ public class FileList extends JList {
 	
 	public void SetStatus(String status) {parent.SetStatus(status);}
 }
+
+
+//interactive search
+//import javax.swing.DefaultListModel;
+//import javax.swing.JList;
+//import javax.swing.event.DocumentEvent;
+//import javax.swing.event.DocumentListener;
+//import javax.swing.text.BadLocationException;
+//
+//public class SolarSystemSearchField extends JList implements DocumentListener {
+//
+//  private SolarSystemCollection m_collection;
+//  private static DefaultListModel m_listModel = new DefaultListModel();
+//   
+//  /**
+//   * 
+//   */
+//  private static final long serialVersionUID = 1L;
+//   
+//  SolarSystemSearchField(SolarSystemCollection collection) {
+//      super(m_listModel);
+//       
+//      m_collection = collection;
+//       
+//      for (int i=0; i<m_collection.GetSize(); ++i)
+//          m_listModel.addElement(m_collection.systems.get(i));
+//  }
+//   
+//  public SolarSystem getTopmost() {
+//      if (m_listModel.size() > 0)
+//          return (SolarSystem) m_listModel.get(0);
+//      else
+//          return null;
+//  }
+//
+//  @Override
+//  public void changedUpdate(DocumentEvent arg0) {
+//      searchForHit(getSearchString(arg0));
+//  }
+//
+//  @Override
+//  public void insertUpdate(DocumentEvent arg0) {
+//      searchForHit(getSearchString(arg0));
+//  }
+//
+//  @Override
+//  public void removeUpdate(DocumentEvent arg0) {
+//      searchForHit(getSearchString(arg0));
+//  }
+//   
+//  private String getSearchString(DocumentEvent arg0) {
+//      try {
+//          return arg0.getDocument().getText(0, arg0.getDocument().getLength());
+//      } catch (BadLocationException e) {
+//  		  Errorist.printLog(e);
+//          return "";
+//      }
+//  }
+//   
+//  private void searchForHit(String searchStr) {
+//      m_listModel.clear();
+//      m_listModel.ensureCapacity(m_collection.GetSize());
+//
+//      for (int i=0; i<m_collection.GetSize(); ++i) {
+//          SolarSystem s = m_collection.systems.get(i);
+//          if (s.name.toLowerCase().contains(searchStr.toLowerCase()))
+//              m_listModel.addElement(s);
+//      }
+//      //if (m_listModel.getSize() > 0)
+//      //  setSelectedIndex(0);
+//  }
+//
+//}

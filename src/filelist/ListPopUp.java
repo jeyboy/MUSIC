@@ -19,9 +19,13 @@ public class ListPopUp extends JPopupMenu {
 	    JMenuItem m = new JMenuItem(text);
 	    m.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		Object o = list.getSelectedValue();
-	    		if (o != null)
-	    			((ListItem)o).OpenFolder();
+	    		ListItem i = list.getItemFromCursor();
+	    		if (i == null) {
+	    			Object o = list.getSelectedValue();
+	    			if (o != null)
+	    				((ListItem)list.getSelectedValue()).OpenFolder();
+	    		}
+	    		else i.OpenFolder();
 	        }
 	    });
 	    return m;
