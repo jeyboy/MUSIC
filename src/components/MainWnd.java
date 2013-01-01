@@ -27,7 +27,13 @@ public class MainWnd {
 	static public Container wnd;
 	static public GridBagLayout gridbag = new GridBagLayout();
 	static public void init(Container window) 	{ wnd = window; Common.Initialize(); initializeWnd(); }
-	static public void Toggle() 				{ wnd.setVisible(!wnd.isVisible());	}
+	
+	static void SetState(boolean show) {
+		((JFrame)wnd).setState((show ? JFrame.NORMAL : JFrame.ICONIFIED));	
+		wnd.setVisible(show);		
+	}
+	static public void Show() 					{ SetState(true); }
+	static public void Toggle() 				{ SetState(!wnd.isVisible()); }
 	
 	static private void initLayout() {
         GridBagConstraints c = new GridBagConstraints();
@@ -37,37 +43,36 @@ public class MainWnd {
         c.ipadx = 15;
         
 		c.gridheight = 5; c.gridwidth = 1; c.gridx = 0; c.gridy = 0;
-		gridbag.setConstraints(Common.drop_manager.drop_left, c);	wnd.add(Common.drop_manager.drop_left);
+		gridbag.setConstraints(wnd.add(Common.drop_manager.drop_left), c);
         
 		c.gridheight = 5; c.gridwidth = 1; c.gridy = 0; c.gridx = 4;
-        gridbag.setConstraints(Common.drop_manager.drop_right, c);	wnd.add(Common.drop_manager.drop_right);
+        gridbag.setConstraints(wnd.add(Common.drop_manager.drop_right), c);
         
         c.ipady = 15;
         
 		c.gridheight = 1; c.gridwidth = 3; c.gridy = 0; c.gridx = 1;
-        gridbag.setConstraints(Common.drop_manager.drop_top, c);	wnd.add(Common.drop_manager.drop_top);
+        gridbag.setConstraints(wnd.add(Common.drop_manager.drop_top), c);
         
 		c.gridheight = 1; c.gridwidth = 3; c.gridy = 4; c.gridx = 1;
-        gridbag.setConstraints(Common.drop_manager.drop_bottom, c);	wnd.add(Common.drop_manager.drop_bottom);
+        gridbag.setConstraints(wnd.add(Common.drop_manager.drop_bottom), c);
         
         c.ipady = c.ipadx = 0;
       
 		c.gridheight = 3; c.gridwidth = 1; c.gridy = 1; c.gridx = 1; 
-		gridbag.setConstraints(Common.drop_manager.arrow_left, c); wnd.add(Common.drop_manager.arrow_left);
+		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_left), c);
         
 		c.gridheight = 1; c.gridwidth = 1; c.gridy = 1; c.gridx = 2;
-		gridbag.setConstraints(Common.drop_manager.arrow_top, c); wnd.add(Common.drop_manager.arrow_top);                
+		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_top), c);                
         
 		c.gridheight = 1; c.gridwidth = 1; c.gridy = 3; c.gridx = 2;
-		gridbag.setConstraints(Common.drop_manager.arrow_bottom, c); wnd.add(Common.drop_manager.arrow_bottom);
+		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_bottom), c);
         
 		c.gridheight = 3; c.gridwidth = 1; c.gridy = 1; c.gridx = 3;
-		gridbag.setConstraints(Common.drop_manager.arrow_right, c); wnd.add(Common.drop_manager.arrow_right);
+		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_right), c); 
         
         
-		
 		c.gridheight = 1; c.gridwidth = 1; c.gridy = 2; c.gridx = 2; c.weightx = c.weighty = 1;
-        gridbag.setConstraints(Common.tabber, c); wnd.add(Common.tabber);
+        gridbag.setConstraints(wnd.add(Common.tabber), c);
 	}
 	
 	static private void Load() {

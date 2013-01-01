@@ -35,7 +35,7 @@ public class Tray {
 		trayIcon.addMouseMotionListener(new MouseMotionListener() {
 	        public void mouseDragged(MouseEvent e) 	{}
 	        public void mouseMoved(MouseEvent e) 	{
-	        	MainWnd.wnd.setVisible(true);	        	
+	        	MainWnd.Show();	        	
 	        	
 //	        	ListItem temp_li = Common.tabber.GetCurrentItem();
 //	        	String temp = temp_li == null ? "None" : temp_li.title;
