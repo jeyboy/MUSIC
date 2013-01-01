@@ -669,8 +669,6 @@ public class Dropper
             public abstract Object getObject();
         }   // end inner interface Fetcher
 
-
-
     }   // end class TransferableObject
     
 }   // end class FileDrop

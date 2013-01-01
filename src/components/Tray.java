@@ -1,97 +1,63 @@
 package components;
 
 import java.awt.AWTException;
-import java.awt.Image;
-import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import filelist.ListItem;
-
-import service.Common;
-import service.Constants;
+import service.ActionBind;
 import service.Errorist;
+import service.Utils;
 
 public class Tray {
-	static Image image; 
 	static TrayIcon trayIcon;
 	
-	static MouseListener mouse_listens = 
-		new MouseListener() {
-	        public void mouseClicked(MouseEvent e) 	{ MainWnd.wnd.setVisible(true); }
-	        public void mouseEntered(MouseEvent e) 	{}
-	        public void mouseExited(MouseEvent e) 	{}
-	        public void mousePressed(MouseEvent e)  {}
-	        public void mouseReleased(MouseEvent e) {}
-	   };
-	static MouseMotionListener mouse_motion_listens = 	      
-	    new MouseMotionListener() {
+	static PopupMenu BuildMenu() {
+		return Utils.BuildMenu(
+			new ActionBind("Toggle window", new ActionListener() {
+		      public void actionPerformed(ActionEvent e) { MainWnd.Toggle(); }
+		    }),
+			new ActionBind("Exit", new ActionListener() {
+			  public void actionPerformed(ActionEvent e) { System.exit(0); }
+			})		    
+		);
+	}
+	
+	static void TrayIconInitialization()
+	{
+		trayIcon = new TrayIcon(Utils.GetImage("tray.png"), "(O_o)");
+		
+		trayIcon.setImageAutoSize(true);
+		trayIcon.addMouseMotionListener(new MouseMotionListener() {
 	        public void mouseDragged(MouseEvent e) 	{}
 	        public void mouseMoved(MouseEvent e) 	{
-	        	ListItem temp_li = Common.tabber.GetCurrentItem();
-	        	String temp = temp_li == null ? "None" : temp_li.title;
+	        	MainWnd.wnd.setVisible(true);	        	
 	        	
-	        	trayIcon.setToolTip(temp);
+//	        	ListItem temp_li = Common.tabber.GetCurrentItem();
+//	        	String temp = temp_li == null ? "None" : temp_li.title;
+//	        	
+//	        	trayIcon.setToolTip(temp);
 //	        	trayIcon.displayMessage("Now active...", temp, TrayIcon.MessageType.INFO);	        	
 	        }
-	    };
-	
-	static PopupMenu BuildMenu() {
-		PopupMenu popup = new PopupMenu();
-		
-	    MenuItem messageItem = new MenuItem("Toggle window");
-	    messageItem.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent e) {
-	    	  MainWnd.Toggle();
-	      }
 	    });
-	    popup.add(messageItem);		
-		
-		MenuItem miExit = new MenuItem("Exit");
-		ActionListener al = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-		    }
-		};
-		miExit.addActionListener(al);
-		popup.add(miExit);
-	    return popup;
-	}   
-	static boolean TrayIconInitialization()
-	{
-		if (SystemTray.isSupported()) {
-			try { image = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(Constants.imagepath + "tray.png")); }
-			catch (IOException e) { Errorist.printLog(e); }
-			trayIcon = new TrayIcon(image, "(O_o)");
-			
-			trayIcon.setImageAutoSize(true);
-			trayIcon.addMouseListener(mouse_listens);
-			trayIcon.addMouseMotionListener(mouse_motion_listens);
-			trayIcon.setPopupMenu(BuildMenu());
-		}
-		return SystemTray.isSupported(); 
+		trayIcon.setPopupMenu(BuildMenu());
 	}
 
 	public static boolean Add() throws Exception {
-		if (TrayIconInitialization()) {
-			try { SystemTray.getSystemTray().add(trayIcon);	}
-			catch (AWTException e) { Errorist.printLog(e);
-				return false;
+		if (SystemTray.isSupported()) {
+			try {
+				TrayIconInitialization();
+				SystemTray.getSystemTray().add(trayIcon);
+				return true;
 			}
-			return true;
+			catch (AWTException e) { Errorist.printLog(e); }
 		}
-		else return false;
+		return false;
 	}
 	
-	public static void Remove()  throws Exception {
-		SystemTray.getSystemTray().remove(trayIcon);
-	}
+	public static void Remove()  throws Exception { SystemTray.getSystemTray().remove(trayIcon); }
 }

@@ -7,7 +7,6 @@ import service.Common;
 import service.Errorist;
 import service.IOOperations;
 import service.MediaInfo;
-import service.ServiceAgent;
 
 public class ListItem {
 	final static byte default_status = (byte)128;
@@ -63,8 +62,6 @@ public class ListItem {
 	
 	@Override
 	public String toString() { return title; }
-	
-	public long MemorySize() { return ServiceAgent.getObjectSize(this); }
 	
 	public void Exec() {
 		if (Common.raw_flag) InnerExec();

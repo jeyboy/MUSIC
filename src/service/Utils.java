@@ -1,7 +1,10 @@
 package service;
 
 import java.awt.Dimension;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -43,6 +46,20 @@ public class Utils {
     
     //////////////////////////////////////////////////
     
+    public static PopupMenu BuildMenu(ActionBind ... items) {
+		PopupMenu popup = new PopupMenu();
+		
+		for(ActionBind act : items) {
+		    MenuItem messageItem = new MenuItem(act.name);
+		    messageItem.addActionListener(act.action);
+		    popup.add(messageItem);		
+		}
+		
+	    return popup;   	
+    }
+    
+    //////////////////////////////////////////////////    
+    
     public static String JoinPaths(String ... parts) {
     	if (parts.length == 0) return "";
     	String res = parts[0];
@@ -52,10 +69,12 @@ public class Utils {
     }
     
     //////////////////////////////////////////////////
-    
-    public static ImageIcon GetIcon(String path) {
-		try { return new ImageIcon(ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(Constants.imagepath + path))); } 
+
+    public static BufferedImage GetImage(String path) {
+		try { return ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(Constants.imagepath + path)); } 
 		catch (IOException e1) { Errorist.printLog(e1); }
 		return null;     	
-    }
+    }    
+    
+    public static ImageIcon GetIcon(String path) { return new ImageIcon(GetImage(path)); }
 }

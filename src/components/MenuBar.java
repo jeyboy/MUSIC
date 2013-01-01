@@ -29,6 +29,7 @@ import service.Errorist;
 import service.IOOperations;
 import service.MediaInfo;
 import service.Utils;
+import service.ActionBind;
 import tabber.Tab;
 import tabber.TabOptions;
 import tabber.Tabber;
@@ -259,15 +260,5 @@ public class MenuBar extends JMenuBar {
 	}
 	
 	public static void SetPlay() { play_item.setIcon(play_item.getPressedIcon()); }
-	public static void SetStop() { play_item.setIcon(play_item.getDisabledIcon()); }
-	
-	class ActionBind {
-		public ActionListener action = null;
-		public String name = null;
-		
-		public ActionBind(String name, ActionListener action) {
-			this.action = action;
-			this.name = name;
-		}
-	}	
+	public static void SetStop() { play_item.setIcon(play_item.getDisabledIcon()); }	
 }
