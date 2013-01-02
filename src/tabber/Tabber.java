@@ -37,8 +37,6 @@ public class Tabber extends JTabbedPane {
 	}
 	
 	public void Save() {
-//		try { Common._trash.join(0); }
-//		catch (InterruptedException e1) { Errorist.printLog(e1); }
 		Common._trash.save();
 		if (!Common.save_flag) return;
 		

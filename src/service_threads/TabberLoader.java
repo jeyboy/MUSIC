@@ -19,7 +19,6 @@ import filelist.ListItem;
 public class TabberLoader extends BaseThread {
 	
     public TabberLoader() {
-//		setDaemon(true);
     	setPriority(Thread.MAX_PRIORITY);    	
 		start();
     }
@@ -58,7 +57,6 @@ public class TabberLoader extends BaseThread {
 	  					break;
 	  				case ' ':
 	  					proceedTab(list, files);
-	  					//curr_tab.Files().AddElemsLI(files);
 	  					files.clear();	  					
 	  					list.setEnabled(true);
 	  					list.setVisible(true);
@@ -85,19 +83,4 @@ public class TabberLoader extends BaseThread {
 		} 
 		catch (InvocationTargetException | InterruptedException e) { Errorist.printLog(e); }
     }
-    
-//    class Temp implements Runnable {
-//    	Tab curr_tab;
-//    	ArrayList<ListItem> files;
-//
-//    	public Temp(Tab tab, ArrayList<ListItem> tab_files) {
-//    		curr_tab = tab;
-//    		files = tab_files;
-//    	}
-//    	
-//		@Override
-//		public void run() {
-//			curr_tab.Files().AddElemsLI(files);
-//		}
-//    } 
 }
