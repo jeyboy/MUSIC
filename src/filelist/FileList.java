@@ -58,7 +58,7 @@ public class FileList extends JList<ListItem> {
 	}
 
 	private void ProceedElem(File elem) { ProceedElem(new ListItem(elem)); }
-    private void ProceedElem(ListItem elem) {
+    public void ProceedElem(ListItem elem) {
         AddAssocIcon(elem.ext, FileSystemView.getFileSystemView().getSystemIcon(elem.file));
         model.addElement(elem);
         Common._initer.AddItem(elem);

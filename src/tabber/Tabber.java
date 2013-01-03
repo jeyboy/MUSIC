@@ -55,7 +55,6 @@ public class Tabber extends JTabbedPane {
 	        	for(int loop1 = 0; loop1 < curr_tab.FilesCount(); loop1++) 
 	        		pw.println(curr_tab.File(loop1).SaveInfo());
 	        	
-	        	pw.println(" ");
 	        	pw.flush();
 	        }
 	    }
