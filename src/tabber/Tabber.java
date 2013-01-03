@@ -15,10 +15,9 @@ public class Tabber extends JTabbedPane {
 	
 	public Tabber() { setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);  } //JTabbedPane.SCROLL_TAB_LAYOUT
 	
-	Tab InitTab(String title, TabOptions opts, ListItem [] items) 		{ return new Tab(this, title, opts, items); }
-	public Tab AddTab(String title, TabOptions opts, ListItem [] items)	{ return InitTab(title, opts, items); }
-	public Tab AddTab(String title, TabOptions opts)					{ return InitTab(title, opts, null); }
-	public Tab AddTab(String title)										{ return InitTab(title, new TabOptions(), null); }
+	public Tab AddTab(String title, TabOptions opts, ListItem [] items)	{ return new Tab(this, title, opts, items); }
+	public Tab AddTab(String title, TabOptions opts)					{ return AddTab(title, opts, null); }
+	public Tab AddTab(String title)										{ return AddTab(title, new TabOptions(), null); }
 	
 	public Tab GetTab(int index)			{ return (Tab) getComponentAt(index);}
 	public Tab GetCurrentTab()				{ return (Tab) getSelectedComponent();}
