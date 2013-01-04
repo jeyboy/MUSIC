@@ -1,0 +1,190 @@
+# german.lang Langage Properties File
+#*********************************************************************
+#  Copyright notice
+#  
+#  (c) 2003 Entagged Developpement Team
+#  http://www.sourceforge.net/projects/entagged
+#  
+#  All rights reserved
+# 
+#  This script is part of the Entagged project. The Entagged
+#  project is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  The GNU General Public License can be found at
+#  http://www.gnu.org/copyleft/gpl.html.
+# 
+#  This copyright notice MUST APPEAR in all copies of the file!
+#  ********************************************************************
+#
+# $Id: german.lang,v 1.19 2005/11/27 12:11:12 liree Exp $
+#
+case.capitalize=Anfangsbuchstaben groß schreiben
+case.lowercase=Alles Kleinschreiben
+case.unchanged=Unverändert
+case.uppercase=Alles Groß schreiben
+common.dialog.abort=Abbrechen
+common.dialog.apply=Übernehmen
+common.dialog.delete=Lösche Tags
+common.dialog.down=Nach unten
+common.dialog.error=Fehler
+common.dialog.finish=Abschliessen
+common.dialog.mayneedrestart=Sie sollten neu starten um die Änderungen zu Übernehmen.
+common.dialog.next=Weiter >
+common.dialog.ok=OK
+common.dialog.previous=< Zurück
+common.dialog.progresstask=Aktuell
+common.dialog.quit=Beenden
+common.dialog.save.recursive=Suchen und Speichern
+common.dialog.save=Speichern
+common.dialog.up=Nach oben
+common.dialog.warning=Warnung!
+common.encoding.bitrate=Bitrate
+common.tag.album=Album
+common.tag.artist=Künstler
+common.tag.comment=Kommentar
+common.tag.genre=Genre
+common.tag.length=Länge
+common.tag.title=Titel
+common.tag.track=Track
+common.tag.year=Jahr
+controlpanel.freedb=freedb Suche
+controlpanel.manualfreedb=Manuelle freedb Suche
+controlpanel.renamefromtag=Dateinamen vom Tag
+controlpanel.tageditor=Tag Editor
+controlpanel.tagfromfilename=Tag von Dateinamen
+controlpanel.trackenum=Tracks aufzählen
+entaggedmenubar.aboutitem=Über...
+entaggedmenubar.exititem=Verlassen
+entaggedmenubar.filemenu=Datei
+entaggedmenubar.helpmenu=Hilfe
+entaggedmenubar.helpmessage=Die readme datei liegt im Installationsverzeichniss!
+entaggedmenubar.listingitem=Erzeuge Auflistung
+entaggedmenubar.optionsitem=Optionen...
+entaggedmenubar.statisticitem=Zeige Statistik
+entaggedmenubar.toolsmenu=Werkzeuge
+entaggedoptionsdialog.title=Entagged Optionen
+freedb.noresult=Search Error : Es wurde nichts gefunden... 
+freedboptionpanel.button=Freedb
+freedboptionpanel.INETCONN1_DIRECT=Direkt (kein Proxy)
+freedboptionpanel.INETCONN2_PROXY=Standard Proxy
+freedboptionpanel.INETCONN3_PROXY_WITH_AUTHENTICATION=Standard Proxy mit Authentifizierung (Login)
+freedboptionpanel.inetconn=Internet Verbindung
+freedboptionpanel.login=Freedb Login
+freedboptionpanel.proxypass=Passwort
+freedboptionpanel.proxyport=Port
+freedboptionpanel.proxyserver=Proxy Server. Name
+freedboptionpanel.proxyuser=Proxy Benutzername
+freedboptionpanel.server=Freedb Server
+freedboptionpanel.title=Freedb Optionen
+freedbpanel.enter=Suche eingeben
+freedbpanel.error.invalidmaxresult=Geben sie für "Anzahl Ergebnisse" eine Zahl größer Null ein.
+freedbpanel.error.nofileselected=Bitte wählen Sie mindestens eine Datei zur freedb Suche aus!
+freedbpanel.errors=Einige Dateien konnten nicht bearbeitet werden (wurden nicht verändert):
+freedbpanel.matching=FreeDb-Ergebnis anpassen
+freedbpanel.maxresults=Anzahl Ergebnisse: 
+freedbpanel.results=Ergebnis(se)
+freedbpanel.search=Suche...
+freedb.progress.prepare=Vorbereitung
+freedb.progress.query=Abfrage
+freedb.progress.title=Duchsuche FreeDB
+freedb.readingresults=Lese Ergebnisse...
+freedb.resultof=Ergebnis %1 von %2 lese......%3% fertig
+freedb.searchsuccessful=Suche erfolgreich : %1 Ergebnis(se) gefunden
+generaloptionpanel.automaticupdate=Automatische Tabellenaktualisierung (1sek Intervall)
+generaloptionpanel.button=Allgemein
+generaloptionpanel.encoding=ID3 Tags Zeichensatz
+generaloptionpanel.preseverfiletime=Änderungsdatum der Dateien beibehalten
+generaloptionpanel.preseverfiletime=Änderungsdatum erhalten (Änderungsdatum wird beim taggen nicht geändert).
+generaloptionpanel.title=Allgemeine Optionen
+generaloptionpanel.warnfiletimeupdateconflict=Achtung!\nSie haben die "automatische Aktualisierung" und "Änderungsdatum erhalten" gleichzeitig aktiviert.\nDies führt dazu das die autom. Aktualisierung, die Änderungen durch taggen nicht erkennt.\nUmbenennung, Löschung und Erstellung von Dateien werden allerdings weiterhin erkannt.
+lafoptionpanel.button=Look And Feel
+lafoptionpanel.error=Neues Look And Feel konnte nicht gestartet werden. Entweder es ist nicht Verfügbar auf ihrer Plattform, oder Sie müssen Entagged neu starten.
+lafoptionpanel.laf=Look And Feel :
+lafoptionpanel.title=Look And Feel Auswahl
+langageoptionpanel.button=Sprache
+langageoptionpanel.langage=Sprache :
+langageoptionpanel.title=Sprachauswahl
+listgen.confirmabort=Soll die Auflistung wirklich abgebrochen werden?
+listgen.dialogtitle=Erzeuge Auflistung
+listgen.finished=Abgeschlossen
+listgen.label.browse=Durchsuchen
+listgen.label.directory=Verzeichniss
+listgen.label.recursively=Rekursiv
+listgen.label.reporttype=Format
+listgen.label.saveas=Speichern als
+listgen.progress.directory=Verarbeite Verzeichniss
+listgen.progress.file=Bearbeite Datei
+listgen.progress=Fortschritt
+listgen.transformation.end=Transformation beendet
+listgen.transformation.error=Fehler bei Tranformation
+listgen.transformation.start=Beginne Transformation
+opex.direrror=Failed to create directories leading to directory %1
+opex.dpattern=Verzeichnissmaske konnte nicht verwendet werden. (Directory Pattern could not matched)
+opex.emptyfield=Trying to use an empty field in the filename (%1)
+opex.fileexists=Versuche zu einer existierenden Datei umzubenennen: %1
+opex.fpattern=Dateimaske konnte nicht verwendet werden. (Filename Pattern could not matched)
+opex.renfailed=Umbenennung zu %1 fehlgeschlagen Datei wurde nicht verschoben.
+opex.tagempty=Kann nicht umbenannt werden: Tag ist leer
+renamefromtagpanel.button=Umbenennen !
+renamefromtagpanel.tooltip=Verwenden Sie <artist>, <album>, <title>, <track>, <genre>, <year>, <comment> und <bitrate>
+statistic.bitrate=Bitrate
+statistic.categorydescription.bitrate=Gefundene Bitraten (kpbs)
+statistic.categorydescription.codec=Gefundene Formate
+statistic.categorydescription.sampling=Gefundene Sample-Raten (Hz)
+statistic.codecs=Codecs
+statistic.compressbitrates=nur Kategorien anzeigen
+statistic.invalidfilecount=Anzahl unlesbarer Dateien
+statistic.occurrencedescriptor=mal
+statistic.sampling=Sample Raten
+statistic.statistic=-Statistik
+statistic.summary=Zusammenfassung
+statistic.totalfilesize=Summe der Dateigrößen
+statistic.totalmediatime=Abspieldauer gesamt
+statistic.validfilecount=Anzahl gelesener Dateien
+tablemodel.filename=Dateiname
+tageditorframe.drivecouldnotberead=Vom Laufwerk %1 konnte nicht gelesen werden. Vergewissern Sie sich, dass es Etwas enthält.
+tageditorframe.errors=Bei den folgenden Dateien sind Fehler aufgetreten:
+tageditorframe.numberoffileswarning.text=Sie sind im Begriff %1 Datei(en) zu verändern! Weiter?
+tageditorframe.numberoffileswarning.title=Rekursive Bearbeitung
+tageditorframe.title=Tag Editor
+tagfromfilenamepanel.button=Tag !
+tagfromfilenamepanel.tooltip=Verwenden Sie <artist>, <album>, <title>, <track>, <genre>, <year> , <comment> und <ignore> um beliebigen Text zu ignorieren
+taghelpfieldextender.ignoredescription=Ignoriert den Text welcher an dieser Stelle steht.
+taghelpfieldextender.valuedescription=Wird ersetzt durch 
+tagrename.casetransformation=Groß-/Kleinschreibung Transformation
+tagrename.clearmasks=Lösche Masken
+tagrename.directorypattern=Verzeichnissmaske
+tagrename.errormsg=Während der Umbenennung ist ein Fehler aufgetreten (Keine Dateien ändern, während die Vorschau angezeigt wird)
+tagrename.extendtracks=Erweitere Tracknummern ("1" -> "01", nur zwei Ziffern)
+tagrename.filenamepattern=Dateinamenmaske
+tagrename.option.copyifunmodifiable=Kopieren wenn Datei nicht geändert werden kann
+tagrename.property.cannotwrite.msg=Datei kann nicht geändert werden (Schreibschutz)
+tagrename.property.containswarnings.msg=Die Datei oder das Verzeichnis enthält Warnungen
+tagrename.property.destinationexists.msg=Datei würde eine bereits Existierende überschreiben.
+tagrename.property.duplicateerror.msg=Datei würde neben einer anderen Gleichlautenden abgelegt.
+tagrename.property.nochange.msg=Datei wird nicht geändert, da Sie bereits der Einstellung genügt.
+tagrename.property.tagsmissing.msg=Audiodatei hat in folgenden Feldern keine Werte:
+tagrename.prune=Lösche geleerte Verzeichnisse
+tagrename.usedirectorypattern=Verwende Verzeichnissmaske
+tagrename.warning.empty=Sie müssen mindestens eine Dateimaske angeben!
+trackenum.digitextension=Erweitern wenn nötig
+trackenum.directoryrestart=Für jedes Verzeichniss neu aufzählen
+trackenum.error=Wegen fehlern wurde keine Datei geändert.
+trackenum.extendnumbers=Erweitere Nummern in Dateinamen
+trackenum.filesfirst=Erst Dateien
+trackenum.numofdigits=Anzahl der Ziffern
+trackenum.offunction=Von Funktion
+trackenum.processor.fileerror=Datei konnte nicht korrekt gelesen werden: 
+trackenum.processor.readaccesserror=Kein Lesezugriff: 
+trackenum.saverun=Sicherer Lauf
+trackenum.useof=Verwenden
+trackenum.various=Verschiedenes
+transfo.romanletters=Römische Ziffern Groß schreiben
+transfo.slashtodash="/" oder "\\" zu "-" umwandeln
+transfo.spacetounderscore=Leerzeichen zu Unterstrichen umwandeln
+transfo.stripnonusascii=In ASCII-Zeichen umwandeln
+transfo.trim=Leerzeichen am Anfang und Ende entfernen
+transfo.underscoretospace=Unterstriche zu Leerzeichen umwandeln

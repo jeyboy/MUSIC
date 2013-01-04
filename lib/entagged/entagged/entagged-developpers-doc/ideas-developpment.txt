@@ -1,0 +1,2 @@
+Ideas Concerning the developpment of entagged
+// $Id: ideas-developpment.txt,v 1.1 2007/03/23 14:16:42 nicov1 Exp $ //

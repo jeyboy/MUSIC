@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat.Type;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -87,4 +89,10 @@ public class Utils {
     }    
     
     public static ImageIcon GetIcon(String path) { return new ImageIcon(GetImage(path)); }
+    
+    ////////////////////////////////////////////////
+    
+    public static Type[] GetExtensions() {
+    	return AudioSystem.getAudioFileTypes(); 
+    }
 }

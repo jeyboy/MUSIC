@@ -1,0 +1,43 @@
+Comprehensive list of current Entagged features
+// $Id: current-features.txt,v 1.1 2007/03/23 14:16:42 nicov1 Exp $ //
+
+I will try to maintain here a list of all the basic features of Entagged. They can of course be used together
+to form new one. GUI features are not listed here, because they are just a combination of the listed feature.
+
+-Read encoding specific info, such as encoder name, bitrate, length, samplerate etc.
+
+-Read/write id3v1 tag. Full support, except non standard custom genres.
+
+-Read/write id3v2 tag. Part of the id3.org specs. Supports very few of the optional flags, approximative support of
+	character encoding. Can read/write every field.
+
+-Read Ogg tags, still experimental, to be developped.
+
+-Write Ogg tags, not supported, experimental developpement.
+
+-Pluggable audio format support (still experimental), allows to add new formats very easily, simply by implementing an interface
+
+-Rename a file with a given pattern, using regex (very powerful), and a given tag (more supported fields can be added).
+	The filename can be only the real filename, but also a directory structure (Artist\Album\Track - Name.mp3)
+
+-Tag a file from its filename, using regex (very powerful), more supported fields can be added. Cannot use the directory structure (can be added)
+
+-Generate pls or m3u playlists, from a given oredered list of audio files
+
+-Support freedb disc ID computation (with assumption of 2 sec leadin track).
+
+-Support freedb query/read (Not fully implementing freedb though (special error codes etc.)) with disc ID, and parsing of the answer.
+
+-Scanning folder (recursively or not) and stores tag infos (still experimental) into a sql database.
+	Ability to create multiple database / delete / reset
+
+-Show the stored files as a tree, with either folders, or artist-album-title hierarchy.
+
+
+Remarkable GUI Features
+----------------------
+-Pluggable look and feel
+-some themes for skin LAF
+-Internationalization SUpport (langage files to translate GUI labels, buttons, etc)
+-Preferences stored in a xml file, thanks to Preferences API
+-Squonk Icon for the main program

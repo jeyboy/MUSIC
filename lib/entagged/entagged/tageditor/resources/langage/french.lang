@@ -1,0 +1,238 @@
+# french.lang Langage Properties File
+#*********************************************************************
+#  Copyright notice
+#
+#  (c) 2003 Entagged Developpement Team
+#  http://www.sourceforge.net/projects/entagged
+#
+#  All rights reserved
+#
+#  This script is part of the Entagged project. The Entagged
+#  project is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  The GNU General Public License can be found at
+#  http://www.gnu.org/copyleft/gpl.html.
+#
+#  This copyright notice MUST APPEAR in all copies of the file!
+#  ********************************************************************
+#
+# $Id: french.lang,v 1.30 2005/10/01 17:13:36 kikidonk Exp $
+#
+
+case.capitalize=Capitaliser
+case.capitalizefirst=Capitaliser première lettre
+case.lowercase=minuscules
+case.unchanged=Inchangée
+case.uppercase=MAJUSCULES
+clear=Vider
+close=Fermer
+common.dialog.abort=Interrompre
+common.dialog.apply=Appliquer
+common.dialog.delete=Effacer le tag
+common.dialog.down=Descendre
+common.dialog.error=Erreur
+common.dialog.finish=Terminer
+common.dialog.mayneedrestart=Il faudra peut être redémarrer pour que les changements soient pris en compte
+common.dialog.next=Suivant >
+common.dialog.ok=OK
+common.dialog.previous=< Précédent
+common.dialog.progresstask=Action
+common.dialog.quit=Quitter
+common.dialog.save.recursive=Chercher et Sauver
+common.dialog.save=Sauver
+common.dialog.up=Remonter
+common.dialog.warning=Attention!
+common.dialog.explore=Parcourir...
+common.dialog.add=+
+common.dialog.remove=-
+common.dialog.folderAndChild=Dossier et ses sous dossiers
+common.dialog.select=Selectionner
+common.dialog.files=Fichiers
+common.encoding.bitrate=Bitrate
+common.tag.album=Album
+common.tag.artist=Artiste
+common.tag.comment=Commentaire
+common.tag.genre=Genre
+common.tag.length=Durée
+common.tag.title=Titre
+common.tag.track=Piste
+common.tag.year=Année
+controlpanel.freedb=Recherche freedb
+controlpanel.manualfreedb=Recherche freedb manuelle
+controlpanel.renamefromtag=Renommer à partir du tag
+controlpanel.tageditor=Editeur de Tag
+controlpanel.tagfromfilename=Tagger à partir du fichier
+controlpanel.trackenum=Editer les numéros de pistes
+delete=Supprimer
+entaggedmenubar.aboutitem=A propos...
+entaggedmenubar.exititem=Quitter
+entaggedmenubar.filemenu=Fichier
+entaggedmenubar.helpmenu=Aide
+entaggedmenubar.helpmessage=Le fichier d'aide se trouve dans votre répertoire d'installation !
+entaggedmenubar.listingitem=Créer une liste de musiques
+entaggedmenubar.optionsitem=Options...
+entaggedmenubar.statisticitem=Afficher les statistiques
+entaggedmenubar.index=Indexation des fichiers
+entaggedmenubar.wronginput=Traitement des mauvaises frappes
+entaggedmenubar.double=Traitement des duplicatas
+entaggedmenubar.toolsmenu=Outils
+entaggedoptionsdialog.title=Options d'Entagged
+freedb.noresult=Erreur de recherche: pas de résultat(s) correspondant(s)...
+freedboptionpanel.button=freedb
+freedboptionpanel.INETCONN1_DIRECT=Directe (pas de proxy)
+freedboptionpanel.INETCONN2_PROXY=Proxy standard (sans mot de passe)
+freedboptionpanel.INETCONN3_PROXY_WITH_AUTHENTICATION=Proxy avec authentification
+freedboptionpanel.inetconn=Connection internet
+freedboptionpanel.login=Login freedb
+freedboptionpanel.proxypass=Mot de passe
+freedboptionpanel.proxyport=Port
+freedboptionpanel.proxyserver=Nom du serveur Proxy
+freedboptionpanel.proxyuser=Nom d'utilisateur du serveur Proxy
+freedboptionpanel.server=Serveur freedb
+freedboptionpanel.title=Options freedb
+freedbpanel.enter=Entrez l'id freedb, et sélectionnez un genre
+freedbpanel.error.invalidmaxresult=Le nombre de résultats maximal doit être positif !
+freedbpanel.error.nofileselected=Sélectionnez au moins un fichier avant de lancer une recherche
+freedbpanel.errors=Quelques fichiers n'ont pas pu être taggés:
+freedbpanel.matching=Correspondance freedb-selection
+freedbpanel.maxresults=Nombre de résultats max
+freedbpanel.results=résultat(s)
+freedbpanel.search=Recherche...
+freedb.progress.prepare=Préparation
+freedb.progress.query=Requête
+freedb.progress.title=Recherche freedb
+freedb.readingresults=Lecture des résultats...
+freedb.resultof=Result %1 sur %2 lu......%3% réalisé
+freedb.searchsuccessful=Recherche réussite : %1 résultat(s) correspondant(s)
+generaloptionpanel.button=Général
+generaloptionpanel.title=Options générales
+generaloptionpanel.encoding=Encodage des tags ID3 :
+generaloptionpanel.preseverfiletime=Conserver la date du fichier original (pas de changement de date)
+generaloptionpanel.automaticupdate=Rafraîchit automatiquement le listing (toutes les secondes)
+generaloptionpanel.warnfiletimeupdateconflict=Consider!\n You have activated the automatic update while file time is preserved.\nThe Update mechanism won't be able to identify changes of tags.\nHowever, the recognition of renaming, new files and deletion still works.
+ignore=Ignorer
+lafoptionpanel.button=Look And Feel
+lafoptionpanel.error=Le Look And Feel n'est pas activé. Peut être est il indisponible sur votre machine ou alors il faut redémarrer Entagged...
+lafoptionpanel.laf=Look And Feel :
+lafoptionpanel.title=Selection de la skin
+langageoptionpanel.button=Langue
+langageoptionpanel.langage=Langue :
+langageoptionpanel.title=Sélection de la langue
+listgen.confirmabort=Voulez vous réellement interrompre ?
+listgen.dialogtitle=Créer une liste de musiques
+listgen.finished=Terminé
+listgen.label.browse=Parcourir
+listgen.label.directory=Répertoire
+listgen.label.recursively=Récursion
+listgen.label.reporttype=Type
+listgen.label.saveas=Sauver sous
+listgen.progress.directory=Traiter le répertoire
+listgen.progress.file=Traiter le fichier
+listgen.progress=Progrès
+listgen.transformation.end=Fin de la transformation
+listgen.transformation.error=Erreur pendant la transformation
+listgen.transformation.start=Transformation en cours
+mediaplayeroptionpanel.mediaplayer=Lecteur audio :
+opex.direrror=Impossible de créer les répertoires menant à %1
+opex.dpattern=Le masque du répertoire est invalide (pas de correspondances)
+opex.emptyfield=Le champ %1 est vide et ne peut pas être utilisé dans un nom de fichier
+opex.fileexists=Impossible de renommer vers un fichier déjà existant: %1
+opex.fpattern=Le masque du fichier est invalide (pas de correspondances)
+opex.renfailed=Impossible de renommer le fichier en ""%1 .Le fichier n'a pas bougé.
+opex.tagempty=Impossible de renommer: le tag est vide
+play=Gérer les playlists
+playplayList=Lire
+renamefromtagpanel.button=Renommer !
+renamefromtagpanel.tooltip=Utiliser <artist>, <album>, <title>, <track>, <genre>, <year>, <comment> et <bitrate>
+statistic.bitrate=Débit
+statistic.categorydescription.bitrate=Débits trouvés (kpbs)
+statistic.categorydescription.codec=Formats trouvés
+statistic.categorydescription.sampling=Fréquences trouvées (Hz)
+statistic.codecs=Codecs
+statistic.compressbitrates=afficher par catégories
+statistic.invalidfilecount=Nombre de fichiers non lisibles
+statistic.occurrencedescriptor=fois
+statistic.sampling=Fréquence d'échantillonnage
+statistic.statistic=Statistiques
+statistic.summary=Résumé
+statistic.totalfilesize=Taille des fichiers totale
+statistic.totalmediatime=Durée totale
+statistic.validfilecount=Nombre de fichier lus
+tablemodel.filename=Nom du fichier
+tageditorframe.drivecouldnotberead=Le disque %1 ne peut pas être lu, assurez vous qu'il y a un disque dedans.
+tageditorframe.errors=Des erreurs ont eu lieu pour ce(s) fichier(s):
+tageditorframe.numberoffileswarning.text=%1 fichier(s) vont être traités ! Continuer ?
+tageditorframe.numberoffileswarning.title=Traitement récursif
+tageditorframe.title=Editeur de tag
+tagfromfilenamepanel.button=Tagger !
+tagfromfilenamepanel.tooltip=Utiliser <artist>, <album>, <title>, <track>, <genre>, <year>, <comment> et <ignore> pour ignorer une partie de texte
+taghelpfieldextender.ignoredescription=Ignore ce qui sera attrapé par ce masque.
+taghelpfieldextender.valuedescription=sera remplacé par
+tagrename.casetransformation=Transformation de casse
+tagrename.clearmasks=Effacer les masques
+tagrename.directorypattern=Masque du répertoire
+tagrename.filenamepattern=Masque du fichier
+tagrename.usedirectorypattern=Utiliser le masque du répertoire
+tagrename.warning.empty=Il faut au moins remplir le masque du fichier !
+trackenum.digitextension=Remplir avec 0 ?
+trackenum.directoryrestart=Redémarrer le compteur pour chaque répertoire
+trackenum.error=Erreur! Aucun fichier n'est modifié
+trackenum.extendnumbers=Remplir le nombre dans les noms de fichiers
+trackenum.filesfirst=Fichiers d'abord
+trackenum.numofdigits=Nombre de chiffres
+trackenum.offunction=Piste X "de" X
+trackenum.processor.fileerror=Erreur d'accès au fichier:
+trackenum.processor.readaccesserror=Impossible de lire:
+trackenum.saverun=Sauvegarder
+trackenum.useof=Utiliser un séparateur
+trackenum.various=Divers
+transfo.romanletters=Chiffres Romains en majuscule
+transfo.slashtodash=Convertir "/" ou "\\" en "-"
+transfo.spacetounderscore=Convertir les espaces en underscores
+transfo.stripnonusascii=Convertir en caractères ASCII
+transfo.trim=Enlever les espaces inutiles
+transfo.underscoretospace=Convertir les sous-tirets en espaces
+miage.tauxindex=Taux d'indexation : 
+miage.folderwithoutmusicfiles=Dossier sans fichiers musicaux
+miage.Foldernoindexed=Dossier non indéxé
+miage.FolderTaux=Dossier indéxé à
+miage.folder=Dossier : 
+miage.calculationprogress=Calcul en cours...
+miage.jprogressDossier = Taux d'indexation des fichiers physiques visible de ce dossier
+miage.jprogressReel = Taux d'indexation réel de ce dossier
+miage.reel=Réel : 
+miage.indexeddatasyes=Données Indexées : Oui
+miage.notindexeddatas=Données Indexées : Non
+miage.update=(Ré)indexer le dossier
+miage.foldertoupdate=Dossier à actualiser
+miage.updatingfolder=Actualisation du dossier
+miage.explorer=Explorateur
+miage.index=Index
+miage.updateactinprog=Actualisation en cours...
+miage.file=fichier
+miage.artist=artiste
+miage.indexationisfinished=L'indexation des fichiers est terminée.
+miage.filesindexed= fichiers ont été indexés.
+miage.filesindexation=Indexation des fichiers
+miage.folderindexed=Le dossier est désormais correctement indexé.
+miage.folderinindexable=Le dossier ne contient pas de données à indexer.
+miage.folderunindexed=Le dossier est désormais correctement désindexé.
+miage.foldernotindexed=Le dossier n'est pas indexé
+miage.errorreaderchoice=Erreur dans le choix de votre lecteur !
+miage.diskexplorer=Disque Exploré : 
+miage.stockfoldersoptimum=Gérez vos dossiers de manière optimisée : l'arborescence à gauche permet de parcourir vos lecteurs et de visualiser les dossiers indexés ou non
+miage.index=Indexer
+miage.unindex=Désindexer
+miage.searchTextField=Rechercher...
+miage.searchTextFieldexplication=Entrez votre mot de recherche
+miage.titleWrongInput=Traitement des mauvaises frappes
+miage.wrongInputNameChosen=Nom de l'artiste retenu :
+miage.wrongInputExplication=Plusieurs artistes avec des noms très proches ont été détectés. Il pourrait s'agir du même artiste.\n\nVous pouvez choisir le nom de l'artiste que vous préférez conserver. Si vous ne souhaitez pas apporter de modification, cliquez sur Annuler
+miage.wrongInputNoneFound=Aucune mauvaise frappe n'a été trouvée
+miage.duplicatesSearch=Traitement des duplicatas
+miage.duplicatesChooseFile=Fichier musical retenu
+miage.duplicatesExplication=Plusieurs fichiers musicaux semblent identiques.\nIl pourrait s'agir de doublons.\n\nVous pouvez choisir le fichier que vous préférez conserver.\nSi vous ne souhaitez pas apporter de modification, cliquez sur Fermer
+miage.duplicatesNoneFound=Aucun doublon n'a été trouvé

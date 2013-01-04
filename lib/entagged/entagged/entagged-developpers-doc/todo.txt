@@ -1,0 +1,11 @@
+TO DO List
+// $Id: todo.txt,v 1.1 2007/03/23 14:16:41 nicov1 Exp $ //
+Library:
+* les champs doivent etre tronqués si trop long
+* Si le genre n'est pas arbitraire, mettre no genre ou equivalent
+* Track number = 0 si pas un chiffre
+* Binary fields
+
+Langage resources:
+Init(splash) text
+Features tabs (also tabs contents)

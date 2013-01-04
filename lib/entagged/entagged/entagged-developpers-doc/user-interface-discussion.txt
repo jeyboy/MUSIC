@@ -1,0 +1,89 @@
+User Interface Discussion...
+// $Id: user-interface-discussion.txt,v 1.1 2007/03/23 14:16:41 nicov1 Exp $ //
+Here we should list all the features we like in the different software tha exists, and especially
+how they implemented the gui...
+
+(WA)
+Having examined several audio file tagging programs, my feeling is that
+these programs generally have very cluttered, unintuitive user interfaces.
+About the best UI I have seen thus far from tagging software is that of
+'Abander TagControl' ((c) SoftArtStudio 1998 - 2002 All Right Reserved).
+
+(RS)
+Global remarks: - Color coding the displayed files is important, as well as a nice set of icons..
+
+Well I compared tag&rename, abander tagcontrol, k-mp3, and the godfather.
+	-K-MP3 is freeware under windows only, I do not like the interface at all and all their feature we have.
+	The only thing i like, is the idea of processing queue, to tag the files (You create a queue
+	of files, and the program shows you the files one by one, until the queue is empty..)
+	but I think this is not very used...
+	The interface don't use a filesystem tree, instead lists are present everywhere, to tag from freedb,
+	you have first to create a list, by selecting manuallythe folder, etc.. This is long and fastidious if
+	you have more than 1 or two album to tag. 
+	The names of the functions, aren't very explicit, or goodly classified, I feel myself a bit lost...
+		*Good points: The list queuing to tag files manually
+					  The "all works with list" concept, could be used for long and repetitive tasks,
+					  such as renaming a whole directory of files, including it's subdirectories.
+					  
+		*Bad points: Too unclear, names are not very significant.
+					  No filesystem tree view, and all list concept.
+					  Minimalistic functions...
+					  
+		*Feature we don't have: Supports : MP3, OGG, MPC, APE, AAC, FLAC and WavPack files.
+			   					Burning of audio files
+								Duplicate Files Finder
+								Files Lister (Supported Formats : Raw listing, Coma Separated Values, SQL, XML)
+								Incomplete Tags Finder.
+	
+	-The godfather is freeware under windows only. It has a more classic look, a tree on the left, a table to 
+	show the results, and a "control panel" above the table. The different main function are accessed from a toolbar.
+	Rename, tag, manual edit, and organize. Then the control panel shows all the options for that mode. This is a bit cluttered, 
+	sometimes the control panel can have three defferent subpanels, and everything is so close and not clearly grouped.
+	Double clicking in a file in the table, open a tag and file encoding info VIEWER, not editor..
+	A lot of features, but the interface a bit confused...
+		*Good points: the tree view, with filter capabilities
+					  Features..
+					  The idea of selecting a folder in the tree, then show each file that it contains in the table,
+					  and is selected, also scans recursively. 
+					  
+		*Bad points: Too many options, for the first time user and badly presented.
+		
+		*Feature we don't have: (MP3, OGG, MPC, APE)too long.
+		
+	-Tag&Rename is shareware (30days) this is I think what most people know and use. It has the same layout as godfather
+	Only three tabs, The names aren't very clear again..The interface is however more useable than godfather.
+	The files are presented in a "treetable" way, if a folder contains subfolders, then the table can expand and collapse this folder.
+	This is the best solution I think... When you dbl click on a file, a manual tag editor appears.
+		*Good points: Treetable view type
+					  Right click on a file allows simple operation(freedb)
+					  Color code
+					  
+		*Bad points: Every time you have to select the desired files, make sure you didn't forget to remove the one that
+					 aren't needed.
+					 Interface could be clearer...
+					 You have to select wich file type to show (ogg or mp3 or etc..)
+					 
+	-Abander Tagcontrol is shareware (30days) for windows only. It is in my opinion the best software of this selection.
+	Therer is a tree on the left, and a treetable on the right, and the control panel on the bottom. It is a tabbed panel
+	with clear Labels: tag editor, rename files, tag from filename. It also has color codes and an icon set to indicate the tag type.
+	The tag editor allows to modify the seven most used fields, wich is good. Double clicking afile open the same tag editor in a
+	new window, they should have shown advanced tag features, like in tag & rename. There is a feature to filter out the desired 
+	file types, or to show them all. The UI is based around toolbars, cutomizable. Each toolbar controls a specific feature. 
+	Files shown in the table cn be selected, then the modification apply only to the selected files.
+	Another problem is like tag&rename, if you select multiple file and you want to modify a field, you have to check wich fields you
+	want to update, then modify it. I find my actual system more useful (<var> text).
+	They have a high degree of customization via html like tags for the renaming and tagging from filename. (<artist>, etc)
+	There is also a way to store all the patterns you like, then have access to it, through a combobox ! this is great!
+	This software should be a source of inspiration !
+		*Good points: treetable and tree view, but without having to check a box to select the file
+				  	  Simple tag editor, renamer etc, but also has "advanced features"
+					  Customizable treetable structure, I think this is really interesting!
+		
+		*Bad points: too short delay after selecting a folder in the tree. If you select a folder witha lot of files in it
+					 it takes ages, and maybe this wasn't the folder you really wanted.
+					 Poor freedb support, i didn't understand how it works...
+					 
+	Here it is. All the soft I tested run under windows only, so we should always have in mind that we write in java, so this should
+	work on virtually every platform, wich could make us a important actor on the linux platform, for that kind of soft. (though i don't know
+	if there are already this ind of software for linux/mac).
+	The music library discussion has also to be done, but let's focus first on the tag editor !

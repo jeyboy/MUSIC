@@ -1,0 +1,193 @@
+# spanish.lang Langage Properties File
+#*********************************************************************
+#  Copyright notice
+#  
+#  (c) 2003 Entagged Developpement Team
+#  http://www.sourceforge.net/projects/entagged
+#  
+#  All rights reserved
+# 
+#  This script is part of the Entagged project. The Entagged
+#  project is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  The GNU General Public License can be found at
+#  http://www.gnu.org/copyleft/gpl.html.
+# 
+#  This copyright notice MUST APPEAR in all copies of the file!
+#  ********************************************************************
+#
+# $Id: spanish.lang,v 1.36 2005/11/28 19:03:51 anacleto Exp $
+#
+
+case.capitalizefirst=Primera posición en mayúsculas
+case.capitalize=Primera Letra En Mayúsculas
+case.lowercase=todo en minúsculas
+case.unchanged=No convertir
+case.uppercase=TODO EN MAYÚSCULAS
+common.dialog.abort=Interrumpir
+common.dialog.apply=Aplicar
+common.dialog.delete=Borrar las etiquetas
+common.dialog.down=Bajar
+common.dialog.error=Error
+common.dialog.finish=Terminar
+common.dialog.mayneedrestart=Puede ser necesario reiniciar Entagged para que tengan efecto los cambios
+common.dialog.next=Siguiente >
+common.dialog.ok=Aceptar
+common.dialog.previous=< Anterior
+common.dialog.progresstask=Fase:
+common.dialog.quit=Salir
+common.dialog.save=Guardar
+common.dialog.save.recursive=Buscar y Guardar
+common.dialog.up=Subir
+common.dialog.warning=¡Aviso!
+common.encoding.bitrate=Bitrate
+common.tag.album=Álbum
+common.tag.artist=Intérprete
+common.tag.comment=Comentarios
+common.tag.genre=Género
+common.tag.length=Duración
+common.tag.title=Título
+common.tag.track=Pista
+common.tag.year=Año
+controlpanel.freedb=Búsqueda en freedb
+controlpanel.manualfreedb=Búsqueda manual en freeddb
+controlpanel.renamefromtag=Renombrar a partir de etiquetas
+controlpanel.tageditor=Editor de Etiquetas
+controlpanel.tagfromfilename=Etiquetar a partir del nombre
+controlpanel.trackenum=Numerar las pistas
+entaggedmenubar.aboutitem=Acerca de...
+entaggedmenubar.exititem=Salir
+entaggedmenubar.filemenu=Archivo
+entaggedmenubar.helpmenu=Ayuda
+entaggedmenubar.helpmessage=El fichero readme se encuentra en el directorio de instalación!
+entaggedmenubar.listingitem=Generar un listado
+entaggedmenubar.optionsitem=Opciones...
+entaggedmenubar.statisticitem=Mostrar estadísticas
+entaggedmenubar.toolsmenu=Herramientas
+entaggedoptionsdialog.title=Opciones de Entagged
+freedb.noresult=La búsqueda no tuvo éxito: no se han encontrado coincidencias
+freedboptionpanel.button=Freedb
+freedboptionpanel.INETCONN1_DIRECT=Directa (sin proxy)
+freedboptionpanel.INETCONN2_PROXY=Proxy standard
+freedboptionpanel.INETCONN3_PROXY_WITH_AUTHENTICATION=Proxy standard con autenticación
+freedboptionpanel.inetconn=Tipo de conexión a internet
+freedboptionpanel.login=Identificación en Freedb
+freedboptionpanel.proxypass=Contraseña
+freedboptionpanel.proxyport=Puerto
+freedboptionpanel.proxyserver=Servidor Proxy. Nombre
+freedboptionpanel.proxyuser=Autenticación en el proxy. Usuario
+freedboptionpanel.server=Servidor Freedb
+freedboptionpanel.title=Opciones Freedb
+freedbpanel.enter=Introduzca los criterios de búsqueda
+freedbpanel.error.invalidmaxresult=Introduzca un número mayor que 0 como  Nº máximo de resultados
+freedbpanel.error.nofileselected=Por favor, seleccione al menos un archivo para buscar en freedb 
+freedbpanel.errors=Algunos archivos no pudieron etiquetarse (no se han tocado):
+freedbpanel.matching=Correspondencia freedb-selection
+freedbpanel.maxresults=Nº máximo de resultados
+freedbpanel.results=resultado(s)
+freedbpanel.search=Buscar...
+freedb.progress.prepare=Preparación
+freedb.progress.query=Consulta
+freedb.progress.title=Buscando en FreeDB
+freedb.readingresults=Leyendo resultados...
+freedb.resultof=Leídos %1 de %2 resultados......%3% Completado
+freedb.searchsuccessful=La búsqueda tuvo éxito!. Encontrada(s) %1 coincidencia(s)
+generaloptionpanel.automaticupdate=Refrescar automáticamente la tabla (intervalos de un segundo)
+generaloptionpanel.button=Generales
+generaloptionpanel.encoding=Codificación de las etiquetas ID3
+generaloptionpanel.preseverfiletime=Conservar la fecha al modificar archivos.
+generaloptionpanel.title=Opciones generales
+generaloptionpanel.warnfiletimeupdateconflict=¡Atención!\n Se ha activado el refresco automático al mismo tiempo que la opción de conservar la fecha al modificar archivos.\nEl mecanismo de refresco no podrá detectar cambios en las etiquetas.\nSin embargo, seguirá funcionando la detección de otros cambios (ficheros renombrados, nuevos o eliminados).
+lafoptionpanel.button=Aspecto general
+lafoptionpanel.error=Error al instalar el nuevo Aspecto General. Puede que no esté disponible en su sistema, o que sea necesario reiniciar Entagged.
+lafoptionpanel.laf=Aspecto general :
+lafoptionpanel.title=Selección del Aspecto General (Look And Feel)
+langageoptionpanel.button=Idioma
+langageoptionpanel.langage=Idioma :
+langageoptionpanel.title=Selección de idioma
+listgen.confirmabort=¿Realmente quiere cancelar el proceso?
+listgen.dialogtitle=Generar listado
+listgen.finished=Finalizado
+listgen.label.browse=Examinar
+listgen.label.directory=Directorio
+listgen.label.recursively=Recursivo
+listgen.label.reporttype=Formato
+listgen.label.saveas=Guardar como
+listgen.progress.directory=Procesando directorio
+listgen.progress.file=Procesando fichero
+listgen.progress=Progreso
+listgen.transformation.end=Transformación finalizada
+listgen.transformation.error=Error en la transformación
+listgen.transformation.start=Iniciando la transformación
+opex.direrror=Error al crear los directorios intermedios de %1
+opex.dpattern=No se pudo hacer corresponder el nombre del directorio con el patrón
+opex.emptyfield=Se está intentando utilizar un cmampo vacío en el fichero (%1)
+opex.fileexists=Se intenta renombrar a un nombre de archivo que ya existe: %1
+opex.fpattern=No se pudo hacer corresponder el nombre del fichero con el patrón
+opex.renfailed=Error al renombrar el fichero a  %1 .
+opex.tagempty=No se puede renombrar porque la etiqueta está vacía
+renamefromtagpanel.button=Renombrar !
+renamefromtagpanel.tooltip=Usar <artist>, <album>, <title>, <track>, <genre>, <year>, <comment> y <bitrate>.
+statistic.bitrate=Frecuencias de bit
+statistic.categorydescription.bitrate=Frecuencias de bit encontradas(kpbs)
+statistic.categorydescription.codec=Formatos de compresión encontrados
+statistic.categorydescription.sampling=Frecuencias de muestreo encontradas (Hz)
+statistic.codecs=Codecs
+statistic.compressbitrates=Agrupar por categorías
+statistic.invalidfilecount=Número de ficheros ilegibles
+statistic.occurrencedescriptor=veces
+statistic.sampling=Frecuencias de muestreo
+statistic.statistic=Estadísticas
+statistic.summary=Resumen
+statistic.totalfilesize=Tamaño total de los ficheros
+statistic.totalmediatime=Duración total de los ficheros
+statistic.validfilecount=Número de ficheros procesados
+tablemodel.filename=Nombre de archivo
+tageditorframe.drivecouldnotberead=El disco %1 no puede leerse, por favor, asegúrese de que no está vacío.
+tageditorframe.errors=Los siguientes archivos tuvieron errores:
+tageditorframe.numberoffileswarning.text=¡Se van a procesar %1 archivos! ¿Realmente quiere hacer eso?
+tageditorframe.numberoffileswarning.title=Procesamiento recursivo
+tageditorframe.title=Editor de Etiquetas
+tagfromfilenamepanel.button=Etiquetar !
+tagfromfilenamepanel.tooltip=Usar <artist>, <album>, <title>, <track>, <genre>, <year>, <comment> e <ignore>.
+taghelpfieldextender.ignoredescription=Ignora el texto que corresponda a esta posición.
+taghelpfieldextender.valuedescription=se sustituirá por
+tagrename.casetransformation=Convertir Mayúsculas/Minúsculas
+tagrename.clearmasks=Limpiar patrones
+tagrename.directorypattern=Patrón del nombre de directorio
+tagrename.errormsg=Ocurrió un error al renombrar (Por favor, no cambie los ficheros mientras se previsualiza)
+tagrename.extendtracks=Ampliar los números de pistas ("1" -> "01", sólo dos digitos)
+tagrename.filenamepattern=Patrón del nombre de archivo
+tagrename.option.copyifunmodifiable=Copiar si el archivo no se puede mover
+tagrename.property.cannotwrite.msg=El archivo no se puede modificar (insuficientes permisos)
+tagrename.property.containswarnings.msg=Este archivo o directorio contiene avisos
+tagrename.property.destinationexists.msg=El archivo reemplazaría a otro archivo.
+tagrename.property.duplicateerror.msg=El archivo File would be placed along with another at same location.
+tagrename.property.nochange.msg=El fichero no se modificara, ya que ya se ajusta a los patrones.
+tagrename.property.tagsmissing.msg=El archivo no tiene contenidos en algunas etiquetas: 
+tagrename.prune=Eliminando directorios procesados.
+tagrename.sourcetree=Scanned
+tagrename.targettree=Resultado
+tagrename.usedirectorypattern=Utilizar patrón de directorio
+tagrename.warning.empty=Es obligatorio introducir por lo menos el patrón del nombre de archivo
+trackenum.digitextension=Aumentar Nº de dígitos automáticamente
+trackenum.directoryrestart=Reiniciar contador a 1 en cada directorio
+trackenum.error=Se produjo algún error, y no se ha modificado ningún fichero
+trackenum.extendnumbers=Ordenar teniendo en cuenta números (Ej.:2 antes que 10)
+trackenum.filesfirst=Ordenar los ficheros antes que los directorios
+trackenum.numofdigits=Nº de dígitos
+trackenum.offunction=Incluir el total (Ej.: 2 de 12)
+trackenum.processor.fileerror=Error de acceso en el fichero:
+trackenum.processor.readaccesserror=Error de lectura en el fichero:
+trackenum.saverun=No modificar nada si algo falla 
+trackenum.useof=Usar como separador (Ej.: "de") 
+trackenum.various=Otras opciones
+transfo.romanletters=Números romanos en mayúsculas
+transfo.slashtodash=Convertir "/" o "\\" en "-"
+transfo.spacetounderscore=Convertir espacio en guión bajo(_)
+transfo.stripnonusascii=Eliminar caracteres que no sean Us-Ascii
+transfo.trim=Eliminar espacios al principio y al final
+transfo.underscoretospace=Convertir guión bajo(_) en espacio

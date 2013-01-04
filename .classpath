@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="audiotagger/src"/>
-	<classpathentry kind="src" path="entagged"/>
-	<classpathentry kind="src" path="jkeymaster/src"/>
+	<classpathentry kind="src" path="lib/audiotagger"/>
+	<classpathentry kind="src" path="lib/entagged"/>
+	<classpathentry kind="src" path="lib/jkeymaster"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="F:/Programing/JAVA/jna/dist/jna.jar"/>
-	<classpathentry kind="lib" path="jl1.0.1.jar" sourcepath="C:/Users/JB/Desktop/javazoom/jl"/>
+	<classpathentry excluding="audiotagger/|jna/|jkeymaster/|entagged/|jkeymaster/|jkeymaster/|jna/|jna/|audiotagger/|entagged/" kind="src" path="lib"/>
+	<classpathentry kind="lib" path="lib/basicplayer3.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-api.jar"/>
+	<classpathentry kind="lib" path="lib/jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jmactritonusspi1.74.jar"/>
+	<classpathentry kind="lib" path="lib/jspeex0.9.7.jar"/>
+	<classpathentry kind="lib" path="lib/kj_dsp1.1.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/mp3spi1.9.5.jar"/>
+	<classpathentry kind="lib" path="lib/jorbis-0.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/vorbisspi1.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/jflac-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

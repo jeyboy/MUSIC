@@ -74,11 +74,11 @@ public class MenuBar extends JMenuBar {
 				new ActionBind("start_play", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						Common.rand_play_flag = false;
-						if (!Common.mp3.isPlayed())
+						if (!Common.player.isPlayed())
 							Common.raw_flag = !Common.raw_flag;
 						else {
 							Common.raw_flag = false;
-							Common.mp3.stop();
+							Common.player.stop();
 						}
 						
 						if (Common.raw_flag)

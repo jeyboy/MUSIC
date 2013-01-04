@@ -1,6 +1,10 @@
 package service;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Iterator;
+import java.util.List;
+
+import javazoom.jlgui.basicplayer.BasicPlayer;
 
 import drop_panel.DropPanelsManager;
 import hot_keys.HotKeyManager;
@@ -54,15 +58,10 @@ public class Common {
 	static public Trasher _trash = new Trasher();
 	static public LibraryDumper _library_dumper = new LibraryDumper();
 	
-	static public MP3 mp3 = new MP3();
+	static public MP3 player = new MP3();
 	static public TorrentWindow torrent_window = new TorrentWindow();
 	static public NumberFormat formatter = new DecimalFormat("#0.00");
-	
-	static public void Initialize() {
-//		System.setErr(outputFile(args(2));
-//		try { System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(Settings.outpath))));	}
-//		catch (FileNotFoundException e) { e.printStackTrace();	}
-	}
+	static public BasicPlayer bplayer;
 	
 	static public void Shutdown() {
 		_trash.close();

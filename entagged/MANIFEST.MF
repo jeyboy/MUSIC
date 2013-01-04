@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: entagged.tageditor.TagEditorFrameSplash
-Class-Path: hsqldb.jar squareness.jar

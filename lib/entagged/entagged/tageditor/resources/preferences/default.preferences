@@ -1,0 +1,85 @@
+#Default preferences for an out-of-the-box entagged release
+#********************************************************************   **
+#  Copyright notice                                                     **
+#  **																	**
+#  (c) 2003 Entagged Developpement Team				                    **
+#  http://www.sourceforge.net/projects/entagged                         **
+#  **																	**
+#  All rights reserved                                                  **
+#  **																	**
+#  This script is part of the Entagged project. The Entagged 			**
+#  project is free software; you can redistribute it and/or modify      **
+#  it under the terms of the GNU General Public License as published by **
+#  the Free Software Foundation; either version 2 of the License, or    **
+#  (at your option) any later version.                                  **
+#  **																	**
+#  The GNU General Public License can be found at                       **
+#  http://www.gnu.org/copyleft/gpl.html.                                **
+#  **																	**
+#  This copyright notice MUST APPEAR in all copies of the file!         **
+#  ********************************************************************
+#
+# $Id: default.preferences,v 1.8 2005/03/13 22:48:52 kikidonk Exp $
+#
+#************General Entagged Prefs*********************************************
+#----Look And Feel Preferences
+entagged.lookandfeel=net.beeger.squareness.SquarenessLookAndFeel
+entagged.screen.width=800
+entagged.screen.height=600
+
+#----Langage
+entagged.langage=english.lang
+
+#----Browser
+entagged.tag.encoding=UTF-16
+#*******************************************************************************
+
+
+#*****TagEditor Preferences*****************************************************
+tageditor.tageditorframe.controlpanel.selectedindex=0
+
+tageditor.tageditorframe.tableinfosplitpane.dividerlocation=500
+tageditor.tageditorframe.treetablesplitpane.dividerlocation=300
+
+tageditor.tageditorframe.treetable.column.0.width=100
+tageditor.tageditorframe.treetable.column.1.width=100
+tageditor.tageditorframe.treetable.column.2.width=100
+tageditor.tageditorframe.treetable.column.3.width=100
+tageditor.tageditorframe.treetable.column.4.width=100
+tageditor.tageditorframe.treetable.column.5.width=100
+tageditor.tageditorframe.treetable.column.6.width=100
+tageditor.tageditorframe.treetable.column.7.width=100
+tageditor.tageditorframe.treetable.column.8.width=100
+tageditor.tageditorframe.treetable.column.9.width=100
+tageditor.tageditorframe.treetable.column.10.width=100
+
+
+#tageditor.tageditorframe.framewidth || dynamically determined
+#tageditor.tageditorframe.frameheight || dynamically determined
+
+#tageditor.tageditorframe.framelocationx || dynamically determined
+#tageditor.tageditorframe.framelocationy || dynamically determined
+
+tageditor.tageditorframe.roots=0
+
+#entagged.tageditor.manualfreedbpanel.selectedgenreindex=0
+#*******************************************************************************
+
+#Freedb prefs
+entagged.freedb.server=freedb.freedb.org
+entagged.freedb.login=
+entagged.freedb.domain=
+entagged.freedb.inetconn=1
+
+#Freedb panel prefs
+entagged.freedbpanel.maxresults=5
+
+tagpanel.transformations=0
+renamepanel.transformations=0
+taginfopanel.transformations=0
+renamepanel.usedirectory=false
+tagpanel.usedirectory=false
+tagpanel.filename=<track> - <title>
+tagpanel.directory=/path/to/music/<album>/<artist>
+renamepanel.filename=<track> - <title>
+renamepanel.directory=/path/to/music/<album>/<artist>
