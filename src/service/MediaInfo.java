@@ -14,7 +14,6 @@ import entagged.audioformats.AudioFileIO;
 import entagged.audioformats.exceptions.CannotReadException;
 
 public class MediaInfo {
-//	AudioSystem.getAudioFileTypes()
 	static public String SitesFilter(String title)	{ return title.replaceAll("([\\(\\[](http:\\/\\/)*(www\\.)*([a-z0-9р-џ])+\\.[a-z]+[\\]\\)])", ""); }
 	static public String ForwardNumberPreFilter(String title)	{ return title.replaceAll("\\A\\d{1,}.|\\(\\w*\\d{1,}\\w*\\)", ""); }
 	static public String SpacesFilter(String title) { return title.replaceAll("[^0-9A-Za-zР-пр-џР-пр-џ]", ""); }
@@ -25,6 +24,7 @@ public class MediaInfo {
 		
 		// entagged // 		"flac", "ape", "mp3", "ogg", "wma", "wav", "mpc", "mp+"
 		// jaudiotagger //	
+//		"wsz,snd,aifc,aif,wav,au,mp1,mp2,mp3,ogg,spx,flac,ape,mac"
 		for(String ext : new String [] {"flac", "ape", "mp3", "mp4", "m4a", "m4p", "ogg", "wma", "wav", "asf", "mpc", "mp+", "rmf"})
 			ret.add(ext);
 	
@@ -73,7 +73,6 @@ public class MediaInfo {
 		
 		if (ext.length() == 0) AddTitleHelper(title);
 		else AddTitleHelper(IOOperations.name_without_extension(title, ext));
-//		else AddTitleHelper(title.substring(0, title.length() - (ext.length() + 1)));
 		
 		if (CheckFormat(f.getName(), ext))
 			InitInfo(f);
@@ -93,21 +92,6 @@ public class MediaInfo {
 				"SampleRate \t: " + SampleRate + "\n" +
 				"Time \t\t: " + TimeFormatter(TimeLength) + "\n";
 	}
-	
-//	public String Pack() {
-//		return  (VariableBitrate ? "~" : "-") + "*" + Type + "*" + Bitrate + "*" + Channels + "*" + SampleRate + "*" + TimeLength;
-//	}
-//	
-//	public void Unpack(String info) {
-//		String[] temp = info.split("*");
-//		
-//		VariableBitrate = temp[0] == "~";
-//		Type = temp[1];
-//		Bitrate = temp[2];
-//		Channels = temp[3];
-//		SampleRate = temp[4];
-//		TimeLength = Integer.parseInt(temp[5]);
-//	}
 	
 	@SuppressWarnings("unchecked")
 	void InitInfo(File file) {
@@ -184,27 +168,8 @@ public class MediaInfo {
 			VariableBitrate = head.isVariableBitRate();			
 		}
 		catch (org.jaudiotagger.audio.exceptions.CannotReadException e) {
-			GetApeInfo(file);
 			Errorist.printLog(e);
 		}		
 		catch (Exception e) { Errorist.printLog(e); }
 	}
-	
-	void GetApeInfo(File file) {
-//	AudioInputStream audioInputStream;
-//	try {
-//		audioInputStream = AudioSystem.getAudioInputStream(file);
-//		AudioFormat audioFormat = audioInputStream.getFormat();
-//		
-//		properties.put("Type", audioFormat.getEncoding());
-//		properties.put("SampleRate", audioFormat.getSampleRate());
-//		properties.put("BitRate", audioFormat.getSampleSizeInBits());
-//		properties.put("Channels", audioFormat.getChannels());
-//		properties.put("FrameRate", audioFormat.getFrameRate());
-//		properties.put("FrameSize", audioFormat.getFrameSize());
-//	
-////		return audioFormat.properties();
-//	} 
-//	catch (Exception e) { Errorist.printLog(e); }
-	}	
 }

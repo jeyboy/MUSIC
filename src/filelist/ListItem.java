@@ -64,7 +64,7 @@ public class ListItem {
 	public String toString() { return title; }
 	
 	public void Exec() {
-		if (!Common.raw_flag) InnerExec();
+		if (Common.raw_flag) InnerExec();
 		else {
 	        try {
 	        	IOOperations.open(file);
@@ -75,16 +75,6 @@ public class ListItem {
 	}
 	
 	void InnerExec() {
-//    	if (ext.equals("mp3")) {
-//    		try {
-//    			Common.player.play(file);
-//    			SetStatusListened();
-//    		}
-//    		
-//    		catch (Exception e2) { Errorist.printLog(e2); }
-//    	} 
-//    	else Common.tabber.MoveSelectAndInit(true); 
-
 		try {
 			Common.player.play(file);
 			SetStatusListened();

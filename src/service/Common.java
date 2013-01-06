@@ -58,7 +58,7 @@ public class Common {
 	static public Trasher _trash = new Trasher();
 	static public LibraryDumper _library_dumper = new LibraryDumper();
 	
-	static public MP3 player = new MP3();
+	static public MediaPlayer player = new MediaPlayer();
 	static public TorrentWindow torrent_window = new TorrentWindow();
 	static public NumberFormat formatter = new DecimalFormat("#0.00");
 	static public BasicPlayer bplayer;
