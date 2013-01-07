@@ -32,7 +32,6 @@ public class MenuBar extends JMenuBar {
 	private JCheckBox delete_empty_folders;
 	private JCheckBox remote_source;
 	JFileChooser fileChooser = new JFileChooser(".");
-	static JMenuItem play_item;
 	FileDialogFilter dialog_filter = new FileDialogFilter("torrent", "torrent file");
 	
 	
@@ -133,8 +132,5 @@ public class MenuBar extends JMenuBar {
 			this.add(item);
 		}
 		this.setVisible(true);
-	}
-	
-	public static void SetPlay() { play_item.setIcon(play_item.getPressedIcon()); }
-	public static void SetStop() { play_item.setIcon(play_item.getDisabledIcon()); }	
+	}	
 }

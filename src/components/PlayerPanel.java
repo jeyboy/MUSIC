@@ -26,7 +26,8 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 	
 	Label time;
 	JSlider track, volume;
-	ToggleButton pause;
+	ToggleButton pause, play;
+	String def_time = "00:00";
 
 	public void GUI() {
     	setBackground(Common.color_background);
@@ -63,10 +64,10 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 			public void dragEnter(DropTargetDragEvent dtde) {}
 		});
 		
-		this.add(new ToggleButton(Utils.GetIcon("player/play.png"),
+		play = new ToggleButton(Utils.GetIcon("player/play.png"),
 				Utils.GetIcon("player/stop.png"),
-				this, ActionObserver.STOP, ActionObserver.PLAY
-				));
+				this, ActionObserver.STOP, ActionObserver.PLAY);
+		this.add(play);
 		
 		pause = new ToggleButton(Utils.GetIcon("player/pause.png"),
 				Utils.GetIcon("player/play.png"),
@@ -78,7 +79,7 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 		curr.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) { Common.tabber.GetCurrentTab().Shuffle(); } });
 		this.add(curr);
 		
-		this.add((time = new Label("00:00", 10, 0)));
+		this.add((time = new Label(def_time, 10, 0)));
 		this.add(new Label("", 20, 4));
 		this.add((track = new JSlider(0, 1000)));
 		track.setUI(new SliderUI(track));
@@ -102,8 +103,10 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 	public void notify(int state) {
 		switch(state) {
 			case ActionObserver.PLAY:
-				if (Common.player.isPaused()) 
+				if (Common.player.isPaused()) { 
 					Common.player.resume();
+					play.setVisible(true);
+				}
 				else {
 					Common.raw_flag = true;
 					Common.tabber.MoveSelectAndInit(true);
@@ -111,10 +114,12 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 				break;
 			case ActionObserver.STOP:
 				Common.raw_flag = false;
-				Common.player.stop();				
+				Common.player.stop();
+				setTime(def_time);
 				break;
 			case ActionObserver.PAUSE:
 				Common.player.pause();
+				play.setVisible(false);
 				break;			
 		}
 		

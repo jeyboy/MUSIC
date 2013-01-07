@@ -90,10 +90,16 @@ public class Utils {
     ////////////////////////////////////////////////
     
     public static String MilliToTime(long millis) {
-    	return String.format("%02d:%02d:%02d", 
-    			((millis / 3600000000l) % 24),
+    	long h = (millis / 3600000000l) % 24;
+    	
+    	return h > 0 ?
+    			String.format("%02d:%02d:%02d", 
+    			h,
     			((millis / (60000000)) % 60),
-    			(millis / 1000000) % 60
-    		);
+    			(millis / 1000000) % 60)
+    			:
+    			String.format("%02d:%02d", 
+    			((millis / (60000000)) % 60),
+    			(millis / 1000000) % 60);
     }
 }

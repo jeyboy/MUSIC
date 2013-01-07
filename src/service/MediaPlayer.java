@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import components.MenuBar;
 import components.PlayerPanel;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
@@ -121,15 +120,13 @@ public class MediaPlayer implements BasicPlayerListener {
 	public void stateUpdated(BasicPlayerEvent event) {
 		switch(event.getCode()) {
 			case BasicPlayerEvent.PLAYING :
-		    	MenuBar.SetPlay();
 		        System.out.println("playbackStarted()");				
 				break;
 			case BasicPlayerEvent.STOPPED :
 		        System.out.println("playbackEnded()");
 		        panel.setTrackPosition(0);
 		        if (Common.raw_flag)
-		        	Common.tabber.MoveSelectAndInit(true);
-		        else MenuBar.SetStop();					
+		        	Common.tabber.MoveSelectAndInit(true);				
 				break;
 			case BasicPlayerEvent.GAIN :
 				panel.setVolumePosition(Math.round(player.getGainValue() * 100));
