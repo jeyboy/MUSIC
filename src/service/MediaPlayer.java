@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import components.MenuBar;
+import components.PlayerPanel;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
@@ -13,6 +14,13 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 public class MediaPlayer implements BasicPlayerListener {
     private BasicPlayer player;
+    private PlayerPanel panel;
+    
+    private int byteLength;
+    
+    private long duration;
+//    private int frameCount;    
+//    private int frameSize;
 
     public MediaPlayer() {
         player = new BasicPlayer();
@@ -26,25 +34,26 @@ public class MediaPlayer implements BasicPlayerListener {
     }
 
     public void play(File file) {
-        stop();   	
-    	
         try {
             player.open(file);
             player.play();
         }
-        catch (Exception ex) { Errorist.printLog(ex); }
+        catch (Exception ex) {
+        	Errorist.printLog(ex);
+        	Common.tabber.MoveSelectAndInit(true);
+        }
     }
     
     public void play(String url) {
-        stop();   	
-    	
         try {
             player.open(new URL(url));
             player.play();
         }
-        catch (Exception ex) { Errorist.printLog(ex); }
+        catch (Exception ex) {
+        	Errorist.printLog(ex);
+        	Common.tabber.MoveSelectAndInit(true);
+        }
     }    
-    
     public void stop() {
     	try {
     		if (isPlayed())
@@ -55,8 +64,48 @@ public class MediaPlayer implements BasicPlayerListener {
 
 	public boolean isPlayed() {	return player.getStatus() == BasicPlayer.PLAYING; }
 
-	public void opened(Object stream, Map properties) {}
-	public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {}
+	public void setPanel(PlayerPanel p) { panel = p;}
+	public void opened(Object stream, Map properties) {
+		if (properties.containsKey("audio.length.bytes"))
+			byteLength = (int)properties.get("audio.length.bytes");
+		else
+			byteLength = 0;	
+		
+		
+//		System.out.println("properties : ");
+//	    for (Object me : properties.entrySet()) {
+//	        System.out.print("\t" + me);    	
+//	    }
+		
+//		properties.get("audio.framerate.fps");
+//		properties.get("audio.samplerate.hz");
+//		properties.get("audio.framesize.bytes");
+//		properties.get("audio.length.bytes");
+//		properties.get("audio.channels");
+//		properties.get("audio.length.bytes");
+//		properties.get("mp3.length.bytes");
+//		properties.get("mp3.frequency.hz");
+//		properties.get("vbr");
+//		properties.get("bitrate");
+//		properties.get("author");
+		
+		if (properties.containsKey("duration")) {
+			Object raw_duration = properties.get("duration");
+			if (raw_duration instanceof Long)
+				duration = (long) properties.get("duration");
+			else
+				duration = (int) properties.get("duration");
+		}
+		else
+			duration = Math.round((float)(int)properties.get("audio.length.frames")/(float)properties.get("audio.framerate.fps") * 1000000);
+//		
+//		System.out.println("duration : " + duration);
+		panel.setTrackMax(byteLength);
+	}
+	public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
+		panel.setTrackPosition(bytesread);
+		panel.setTime(Utils.MilliToTime((duration - microseconds)/1000));
+	}
 	public void setController(BasicController controller) {}
 	public void stateUpdated(BasicPlayerEvent event) {
 		switch(event.getCode()) {
@@ -66,11 +115,49 @@ public class MediaPlayer implements BasicPlayerListener {
 				break;
 			case BasicPlayerEvent.STOPPED :
 		        System.out.println("playbackEnded()");
-		        
+		        panel.setTrackPosition(0);
 		        if (Common.raw_flag)
 		        	Common.tabber.MoveSelectAndInit(true);
 		        else MenuBar.SetStop();					
 				break;
+			case BasicPlayerEvent.GAIN :
+				panel.setVolumePosition(Math.round(player.getGainValue() * 100));
+				break;
+			case BasicPlayerEvent.PAN :
+				System.out.println("pan - value : " + event.getValue() + " - position : " + event.getPosition());
+				break;
 		}
 	}
 }
+
+//protected void processSeek(double rate)
+//{
+//    try
+//    {
+//        if ((audioInfo != null) && (audioInfo.containsKey("audio.type")))
+//        {
+//            String type = (String) audioInfo.get("audio.type");
+//            // Seek support for MP3.
+//            if ((type.equalsIgnoreCase("mp3")) && (audioInfo.containsKey("audio.length.bytes")))
+//            {
+//                long skipBytes = (long) Math.round(((Integer) audioInfo.get("audio.length.bytes")).intValue() * rate);
+//                log.debug("Seek value (MP3) : " + skipBytes);
+//                theSoundPlayer.seek(skipBytes);
+//            }
+//            // Seek support for WAV.
+//            else if ((type.equalsIgnoreCase("wave")) && (audioInfo.containsKey("audio.length.bytes")))
+//            {
+//                long skipBytes = (long) Math.round(((Integer) audioInfo.get("audio.length.bytes")).intValue() * rate);
+//                log.debug("Seek value (WAVE) : " + skipBytes);
+//                theSoundPlayer.seek(skipBytes);
+//            }
+//            else posValueJump = false;
+//        }
+//        else posValueJump = false;
+//    }
+//    catch (BasicPlayerException ioe)
+//    {
+//        log.error("Cannot skip", ioe);
+//        posValueJump = false;
+//    }
+//}

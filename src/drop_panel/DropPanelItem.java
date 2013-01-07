@@ -10,7 +10,6 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -42,10 +41,7 @@ public class DropPanelItem extends JButton implements DropTargetListener {
 		setPath(path);
 		super.setText(text);
 		addActionListener(new ActionListener() {          
-			public void actionPerformed(ActionEvent e) {
-				try { IOOperations.open(folder); } 
-				catch (IOException ee) { Errorist.printLog(ee); }
-			}
+			public void actionPerformed(ActionEvent e) { IOOperations.open(folder); }
 		});
 	}
 	

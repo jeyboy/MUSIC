@@ -1,7 +1,6 @@
 package filelist;
 
 import java.io.File;
-import java.io.IOException;
 
 import service.Common;
 import service.Errorist;
@@ -66,11 +65,10 @@ public class ListItem {
 	public void Exec() {
 		if (Common.raw_flag) InnerExec();
 		else {
-	        try {
-	        	IOOperations.open(file);
-	        	SetStatusListened();
-	        }
-	        catch (Exception e) { InnerExec(); }
+			if (IOOperations.open(file))
+				SetStatusListened();
+			else
+				InnerExec(); 
 		}
 	}
 	
@@ -84,13 +82,8 @@ public class ListItem {
 			Errorist.printLog(e2);
 			Common.tabber.MoveSelectAndInit(true);
 		}
-    			
 	}
 	
-	public void OpenFolder() {
-		try { IOOperations.open(file.getParentFile()); }
-		catch (IOException e) { Errorist.printLog(e); }
-	}
-
+	public void OpenFolder() { IOOperations.open(file.getParentFile());	}
 	public void InitMedia() { Common.library.ProceedItem(this); }
 }

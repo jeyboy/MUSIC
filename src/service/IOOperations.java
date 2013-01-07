@@ -95,9 +95,25 @@ public class IOOperations {
     public static boolean deleteFile(File f) 		{ return f.delete(); }
 	
 	// application associated to a file extension
-	public static void open(File document) throws IOException {
-	    Desktop dt = Desktop.getDesktop();
-	    dt.open(document);
+	public static boolean open(File file) {
+		try{
+		    Desktop dt = Desktop.getDesktop();
+		    dt.open(file);
+		    return true;
+	    }
+	    catch (Exception e) { Errorist.printLog(e); }
+		return openW(file);
+	}
+	
+	//open shared pathes
+	static boolean openW(File file) {
+		try{
+			Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL " + file);
+//			Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c", " ./lib/aapt d badging ZingMp3.apk"});
+			return true;
+	    }
+	    catch (Exception e) { Errorist.printLog(e); }
+		return false;
 	}
 
 	public static void print(File document) throws IOException {

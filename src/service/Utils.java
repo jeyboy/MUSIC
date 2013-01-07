@@ -10,10 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioFileFormat.Type;
-import javax.sound.sampled.AudioSystem;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -92,7 +91,11 @@ public class Utils {
     
     ////////////////////////////////////////////////
     
-    public static Type[] GetExtensions() {
-    	return AudioSystem.getAudioFileTypes(); 
+    public static String MilliToTime(long millis) {
+    	return String.format("%02d:%02d:%02d", 
+    			((millis / 3600000) % 24),
+    			((millis / (60000)) % 60),
+    			(millis / 1000) % 60
+    		);
     }
 }
