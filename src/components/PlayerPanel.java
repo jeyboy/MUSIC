@@ -81,11 +81,12 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 		this.add((time = new Label("00:00", 10, 0)));
 		this.add(new Label("", 20, 4));
 		this.add((track = new JSlider(0, 1000)));
+		track.setUI(new SliderUI(track));
 		this.add(new Label("Volume", 20, 4));
 		this.add((volume = new JSlider(0, 100)));
-//		volume.setMinimumSize(new Dimension(20, 20));
-//		volume.setSize(new Dimension(20, 20));
-		volume.setPreferredSize(new Dimension(20, 20));
+		volume.setUI(new SliderUI(volume));
+		volume.setPreferredSize(new Dimension(60, 20));
+		volume.setMaximumSize(new Dimension(120, 20));
 		GUI();
 		Common.player.setPanel(this);
     }
