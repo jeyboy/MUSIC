@@ -10,6 +10,7 @@ import components.PlayerPanel;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
+import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 public class MediaPlayer implements BasicPlayerListener {
@@ -54,6 +55,15 @@ public class MediaPlayer implements BasicPlayerListener {
         	Common.tabber.MoveSelectAndInit(true);
         }
     }    
+    public void resume() { 
+    	try { player.resume(); }
+    	catch (BasicPlayerException e) { Errorist.printLog(e); } 
+    }
+    public void pause() { 
+    	try { player.pause(); }
+    	catch (BasicPlayerException e) { Errorist.printLog(e); } 
+    }    
+    
     public void stop() {
     	try {
     		if (isPlayed())
@@ -63,6 +73,7 @@ public class MediaPlayer implements BasicPlayerListener {
     }
 
 	public boolean isPlayed() {	return player.getStatus() == BasicPlayer.PLAYING; }
+	public boolean isPaused() {	return player.getStatus() == BasicPlayer.PAUSED; }
 
 	public void setPanel(PlayerPanel p) { panel = p;}
 	public void opened(Object stream, Map properties) {
@@ -104,7 +115,7 @@ public class MediaPlayer implements BasicPlayerListener {
 	}
 	public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
 		panel.setTrackPosition(bytesread);
-		panel.setTime(Utils.MilliToTime((duration - microseconds)/1000));
+		panel.setTime(Utils.MilliToTime(duration - microseconds));
 	}
 	public void setController(BasicController controller) {}
 	public void stateUpdated(BasicPlayerEvent event) {

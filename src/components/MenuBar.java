@@ -32,7 +32,6 @@ public class MenuBar extends JMenuBar {
 	private JCheckBox delete_empty_folders;
 	private JCheckBox remote_source;
 	JFileChooser fileChooser = new JFileChooser(".");
-	private Color default_item_color;
 	static JMenuItem play_item;
 	FileDialogFilter dialog_filter = new FileDialogFilter("torrent", "torrent file");
 	
@@ -70,26 +69,7 @@ public class MenuBar extends JMenuBar {
 							tab.UpdateCounter();
 						}						
 				    }
-				}),
-				new ActionBind("start_play", new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						Common.rand_play_flag = false;
-						if (!Common.player.isPlayed())
-							Common.raw_flag = !Common.raw_flag;
-						else {
-							Common.raw_flag = false;
-							Common.player.stop();
-						}
-						
-						if (Common.raw_flag)
-							Common.tabber.MoveSelectAndInit(true);
-				    }
-				}),
-				new ActionBind("mixer", new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						Common.tabber.GetCurrentTab().Shuffle();
-				    }
-				}),					
+				}),		
 				new ActionBind("include_base", new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -141,24 +121,14 @@ public class MenuBar extends JMenuBar {
 		for(int loop1 = 0; loop1 < actions.length; loop1++) {
 			ImageIcon n = Utils.GetIcon("menubar/" + actions[loop1].name + ".png");
 			final JMenuItem item = new JMenuItem(n);
-			if (actions[loop1].name == "start_play") {
-				play_item = item;
-				item.setPressedIcon(Utils.GetIcon("menubar/stop_play.png"));
-				item.setDisabledIcon(n);
-			}
-			item.setBackground(Color.black);
+			item.setBackground(Common.color_background);
 			item.addActionListener(actions[loop1].action);
 			item.addMouseListener(new MouseListener() {
-				public void mouseClicked(MouseEvent arg0) {}
-				public void mouseEntered(MouseEvent arg0) {
-					default_item_color = item.getBackground();
-					item.setBackground(Color.WHITE);
-				}
-				public void mouseExited(MouseEvent arg0) {
-					item.setBackground(default_item_color);
-				}
-				public void mousePressed(MouseEvent arg0) {}
-				public void mouseReleased(MouseEvent arg0) {}
+				public void mouseClicked(MouseEvent arg0) 	{}
+				public void mouseEntered(MouseEvent arg0) 	{ item.setBackground(Common.color_foreground); }
+				public void mouseExited(MouseEvent arg0) 	{ item.setBackground(Common.color_background); }
+				public void mousePressed(MouseEvent arg0) 	{}
+				public void mouseReleased(MouseEvent arg0) 	{}
 			});
 			this.add(item);
 		}
