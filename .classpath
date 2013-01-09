@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="lib/basic_player"/>
 	<classpathentry kind="src" path="lib/audiotagger"/>
 	<classpathentry kind="src" path="lib/entagged"/>
 	<classpathentry kind="src" path="lib/jkeymaster"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="audiotagger/|jna/|jkeymaster/|entagged/|jkeymaster/|jkeymaster/|jna/|jna/|audiotagger/|entagged/" kind="src" path="lib"/>
-	<classpathentry kind="lib" path="lib/basicplayer3.0.jar"/>
+	<classpathentry excluding="audiotagger/|jna/|jkeymaster/|entagged/|jkeymaster/|jkeymaster/|jna/|jna/|audiotagger/|entagged/|javazoom/|javazoom/|basic_player/" kind="src" path="lib"/>
 	<classpathentry kind="lib" path="lib/commons-logging-api.jar"/>
 	<classpathentry kind="lib" path="lib/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jmactritonusspi1.74.jar"/>

@@ -2,8 +2,8 @@ package service;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import components.PlayerPanel;
 import javazoom.jlgui.basicplayer.BasicController;
@@ -16,15 +16,13 @@ public class MediaPlayer implements BasicPlayerListener {
     private BasicPlayer player;
     private PlayerPanel panel;
     
-    private int byteLength;
-    
+    private long byteLength;
     private long duration;
-//    private int frameCount;    
-//    private int frameSize;
+
 
     public MediaPlayer() {
         player = new BasicPlayer();
-        List<String> mixers = player.getMixers();
+        Vector<String> mixers = player.getMixers();
         if (mixers != null)
 //            for(String h : mixers)
 //                player.setMixerName(h);
@@ -34,6 +32,7 @@ public class MediaPlayer implements BasicPlayerListener {
     }
 
     public void play(File file) {
+    	stop();
         try {
             player.open(file);
             player.play();
@@ -45,6 +44,7 @@ public class MediaPlayer implements BasicPlayerListener {
     }
     
     public void play(String url) {
+    	stop();
         try {
             player.open(new URL(url));
             player.play();
@@ -70,14 +70,18 @@ public class MediaPlayer implements BasicPlayerListener {
     	}
     	catch(Exception e) { e.printStackTrace(); }
     }
+    public void seek(long bytes) {
+    	try { player.seek(bytes); }
+    	catch(BasicPlayerException e) { Errorist.printLog(e);}
+    }
 
-	public boolean isPlayed() {	return player.getStatus() == BasicPlayer.PLAYING; }
-	public boolean isPaused() {	return player.getStatus() == BasicPlayer.PAUSED; }
+	public boolean isPlayed() {	return player.IsPlaying(); }
+	public boolean isPaused() {	return player.IsPaused(); }
 
 	public void setPanel(PlayerPanel p) { panel = p;}
 	public void opened(Object stream, Map properties) {
 		if (properties.containsKey("audio.length.bytes"))
-			byteLength = (int)properties.get("audio.length.bytes");
+			byteLength = (long)properties.get("audio.length.bytes");
 		else
 			byteLength = 0;	
 		
@@ -129,7 +133,7 @@ public class MediaPlayer implements BasicPlayerListener {
 		        	Common.tabber.MoveSelectAndInit(true);				
 				break;
 			case BasicPlayerEvent.GAIN :
-				panel.setVolumePosition(Math.round(player.getGainValue() * 100));
+				panel.setVolumePosition(Math.round(player.getGain() * 100));
 				break;
 			case BasicPlayerEvent.PAN :
 				System.out.println("pan - value : " + event.getValue() + " - position : " + event.getPosition());

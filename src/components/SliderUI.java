@@ -14,6 +14,9 @@ class SliderUI extends BasicSliderUI {
     public SliderUI(JSlider slider) {
         super(slider);
         slider.setBackground(Common.color_background);
+        slider.setPaintTicks(false);
+        slider.setPaintLabels(false);
+//		slider.setExtent(extent)
     }
 
     @Override

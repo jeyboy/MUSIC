@@ -16,6 +16,8 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import service.Common;
 import service.Utils;
@@ -28,14 +30,28 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 	JSlider track, volume;
 	ToggleButton pause, play;
 	String def_time = "00:00";
-
+	boolean lock_track_update = false;
+	
 	public void GUI() {
     	setBackground(Common.color_background);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		track.setUI(new SliderUI(track));
 		
-//		track.setExtent(extent)
-		track.setPaintTicks(false);
-		track.setPaintLabels(false);
+		track.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if (track.getValueIsAdjusting())
+					lock_track_update = true;
+				else if (lock_track_update) {
+					lock_track_update = false;
+//					System.out.println(track.getValue() + " : " + track.getMaximum());
+					Common.player.seek(track.getValue());
+				}
+			}
+		});
+		
+		volume.setUI(new SliderUI(volume));
+		volume.setPreferredSize(new Dimension(60, 20));
+		volume.setMaximumSize(new Dimension(120, 20));		
 	}
 	
     public PlayerPanel() {
@@ -82,18 +98,18 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 		this.add((time = new Label(def_time, 10, 0)));
 		this.add(new Label("", 20, 4));
 		this.add((track = new JSlider(0, 1000)));
-		track.setUI(new SliderUI(track));
+		
 		this.add(new Label("Volume", 20, 4));
 		this.add((volume = new JSlider(0, 100)));
-		volume.setUI(new SliderUI(volume));
-		volume.setPreferredSize(new Dimension(60, 20));
-		volume.setMaximumSize(new Dimension(120, 20));
 		GUI();
 		Common.player.setPanel(this);
     }
     
-    public void setTrackMax(int length) { track.setMaximum(length); }
-    public void setTrackPosition(int curr_pos) { track.setValue(curr_pos); }
+    public void setTrackMax(long length) { track.setMaximum((int) length); }
+    public void setTrackPosition(int curr_pos) {
+    	if (!lock_track_update)
+    		track.setValue(curr_pos); 
+    }
     
     public void setVolumePosition(int curr_pos) { volume.setValue(curr_pos); }
     
