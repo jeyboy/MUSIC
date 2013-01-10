@@ -111,7 +111,9 @@ public class PlayerPanel extends JPanel implements ActionObserver {
     		track.setValue(curr_pos); 
     }
     
+    public void setVolumeRange(int min, int max) { volume.setMinimum(min); volume.setMaximum(max); }
     public void setVolumePosition(int curr_pos) { volume.setValue(curr_pos); }
+    public void blockVolume(boolean block) { volume.setEnabled(block); }
     
     public void setTime(String current_time) { time.setText(current_time); }
 

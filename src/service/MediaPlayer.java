@@ -6,14 +6,13 @@ import java.util.Map;
 import java.util.Vector;
 
 import components.PlayerPanel;
-import javazoom.jlgui.basicplayer.BasicController;
-import javazoom.jlgui.basicplayer.BasicPlayer;
-import javazoom.jlgui.basicplayer.BasicPlayerEvent;
-import javazoom.jlgui.basicplayer.BasicPlayerException;
-import javazoom.jlgui.basicplayer.BasicPlayerListener;
+import jb_player.JBPlayer;
+import jb_player.JBPlayerEvent;
+import jb_player.JBPlayerException;
+import jb_player.JBPlayerListener;
 
-public class MediaPlayer implements BasicPlayerListener {
-    private BasicPlayer player;
+public class MediaPlayer implements JBPlayerListener {
+    private JBPlayer player;
     private PlayerPanel panel;
     
     private long byteLength;
@@ -21,18 +20,17 @@ public class MediaPlayer implements BasicPlayerListener {
 
 
     public MediaPlayer() {
-        player = new BasicPlayer();
+        player = new JBPlayer();
         Vector<String> mixers = player.getMixers();
         if (mixers != null)
 //            for(String h : mixers)
 //                player.setMixerName(h);
         	player.setMixerName(mixers.get(0));
         	
-        player.addBasicPlayerListener(this);
+        player.addJBPlayerListener(this);
     }
 
     public void play(File file) {
-    	stop();
         try {
             player.open(file);
             player.play();
@@ -44,7 +42,6 @@ public class MediaPlayer implements BasicPlayerListener {
     }
     
     public void play(String url) {
-    	stop();
         try {
             player.open(new URL(url));
             player.play();
@@ -56,11 +53,11 @@ public class MediaPlayer implements BasicPlayerListener {
     }    
     public void resume() { 
     	try { player.resume(); }
-    	catch (BasicPlayerException e) { Errorist.printLog(e); } 
+    	catch (JBPlayerException e) { Errorist.printLog(e); } 
     }
     public void pause() { 
     	try { player.pause(); }
-    	catch (BasicPlayerException e) { Errorist.printLog(e); } 
+    	catch (JBPlayerException e) { Errorist.printLog(e); } 
     }    
     
     public void stop() {
@@ -72,11 +69,19 @@ public class MediaPlayer implements BasicPlayerListener {
     }
     public void seek(long bytes) {
     	try { player.seek(bytes); }
-    	catch(BasicPlayerException e) { Errorist.printLog(e);}
+    	catch(Exception e) { Errorist.printLog(e);}
     }
+    public void exit() { player.exit(); }
 
 	public boolean isPlayed() {	return player.IsPlaying(); }
 	public boolean isPaused() {	return player.IsPaused(); }
+	
+	void InitVolume() {
+		panel.blockVolume(player.hasVolumeControl());
+		if (player.hasVolumeControl()) {
+			panel.setVolumeRange((int)player.getMinimumVolume(), (int)player.getMaximumVolume());
+		}
+	}
 
 	public void setPanel(PlayerPanel p) { panel = p;}
 	public void opened(Object stream, Map properties) {
@@ -120,24 +125,27 @@ public class MediaPlayer implements BasicPlayerListener {
 		panel.setTrackPosition(bytesread);
 		panel.setTime(Utils.MilliToTime(duration - microseconds));
 	}
-	public void setController(BasicController controller) {}
-	public void stateUpdated(BasicPlayerEvent event) {
+	public void stateUpdated(JBPlayerEvent event) {
 		switch(event.getCode()) {
-			case BasicPlayerEvent.PLAYING :
+			case JBPlayerEvent.PLAYING :
 		        System.out.println("playbackStarted()");				
 				break;
-			case BasicPlayerEvent.STOPPED :
+			case JBPlayerEvent.STOPPED :
 		        System.out.println("playbackEnded()");
 		        panel.setTrackPosition(0);
 		        if (Common.raw_flag)
 		        	Common.tabber.MoveSelectAndInit(true);				
 				break;
-			case BasicPlayerEvent.GAIN :
-				panel.setVolumePosition(Math.round(player.getGain() * 100));
+			case JBPlayerEvent.GAIN :
+				System.out.println("gain - value : " + event.getValue() + " - position : " + event.getPosition());
 				break;
-			case BasicPlayerEvent.PAN :
+			case JBPlayerEvent.PAN :
 				System.out.println("pan - value : " + event.getValue() + " - position : " + event.getPosition());
 				break;
+			case JBPlayerEvent.VOLUME :
+				System.out.println("volume - value : " + event.getValue() + " - position : " + event.getPosition());
+				panel.setVolumePosition((int) Math.round(event.getValue() * 100));
+				break;				
 		}
 	}
 }

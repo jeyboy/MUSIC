@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import javazoom.jlgui.basicplayer.BasicPlayer;
+import jb_player.JBPlayer;
 
 import drop_panel.DropPanelsManager;
 import hot_keys.HotKeyManager;
@@ -37,7 +37,7 @@ public class Common {
 	static public MediaPlayer player = new MediaPlayer();
 	static public TorrentWindow torrent_window = new TorrentWindow();
 	static public NumberFormat formatter = new DecimalFormat("#0.00");
-	static public BasicPlayer bplayer;
+	static public JBPlayer bplayer;
 	
 	static public void Shutdown() {
 		_trash.close();
@@ -46,5 +46,6 @@ public class Common {
 		_refresher.close();
 		_library_dumper.close();
 		Errorist.close();
+		player.exit();
 	} 
 }
