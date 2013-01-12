@@ -31,7 +31,7 @@ import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 /** Threaded simple player class based on JavaSound API. */
 public class JBPlayer implements Runnable {
-    public static int EXTERNAL_BUFFER_SIZE = 16000;
+    public static int EXTERNAL_BUFFER_SIZE = 8192;
     protected Thread m_thread = null;
     
     protected Object m_dataSource;
@@ -95,8 +95,7 @@ public class JBPlayer implements Runnable {
                     if (m_audioInputStream instanceof PropertiesContainer)
                     	empty_map = ((PropertiesContainer) m_audioInputStream).properties();
                     else empty_map.clear();
-                    initCadrLength();
-                    sleep(1000);
+                    sleep(10);
     			break;
     			
     			case JBPlayerEvent.UNKNOWN : sleep(10); break;
@@ -542,11 +541,13 @@ public class JBPlayer implements Runnable {
     //////////////////////////////////////////////////////////      
     
     
-    protected void initCadrLength() {
-    	if (GetAFormat().getFrameSize() > 0 && GetAFormat().getFrameRate() > 0)
-    		EXTERNAL_BUFFER_SIZE = Math.round(GetAFormat().getFrameRate()) * GetAFormat().getFrameSize();
-    	else EXTERNAL_BUFFER_SIZE = 524288; // 128Kb //16000;
-    }
+//    protected void initCadrLength() {
+//    	log.info("**** cadr length ****");
+//    	if (GetAFormat().getFrameSize() > 0 && GetAFormat().getFrameRate() > 0)
+//    		EXTERNAL_BUFFER_SIZE = Math.round(GetAFormat().getFrameRate()) * GetAFormat().getFrameSize();
+//    	else EXTERNAL_BUFFER_SIZE = 524288; // 128Kb //16000;
+//    	log.info("**** cadr length ****");
+//    }
        
     private void sleep(long millis) {
         try { Thread.sleep(millis); }

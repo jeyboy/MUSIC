@@ -98,18 +98,24 @@ public class FileList extends JList<ListItem> {
     }	
 
 	/// Helper methods
-	
+
 	private int CheckRange(int index) {
+		if (index >= model.getSize()) index = (model.getSize() - 1);
+		return (index < 0) ? 0 : index;
+	}    
+    
+	private int InverseCheckRange(int index) {
 		if (index >= model.getSize()) index = 0;
 		return (index < 0) ? (model.getSize() - 1) : index;
 	}
 
 	public int CalcSelect(int curr, boolean next) {
-		int index = CheckRange(curr + (next ? 1 : -1));
+		int index = InverseCheckRange(curr + (next ? 1 : -1));
 		setSelectedIndex(index);
 		return index;
 	}	
 	
+	public void PlaySelectedOrFirst() 				{	SetPlayed(model.elementAt(CheckRange(GetPlayedIndex())));	}	
 	public int MoveSelect(int index, boolean next) 	{ 	return CalcSelect(index, next); }
 	public void MoveSelectAndInit(boolean next) 	{	SetPlayed(model.elementAt(MoveSelect(GetPlayedIndex(), next)));	}
 	public void DeleteSelectAndInit() {
@@ -121,7 +127,7 @@ public class FileList extends JList<ListItem> {
 		if (parent.options.delete_files)
 			Common._trash.AddElem(played.file, parent.options.delete_empty_folders);
 		model.remove(selected);
-		if ((selected = CheckRange(selected)) == -1) return;
+		if ((selected = InverseCheckRange(selected)) == -1) return;
 		ensureIndexIsVisible(selected);
 		SetPlayed(model.elementAt(selected));
 	}

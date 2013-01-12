@@ -135,7 +135,7 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 				}
 				else {
 					Common.raw_flag = true;
-					Common.tabber.MoveSelectAndInit(true);
+					Common.tabber.PlaySelectedOrFirst();
 				}
 				break;
 			case ActionObserver.STOP:

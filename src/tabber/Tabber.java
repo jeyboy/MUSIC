@@ -74,6 +74,11 @@ public class Tabber extends JTabbedPane {
 	//Move to the next elem from selected elem in selected tab
 	public void MoveSelectAndInit(Boolean next) {
 		GetTab(getSelectedIndex()).Files.MoveSelectAndInit(next);
+	}
+	
+	//Move to the next elem from selected elem in selected tab
+	public void PlaySelectedOrFirst() {
+		GetTab(getSelectedIndex()).Files.PlaySelectedOrFirst();
 	}	
 
 	/**
