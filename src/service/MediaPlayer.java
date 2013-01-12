@@ -102,8 +102,6 @@ public class MediaPlayer implements JBPlayerListener {
 //		properties.get("audio.length.bytes");
 //		properties.get("audio.channels");
 //		properties.get("audio.length.bytes");
-//		properties.get("mp3.length.bytes");
-//		properties.get("mp3.frequency.hz");
 //		properties.get("vbr");
 //		properties.get("bitrate");
 //		properties.get("author");

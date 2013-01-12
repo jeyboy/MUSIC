@@ -35,7 +35,7 @@ public class JBPlayer implements Runnable {
     protected Thread m_thread = null;
     
     protected Object m_dataSource;
-    protected AudioInputStream m_audioInputStream;    
+    protected AudioInputStream m_audioInputStream;
     protected AudioInputStream m_encodedaudioInputStream;
     
     protected SourceDataLine m_line;
@@ -49,9 +49,7 @@ public class JBPlayer implements Runnable {
     
     private boolean close_player = false;
     private int m_status = JBPlayerEvent.UNKNOWN;
-    private long audioPosition = -1;
     
-    private int m_lineCurrentBufferSize = -1;
     private int lineBufferSize = -1;
     private static Log log = LogFactory.getLog(JBPlayer.class);
 
@@ -77,16 +75,16 @@ public class JBPlayer implements Runnable {
 	                    try {
 	                        nBytesRead = m_audioInputStream.read(abData, 0, abData.length);
 	                        if (nBytesRead >= 0) {
-	                            m_line.write(abData, 0, nBytesRead);
+	                        	m_line.write(abData, 0, nBytesRead);
                             
 	                            for(JBPlayerListener bpl : m_listeners)
-	                            	bpl.progress(getEncodedStreamPosition(), m_line.getMicrosecondPosition(), abData, empty_map);
+	                            	bpl.progress(getStreamPosition(), m_line.getMicrosecondPosition(), abData, empty_map);
 	                        } 
-	                        else notifyEvent(JBPlayerEvent.EOM, getEncodedStreamPosition(), -1, null);
+	                        else notifyEvent(JBPlayerEvent.EOM, getStreamPosition(), -1, null);
 	                    }
 	                    catch (IOException e) {
 	                        log.error("Thread cannot run()", e);
-	                        notifyEvent(JBPlayerEvent.STOPPED, getEncodedStreamPosition(), -1, null);
+	                        notifyEvent(JBPlayerEvent.STOPPED, getStreamPosition(), -1, null);
 	                    }
     		        }
     				
@@ -96,14 +94,15 @@ public class JBPlayer implements Runnable {
     				closeStream();
     				break;
     			case JBPlayerEvent.SEEKING : break;    			
-    			case JBPlayerEvent.OPENED : 
-    				nBytesRead = 0;
+    			case JBPlayerEvent.OPENED :
                     if (m_audioInputStream instanceof PropertiesContainer)
                     	empty_map = ((PropertiesContainer) m_audioInputStream).properties();
-                    else empty_map.clear();      				
+                    else empty_map.clear();
+                    initCadrLength();
+                    sleep(1000);
     			break;
     			
-    			case JBPlayerEvent.UNKNOWN : sleep(1000); break;
+    			case JBPlayerEvent.UNKNOWN : sleep(10); break;
 				case JBPlayerEvent.PAUSED :
 					PauseLine();
 					sleep(1000);
@@ -154,9 +153,6 @@ public class JBPlayer implements Runnable {
      * @return -1 maximum buffer size.*/
     public int getLineBufferSize() { return lineBufferSize; }
     
-    /** Return SourceDataLine current buffer size. */
-    public int getLineCurrentBufferSize() { return m_lineCurrentBufferSize; }
-
     
     //////////////////////////////////////////////////////////
     // Streaming
@@ -186,7 +182,7 @@ public class JBPlayer implements Runnable {
     protected void initStream() throws JBPlayerException {
         try {
             reset();
-            notifyEvent(JBPlayerEvent.OPENING, getEncodedStreamPosition(), -1, m_dataSource);
+            notifyEvent(JBPlayerEvent.OPENING, getStreamPosition(), -1, m_dataSource);
             
             AudioFileFormat m_audioFileFormat;
             if (sourceIsURL())
@@ -222,7 +218,7 @@ public class JBPlayer implements Runnable {
             for(JBPlayerListener listener : m_listeners)
             	listener.opened(m_dataSource, properties);
             
-            notifyEvent(JBPlayerEvent.OPENED, getEncodedStreamPosition(), -1, null);
+            notifyEvent(JBPlayerEvent.OPENED, getStreamPosition(), -1, null);
         }
         catch (Exception e) 		{ throw new JBPlayerException(e); }
     }
@@ -234,6 +230,18 @@ public class JBPlayer implements Runnable {
             log.info("Stream closed");
         }
         catch (IOException e) { log.info("Cannot close stream", e); }
+    }
+    
+    /** return position in range 0..1000*/
+    protected int getStreamPosition() {
+        if (sourceIsFile()) {
+            try {
+                if (m_encodedaudioInputStream != null)
+                    return encodedLength - m_encodedaudioInputStream.available();
+            }
+            catch (IOException e) { }
+        }
+        return 0;    	
     }    
     
     /** Skip bytes in the File inputstream.
@@ -242,7 +250,7 @@ public class JBPlayer implements Runnable {
      * @return value>0 for File and value=0 for URL and InputStream
      * @throws JBPlayerException */
     protected long skipBytes(long bytes) throws Exception {
-    	bytes -= getEncodedStreamPosition();
+    	bytes -= getStreamPosition();
         long totalSkipped = 0;
         if (sourceIsFile()) {
             log.info("Bytes to skip : " + bytes);
@@ -250,8 +258,8 @@ public class JBPlayer implements Runnable {
             long skipped = 0;
             try {
             	pausePlayback();
-                synchronized (m_audioInputStream) {
-                    notifyEvent(JBPlayerEvent.SEEKING, getEncodedStreamPosition(), -1, null);
+//                synchronized (m_audioInputStream) {
+                    notifyEvent(JBPlayerEvent.SEEKING, getStreamPosition(), -1, null);
                     if (m_audioInputStream != null) {
                         while (true) {
                             skipped = m_audioInputStream.skip(bytes - totalSkipped);
@@ -260,9 +268,9 @@ public class JBPlayer implements Runnable {
                             if (totalSkipped == -1) throw new JBPlayerException(JBPlayerException.SKIPNOTSUPPORTED);
                         }
                     }
-                }
+//                }
                 
-                notifyEvent(JBPlayerEvent.SEEKED, getEncodedStreamPosition(), -1, null);
+                notifyEvent(JBPlayerEvent.SEEKED, getStreamPosition(), -1, null);
                 
                 startPlayback();
                 if (previousStatus == JBPlayerEvent.PAUSED)
@@ -355,7 +363,6 @@ public class JBPlayer implements Runnable {
             
             AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sourceFormat.getSampleRate(), nSampleSizeInBits, sourceFormat.getChannels(), sourceFormat.getChannels() * (nSampleSizeInBits / 8), sourceFormat.getSampleRate(), false);
             
-            // Keep a reference on encoded stream to progress notification.
             m_encodedaudioInputStream = m_audioInputStream;
             // Get total length in bytes of the encoded stream.
             try { encodedLength = m_encodedaudioInputStream.available(); }
@@ -382,8 +389,7 @@ public class JBPlayer implements Runnable {
     	if (m_line == null) return;
 
         AudioFormat audioFormat = m_audioInputStream.getFormat();
-        m_lineCurrentBufferSize = lineBufferSize <= 0 ? m_line.getBufferSize() : lineBufferSize;       
-        m_line.open(audioFormat, m_lineCurrentBufferSize);
+        m_line.open(audioFormat, m_line.getBufferSize());
                
         if (m_line.isControlSupported(FloatControl.Type.MASTER_GAIN))
             m_gainControl = (FloatControl) m_line.getControl(FloatControl.Type.MASTER_GAIN);
@@ -394,7 +400,6 @@ public class JBPlayer implements Runnable {
         if (m_line.isControlSupported(FloatControl.Type.VOLUME))
             m_panControl = (FloatControl) m_line.getControl(FloatControl.Type.VOLUME);        
         
-        log.info("Open Line : BufferSize=" + m_lineCurrentBufferSize);
         /*-- Display supported controls --*/
         for (Control c : m_line.getControls())
             log.debug("Controls : " + c.toString());       
@@ -408,7 +413,7 @@ public class JBPlayer implements Runnable {
     
     /** Stops the playback. */
     protected void stopPlayback() {
-        notifyEvent(JBPlayerEvent.STOPPED, getEncodedStreamPosition(), -1, null);
+        notifyEvent(JBPlayerEvent.STOPPED, getStreamPosition(), -1, null);
         log.info("stopPlayback() completed");
     }
 
@@ -418,7 +423,7 @@ public class JBPlayer implements Runnable {
             if (IsPlaying()) {
             	PauseLine();
                 log.info("pausePlayback() completed");
-                notifyEvent(JBPlayerEvent.PAUSED, getEncodedStreamPosition(), -1, null);
+                notifyEvent(JBPlayerEvent.PAUSED, getStreamPosition(), -1, null);
             }
         }
     }
@@ -429,19 +434,20 @@ public class JBPlayer implements Runnable {
             if (IsPaused()) {
                 m_line.start();
                 log.info("resumePlayback() completed");
-                notifyEvent(JBPlayerEvent.RESUMED, getEncodedStreamPosition(), -1, null);
+                notifyEvent(JBPlayerEvent.RESUMED, getStreamPosition(), -1, null);
             }
         }
     }
 
     /** Starts playback. */
     protected void startPlayback() throws JBPlayerException {
+    	log.info("********************** " + m_status);
     	switch(m_status) {
-    		case JBPlayerEvent.STOPPED: initStream(); break;
+    		case JBPlayerEvent.STOPPED:	initStream(); break;
     		case JBPlayerEvent.OPENED:
                 initLine();
                 m_line.start();
-                notifyEvent(JBPlayerEvent.PLAYING, getEncodedStreamPosition(), -1, null);   			
+                notifyEvent(JBPlayerEvent.PLAYING, getStreamPosition(), -1, null);   			
     	}
     }    
     
@@ -468,7 +474,7 @@ public class JBPlayer implements Runnable {
             double cste = Math.log(10.0) / 20;
             double valueDB = minGainDB + (1 / cste) * Math.log(1 + (Math.exp(cste * ampGainDB) - 1) * fGain);
             m_gainControl.setValue((float) valueDB);
-            notifyEvent(JBPlayerEvent.GAIN, getEncodedStreamPosition(), fGain, null);
+            notifyEvent(JBPlayerEvent.GAIN, getStreamPosition(), fGain, null);
         }
         else throw new JBPlayerException(JBPlayerException.GAINCONTROLNOTSUPPORTED);
     }
@@ -483,7 +489,7 @@ public class JBPlayer implements Runnable {
     public void setVolume(double fVolume) throws JBPlayerException {
         if (hasVolumeControl()) {
             m_volumeControl.setValue((float) fVolume);
-            notifyEvent(JBPlayerEvent.VOLUME, getEncodedStreamPosition(), fVolume, null);
+            notifyEvent(JBPlayerEvent.VOLUME, getStreamPosition(), fVolume, null);
         }
         else throw new JBPlayerException(JBPlayerException.GAINCONTROLNOTSUPPORTED);
     }
@@ -516,7 +522,7 @@ public class JBPlayer implements Runnable {
         if (hasPanControl()) {
             log.debug("Pan : " + fPan);
             m_panControl.setValue((float)fPan);
-            notifyEvent(JBPlayerEvent.PAN, getEncodedStreamPosition(), fPan, null);
+            notifyEvent(JBPlayerEvent.PAN, getStreamPosition(), fPan, null);
         }
         else throw new JBPlayerException(JBPlayerException.PANCONTROLNOTSUPPORTED);
     }
@@ -570,18 +576,12 @@ public class JBPlayer implements Runnable {
     //////////////////////////////////////////////////////////      
     
     
-    protected int getEncodedStreamPosition() {
-        int nEncodedBytes = -1;
-        if (m_dataSource instanceof File) {
-            try {
-                if (m_encodedaudioInputStream != null)
-                    nEncodedBytes = encodedLength - m_encodedaudioInputStream.available();
-            }
-            catch (IOException e) { log.debug("Cannot get m_encodedaudioInputStream.available()",e); }
-        }
-        return nEncodedBytes;
-    }    
-    
+    protected void initCadrLength() {
+    	if (GetAFormat().getFrameSize() > 0 && GetAFormat().getFrameRate() > 0)
+    		EXTERNAL_BUFFER_SIZE = Math.round(GetAFormat().getFrameRate()) * GetAFormat().getFrameSize();
+    	else EXTERNAL_BUFFER_SIZE = 524288; // 128Kb //16000;
+    }
+       
     private void sleep(long millis) {
         try { Thread.sleep(millis); }
         catch (InterruptedException e) { log.error("Thread cannot sleep(1000)", e); }     	
@@ -596,7 +596,7 @@ public class JBPlayer implements Runnable {
         
         m_audioInputStream = null;
         m_encodedaudioInputStream = null;
-        encodedLength = -1;
+        encodedLength = 0;
         m_gainControl = null;
         m_panControl = null;
     }    
