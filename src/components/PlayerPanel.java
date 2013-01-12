@@ -38,17 +38,17 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 		track.setUI(new SliderUI(track));
 		track.setValue(track.getMinimum());
 		
-//		track.addChangeListener(new ChangeListener() {
-//			public void stateChanged(ChangeEvent arg0) {
-//				if (track.getValueIsAdjusting())
-//					lock_track_update = true;
-//				else if (lock_track_update) {
-//					lock_track_update = false;
-//					Common.player.seek(track.getValue());
-//				}
-//			}
-//		});
-		track.setEnabled(false);
+		track.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if (track.getValueIsAdjusting())
+					lock_track_update = true;
+				else if (lock_track_update) {
+					Common.player.seek(track.getValue());
+					lock_track_update = false;
+				}
+			}
+		});
+//		track.setEnabled(false);
 		
 		volume.setUI(new SliderUI(volume));
 		volume.setPreferredSize(new Dimension(60, 20));

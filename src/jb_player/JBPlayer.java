@@ -102,7 +102,7 @@ public class JBPlayer implements Runnable {
     			case JBPlayerEvent.UNKNOWN : sleep(10); break;
 				case JBPlayerEvent.PAUSED :
 					PauseLine();
-					sleep(1000);
+					sleep(10);
 					break;
     		}
     }
@@ -394,24 +394,21 @@ public class JBPlayer implements Runnable {
 
     /** Pauses the playback. */
     protected void pausePlayback() {
-        if (m_line != null) {
+        if (m_line != null)
             if (IsPlaying()) {
-            	PauseLine();
                 log.info("pausePlayback() completed");
                 notifyEvent(JBPlayerEvent.PAUSED, getStreamPosition(), -1, null);
             }
-        }
     }
 
     /** Resumes the playback. */
     protected void resumePlayback() {
-        if (m_line != null) {
+        if (m_line != null)
             if (IsPaused()) {
                 m_line.start();
                 log.info("resumePlayback() completed");
                 notifyEvent(JBPlayerEvent.RESUMED, getStreamPosition(), -1, null);
             }
-        }
     }
 
     /** Starts playback. */
