@@ -358,9 +358,6 @@ public class JBPlayer implements Runnable {
     /** Opens the line. */
     protected void InitControls() throws LineUnavailableException {
     	if (m_line == null) return;
-
-        AudioFormat audioFormat = m_audioInputStream.getFormat();
-        m_line.open(audioFormat, m_line.getBufferSize());
                
         if (m_line.isControlSupported(FloatControl.Type.MASTER_GAIN))
             m_gainControl = (FloatControl) m_line.getControl(FloatControl.Type.MASTER_GAIN);
