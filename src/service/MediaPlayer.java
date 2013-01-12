@@ -78,12 +78,15 @@ public class MediaPlayer implements JBPlayerListener {
 	
 	void InitVolume() {
 		panel.blockVolume(player.hasVolumeControl());
-		if (player.hasVolumeControl()) {
+		if (player.hasVolumeControl())
 			panel.setVolumeRange((int)player.getMinimumVolume(), (int)player.getMaximumVolume());
-		}
 	}
 
 	public void setPanel(PlayerPanel p) { panel = p;}
+	public void setVolume(float volume) { 
+		try { player.setVolume(volume);}
+		catch (JBPlayerException e) { Errorist.printLog(e); }
+	}
 	public void opened(Object stream, Map properties) {
 		if (properties.containsKey("audio.length.bytes"))
 			byteLength = (long)properties.get("audio.length.bytes");
@@ -115,8 +118,8 @@ public class MediaPlayer implements JBPlayerListener {
 		}
 		else
 			duration = Math.round((float)(int)properties.get("audio.length.frames")/(float)properties.get("audio.framerate.fps") * 1000000);
-//		
-//		System.out.println("duration : " + duration);
+
+		InitVolume();
 		panel.setTrackMax(byteLength);
 	}
 	public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
@@ -128,8 +131,7 @@ public class MediaPlayer implements JBPlayerListener {
 			case JBPlayerEvent.PLAYING :
 		        System.out.println("playbackStarted()");				
 				break;
-			case JBPlayerEvent.STOPPED :
-		        System.out.println("playbackEnded()");
+			case JBPlayerEvent.EOM :
 		        panel.setTrackPosition(0);
 		        if (Common.raw_flag)
 		        	Common.tabber.MoveSelectAndInit(true);				
@@ -142,7 +144,7 @@ public class MediaPlayer implements JBPlayerListener {
 				break;
 			case JBPlayerEvent.VOLUME :
 				System.out.println("volume - value : " + event.getValue() + " - position : " + event.getPosition());
-				panel.setVolumePosition((int) Math.round(event.getValue() * 100));
+//				panel.setVolumePosition((int) Math.round(event.getValue() * 100));
 				break;				
 		}
 	}

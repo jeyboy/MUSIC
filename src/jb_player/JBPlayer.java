@@ -35,20 +35,17 @@ public class JBPlayer implements Runnable {
     protected Thread m_thread = null;
     
     protected Object m_dataSource;
-    protected AudioInputStream m_audioInputStream;
-    protected AudioInputStream m_encodedaudioInputStream;
+    protected AudioInputStream m_audioInputStream, m_encodedaudioInputStream;
     
     protected SourceDataLine m_line;
     protected AudioFormat audioFormat;
     
     protected int encodedLength = -1;
-    protected FloatControl m_gainControl;
-    protected FloatControl m_panControl;
-    protected FloatControl m_volumeControl;
+    protected FloatControl m_gainControl, m_panControl, m_volumeControl, m_sampleRateControl;
     protected String m_mixerName = null;
     
     private boolean close_player = false;
-    private int m_status = JBPlayerEvent.UNKNOWN;
+    private int m_status;
     
     private int lineBufferSize = -1;
     private static Log log = LogFactory.getLog(JBPlayer.class);
@@ -123,6 +120,7 @@ public class JBPlayer implements Runnable {
     	if (code < 6) m_status = code;
     	if (code == JBPlayerEvent.RESUMED) m_status = JBPlayerEvent.PLAYING;
     	if (code == JBPlayerEvent.SEEKED) m_status = JBPlayerEvent.OPENED;
+    	if (code == JBPlayerEvent.EOM) m_status = JBPlayerEvent.UNKNOWN;
         new JBPlayerEventLauncher(code, position, value, description, new Vector<>(m_listeners), this).start();
     }    
     
@@ -225,7 +223,7 @@ public class JBPlayer implements Runnable {
 
     protected void closeStream() {
         try {
-        	m_audioInputStream.close();
+      		m_audioInputStream.close();
         	m_status = JBPlayerEvent.UNKNOWN;
             log.info("Stream closed");
         }
@@ -286,34 +284,6 @@ public class JBPlayer implements Runnable {
     // DataLine
     //////////////////////////////////////////////////////////    
     
-    
-    /** Inits Audio ressources from AudioSystem.<br>
-     * @throws JBPlayerException */
-    protected void initLine() throws JBPlayerException {
-        log.info("initLine()");
-        
-        try {
-	        if (m_line == null) createLine();
-	        if (!m_line.isOpen())
-	            openLine();
-	        else {
-	            if (!LineIsCorrect()) {
-	            	log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!Formats not compatible");
-	                m_line.close();
-	                openLine();
-	            }
-	        }
-        }
-        catch (LineUnavailableException e) { throw new JBPlayerException(JBPlayerException.CANNOTINITLINE, e); }
-    }
-    
-    /** Check line format */ 
-    protected boolean LineIsCorrect() {
-        AudioFormat lineAudioFormat = m_line.getFormat();
-        AudioFormat audioInputStreamFormat = m_audioInputStream == null ? null : m_audioInputStream.getFormat();
-        return lineAudioFormat.equals(audioInputStreamFormat);    	
-    }
-
     /** Pause audio resources. */    
     protected void PauseLine() {
         if (m_line != null) {
@@ -350,7 +320,6 @@ public class JBPlayer implements Runnable {
      * care about the exact size. JavaSound will use some default
      * value for the buffer size. */
     protected void createLine() throws LineUnavailableException {
-        log.info("Create Line");
         if (m_line == null)
         {
             AudioFormat sourceFormat = m_audioInputStream.getFormat();
@@ -381,11 +350,14 @@ public class JBPlayer implements Runnable {
                 m_line = (SourceDataLine) AudioSystem.getLine(info);
                 m_mixerName = null;
             }
+            
+            m_line.open(audioFormat, m_line.getBufferSize());
+            InitControls();
         }
     }
 
     /** Opens the line. */
-    protected void openLine() throws LineUnavailableException {
+    protected void InitControls() throws LineUnavailableException {
     	if (m_line == null) return;
 
         AudioFormat audioFormat = m_audioInputStream.getFormat();
@@ -398,7 +370,10 @@ public class JBPlayer implements Runnable {
             m_panControl = (FloatControl) m_line.getControl(FloatControl.Type.PAN);
         
         if (m_line.isControlSupported(FloatControl.Type.VOLUME))
-            m_panControl = (FloatControl) m_line.getControl(FloatControl.Type.VOLUME);        
+            m_volumeControl = (FloatControl) m_line.getControl(FloatControl.Type.VOLUME);
+
+        if (m_line.isControlSupported(FloatControl.Type.SAMPLE_RATE))
+            m_sampleRateControl = (FloatControl) m_line.getControl(FloatControl.Type.SAMPLE_RATE);        
         
         /*-- Display supported controls --*/
         for (Control c : m_line.getControls())
@@ -441,11 +416,9 @@ public class JBPlayer implements Runnable {
 
     /** Starts playback. */
     protected void startPlayback() throws JBPlayerException {
-    	log.info("********************** " + m_status);
     	switch(m_status) {
     		case JBPlayerEvent.STOPPED:	initStream(); break;
     		case JBPlayerEvent.OPENED:
-                initLine();
                 m_line.start();
                 notifyEvent(JBPlayerEvent.PLAYING, getStreamPosition(), -1, null);   			
     	}
@@ -456,10 +429,9 @@ public class JBPlayer implements Runnable {
     // Controls
     //////////////////////////////////////////////////////////    
     
-
-    /** Returns true if Gain control is supported. */
+    
     public boolean hasGainControl() { return m_gainControl != null; }
-
+    
     /** Returns Gain value. */
     public float getGain() { return hasGainControl() ? m_gainControl.getValue() : 0f; }
 
@@ -491,7 +463,6 @@ public class JBPlayer implements Runnable {
             m_volumeControl.setValue((float) fVolume);
             notifyEvent(JBPlayerEvent.VOLUME, getStreamPosition(), fVolume, null);
         }
-        else throw new JBPlayerException(JBPlayerException.GAINCONTROLNOTSUPPORTED);
     }
     
     /** Gets max Volume value. */
@@ -534,8 +505,6 @@ public class JBPlayer implements Runnable {
     
     
     private void openObject(Object o) throws JBPlayerException {
-    	m_status = JBPlayerEvent.UNKNOWN;    	
-    	
         if (o != null) {
         	log.info("open(" + o + ")");
             m_dataSource = o;
@@ -590,15 +559,14 @@ public class JBPlayer implements Runnable {
     protected AudioFormat GetAFormat() { return audioFormat;}
     
     protected void reset() {
+    	m_status = JBPlayerEvent.UNKNOWN;
         if (m_audioInputStream != null)
             synchronized (m_audioInputStream) { closeStream(); }    	
     	CloseLine();
-        
-        m_audioInputStream = null;
-        m_encodedaudioInputStream = null;
-        encodedLength = 0;
-        m_gainControl = null;
-        m_panControl = null;
+
+    	encodedLength = 0;
+        m_audioInputStream = m_encodedaudioInputStream = null;
+        m_sampleRateControl = m_volumeControl = m_gainControl = m_panControl = null;
     }    
     
     public Vector<String> getMixers() {

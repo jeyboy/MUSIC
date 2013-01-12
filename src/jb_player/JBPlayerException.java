@@ -8,6 +8,7 @@ public class JBPlayerException extends Exception
 {
 	private static final long serialVersionUID = 6683735201675903447L;
 	public static final String GAINCONTROLNOTSUPPORTED = "Gain control not supported";
+	public static final String VOLUMECONTROLNOTSUPPORTED = "Volume control not supported";
     public static final String PANCONTROLNOTSUPPORTED = "Pan control not supported";
     public static final String WAITERROR = "Wait error";
     public static final String CANNOTINITLINE = "Cannot init line";

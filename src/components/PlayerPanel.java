@@ -36,22 +36,30 @@ public class PlayerPanel extends JPanel implements ActionObserver {
     	setBackground(Common.color_background);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		track.setUI(new SliderUI(track));
+		track.setValue(track.getMinimum());
 		
-		track.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				if (track.getValueIsAdjusting())
-					lock_track_update = true;
-				else if (lock_track_update) {
-					lock_track_update = false;
-//					System.out.println(track.getValue() + " : " + track.getMaximum());
-					Common.player.seek(track.getValue());
-				}
-			}
-		});
+//		track.addChangeListener(new ChangeListener() {
+//			public void stateChanged(ChangeEvent arg0) {
+//				if (track.getValueIsAdjusting())
+//					lock_track_update = true;
+//				else if (lock_track_update) {
+//					lock_track_update = false;
+//					Common.player.seek(track.getValue());
+//				}
+//			}
+//		});
+		track.setEnabled(false);
 		
 		volume.setUI(new SliderUI(volume));
 		volume.setPreferredSize(new Dimension(60, 20));
-		volume.setMaximumSize(new Dimension(120, 20));		
+		volume.setMaximumSize(new Dimension(120, 20));
+		
+		volume.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if (volume.getValueIsAdjusting()) 
+					Common.player.setVolume(track.getValue());
+			}
+		});		
 	}
 	
     public PlayerPanel() {
@@ -64,7 +72,7 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 			          Transferable data = evt.getTransferable();
 			          if (data.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 			              List<File> files = (List<File>) data.getTransferData(DataFlavor.javaFileListFlavor);
-			              for(File file:files) {
+			              for(File file : files) {
 			            	  if (!evt.isLocalTransfer())
 			            	  {
 			            		  //parse droped and add to active list
