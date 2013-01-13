@@ -91,6 +91,7 @@ public class JBPlayer implements Runnable {
     				
     				break;
     			case JBPlayerEvent.STOPPED :
+    				notifyEvent(JBPlayerEvent.STOPPED, getStreamProgress(), -1, null);
     				CloseLine();	
     				closeStream();
     				break;
@@ -253,25 +254,11 @@ public class JBPlayer implements Runnable {
     }
     
     protected int getStreamProgress() {
-    	if (m_line != null) {
-    		log.info(Math.round(process/duration * 1000) + " = " + process + " / " + duration);
+    	if (m_line != null)
     		return Math.round(process/duration * 1000);
-    	}
     	return 0;
     }       
     
-    
-//    /** return position*/
-//    protected int getStreamPosition() {
-//        if (sourceIsFile()) {
-//            try {
-//                if (m_encodedaudioInputStream != null)
-//                    return encodedLength - m_encodedaudioInputStream.available();
-//            }
-//            catch (IOException e) { }
-//        }
-//        return 0;    	
-//    }    
     
     /** Skip bytes in the File inputstream.
      * It will skip N frames matching to bytes, so it will never skip given bytes length exactly.
@@ -411,7 +398,7 @@ public class JBPlayer implements Runnable {
     
     /** Stops the playback. */
     protected void stopPlayback() {
-        notifyEvent(JBPlayerEvent.STOPPED, getStreamProgress(), -1, null);
+    	m_status = JBPlayerEvent.STOPPED;
         log.info("stopPlayback() completed");
     }
 

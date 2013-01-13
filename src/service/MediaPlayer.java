@@ -87,10 +87,10 @@ public class MediaPlayer implements JBPlayerListener {
 		catch (JBPlayerException e) { Errorist.printLog(e); }
 	}
 	public void opened(Object stream, Map properties) {		
-		System.out.println("properties : ");
-	    for (Object me : properties.entrySet()) {
-	        System.out.print("\t" + me);    	
-	    }
+//		System.out.println("properties : ");
+//	    for (Object me : properties.entrySet()) {
+//	        System.out.print("\t" + me);    	
+//	    }
 		
 //		properties.get("audio.framerate.fps");
 //		properties.get("audio.samplerate.hz");
@@ -113,9 +113,7 @@ public class MediaPlayer implements JBPlayerListener {
 	}
 	public void stateUpdated(JBPlayerEvent event) {
 		switch(event.getCode()) {
-			case JBPlayerEvent.PLAYING :
-		        System.out.println("playbackStarted()");				
-				break;
+			case JBPlayerEvent.PLAYING : break;
 			case JBPlayerEvent.EOM :
 		        panel.setTrackPosition(0);
 		        if (Common.raw_flag)
@@ -132,6 +130,7 @@ public class MediaPlayer implements JBPlayerListener {
 //				panel.setVolumePosition((int) Math.round(event.getValue() * 100));
 				break;
 			case JBPlayerEvent.STOPPED :
+				System.out.println("playbackStoped()");
 				panel.setTrackPosition(0);
 				panel.setDefaultTime();
 				break;
