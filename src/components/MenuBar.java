@@ -126,6 +126,7 @@ public class MenuBar extends JMenuBar {
 		for(int loop1 = 0; loop1 < actions.length; loop1++) {
 			ImageIcon n = Utils.GetIcon("menubar/" + actions[loop1].name + ".png");
 			final JMenuItem item = new JMenuItem(n);
+			item.setToolTipText(actions[loop1].name.replace('_', ' '));
 			item.setBackground(Common.color_background);
 			item.addActionListener(actions[loop1].action);
 			item.addMouseListener(new MouseListener() {

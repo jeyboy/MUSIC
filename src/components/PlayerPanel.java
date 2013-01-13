@@ -100,10 +100,6 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 		pause.setVisible(false);
 		this.add(pause);
 		
-		RoundButton curr = new RoundButton(Utils.GetIcon("player/shuffle.png"));
-		curr.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) { Common.tabber.GetCurrentTab().Shuffle(); } });
-		this.add(curr);
-		
 		this.add((time = new Label(def_time, 10, 0)));
 		this.add(new Label("", 20, 4));
 		this.add((track = new JSlider(0, 1000)));

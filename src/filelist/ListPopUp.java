@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import service.Common;
+import service.Utils;
+
 public class ListPopUp extends JPopupMenu {
 	private static final long serialVersionUID = -8544109534020676273L;
 
@@ -13,6 +16,7 @@ public class ListPopUp extends JPopupMenu {
 	
 	public void Initialize(FileList list) {
 		add(AddMenuItem(list, "Show current folder"));
+		add(AddShuffle(list, "Shuffle"));
 	}
 	
 	JMenuItem AddMenuItem(final FileList list, String text) {
@@ -28,6 +32,16 @@ public class ListPopUp extends JPopupMenu {
 	    		else i.OpenFolder();
 	        }
 	    });
+	    m.setIcon(Utils.GetIcon("popup/open.png"));
+	    return m;
+	}
+	
+	JMenuItem AddShuffle(final FileList list, String text) {
+	    JMenuItem m = new JMenuItem(text);
+	    m.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) { Common.tabber.GetCurrentTab().Shuffle(); }
+	    });
+	    m.setIcon(Utils.GetIcon("popup/shuffle.png"));
 	    return m;
 	}	
 }
