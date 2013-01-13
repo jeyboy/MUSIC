@@ -66,8 +66,8 @@ public class MediaPlayer implements JBPlayerListener {
     	}
     	catch(Exception e) { e.printStackTrace(); }
     }
-    public void seek(long bytes) {
-    	try { player.seek(bytes); }
+    public void seek(int percentage) {
+    	try { player.seek(percentage); }
     	catch(Exception e) { Errorist.printLog(e);}
     }
     public void exit() { player.exit(); }
@@ -104,7 +104,7 @@ public class MediaPlayer implements JBPlayerListener {
 		
 	    	
 	    duration = player.getDuration();
-	    panel.blockTrack(duration != 0);
+	    panel.unblockTrack(player.isTracking());
 		InitVolume();
 	}
 	public void progress(int progress, long microsecPos) {

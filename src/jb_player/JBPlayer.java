@@ -46,6 +46,7 @@ public class JBPlayer implements Runnable {
     
     private boolean close_player = false;
     private int m_status;
+    private int audioLength;
     
     private int lineBufferSize = -1;
     private static Log log = LogFactory.getLog(JBPlayer.class);
@@ -80,7 +81,7 @@ public class JBPlayer implements Runnable {
 	                        	last_millis = temp_millis;
                             
 	                            for(JBPlayerListener bpl : m_listeners)
-	                            	bpl.progress(getStreamProgress(), temp_millis);
+	                            	bpl.progress(getStreamProgress(), Math.round(getStreamProgress() * duration/1000));
 	                        } 
 	                        else notifyEvent(JBPlayerEvent.EOM, getStreamProgress(), -1, null);
 	                    }
@@ -236,6 +237,10 @@ public class JBPlayer implements Runnable {
     			duration = Math.round((float)(int)properties.get("audio.length.frames")/(float)properties.get("audio.framerate.fps") * 1000000);
     		
     		if (m_audioFileFormat.getType().getExtension() == "ape") duration *= 1000;
+    		
+    		audioLength = properties.containsKey(m_audioFileFormat.getType().getExtension() + ".length.bytes") ? 
+    				(int)properties.get(m_audioFileFormat.getType().getExtension() + ".length.bytes") :
+    				properties.containsKey("audio.length.bytes") ? (int)properties.get("audio.length.bytes") : 0; 
             
             for(JBPlayerListener listener : m_listeners)
             	listener.opened(m_dataSource, properties);
@@ -258,7 +263,11 @@ public class JBPlayer implements Runnable {
     	if (m_line != null)
     		return Math.round(process/duration * 1000);
     	return 0;
-    }       
+    }
+    
+    protected void recalcStreamProgress(int new_percentage) {
+    	process = duration * ((float)new_percentage/1000f);
+    }
     
     
     /** Skip bytes in the File inputstream.
@@ -266,36 +275,37 @@ public class JBPlayer implements Runnable {
      * @param percentage (0 ... 1000)
      * @return value>0 for File and value=0 for URL and InputStream
      * @throws JBPlayerException */
-    protected long skipBytes(long percentage) throws Exception {
-//    	bytes -= getStreamProgress();
-//        long totalSkipped = 0;
-//        if (sourceIsFile()) {
-//            int previousStatus = m_status;
-//            long skipped = 0;
-//            try {
-//            	pausePlayback();
-////                synchronized (m_audioInputStream) {
-//                    notifyEvent(JBPlayerEvent.SEEKING, getStreamProgress(), -1, null);
-//                    if (m_audioInputStream != null) {
-//                        while (true) {
-//                            skipped = m_audioInputStream.skip(bytes - totalSkipped);
-//                            if (skipped == 0) break;
-//                            totalSkipped = totalSkipped + skipped;
-//                            if (totalSkipped == -1) throw new JBPlayerException(JBPlayerException.SKIPNOTSUPPORTED);
-//                        }
-//                    }
-////                }
-//                
-//                notifyEvent(JBPlayerEvent.SEEKED, getStreamProgress(), -1, null);
-//                
-//                startPlayback();
-//                if (previousStatus == JBPlayerEvent.PAUSED)
-//                    pausePlayback();
-//            }
-//            catch (IOException e) { throw new JBPlayerException(e); }
-//        }
-//        return totalSkipped;
-    	return 0;
+    protected long seekStream(int percentage) throws Exception {
+    	long bytes = calsOffset(percentage);
+    	
+        long totalSkipped = 0;
+        if (sourceIsFile()) {
+            int previousStatus = m_status;
+            long skipped = 0;
+            try {
+            	pausePlayback();
+                synchronized (m_audioInputStream) {
+                    notifyEvent(JBPlayerEvent.SEEKING, getStreamProgress(), -1, null);
+                    if (m_audioInputStream != null) {
+                        while (true) {
+                            skipped = m_audioInputStream.skip(bytes - totalSkipped);
+                            if (skipped == 0) break;
+                            totalSkipped = totalSkipped + skipped;
+                            if (totalSkipped == -1) throw new JBPlayerException(JBPlayerException.SKIPNOTSUPPORTED);
+                        }
+                    }
+                }
+                
+                notifyEvent(JBPlayerEvent.SEEKED, getStreamProgress(), -1, null);
+                recalcStreamProgress(percentage);
+                
+                startPlayback();
+                if (previousStatus == JBPlayerEvent.PAUSED)
+                    pausePlayback();
+            }
+            catch (IOException e) { throw new JBPlayerException(e); }
+        }
+        return totalSkipped;
     }
     
     
@@ -438,6 +448,8 @@ public class JBPlayer implements Runnable {
     //////////////////////////////////////////////////////////    
     
     
+    public boolean isTracking() { return audioLength > 0 && sourceIsFile(); }
+    
     public boolean hasGainControl() { return m_gainControl != null; }
     
     /** Returns Gain value. */
@@ -531,7 +543,7 @@ public class JBPlayer implements Runnable {
 
     /** @throws Exception 
      * @see javazoom.jlgui.JBPlayer.BasicController#seek(long) */
-    public long seek(long bytes) throws Exception { return skipBytes(bytes); }
+    public long seek(int new_progress) throws Exception { return seekStream(new_progress); }
 
     /** @see javazoom.jlgui.JBPlayer.BasicController#play() */
     public void play() throws JBPlayerException { startPlayback(); }
@@ -560,6 +572,11 @@ public class JBPlayer implements Runnable {
 //    	else EXTERNAL_BUFFER_SIZE = 524288; // 128Kb //16000;
 //    	log.info("**** cadr length ****");
 //    }
+    
+    private long calsOffset(int movePercentage) {
+    	int perc_offset = (movePercentage - getStreamProgress());
+    	return Math.round(audioLength * ((float)perc_offset/1000f));
+    }
        
     private void sleep(long millis) {
         try { Thread.sleep(millis); }

@@ -115,7 +115,7 @@ public class PlayerPanel extends JPanel implements ActionObserver {
     	if (!lock_track_update)
     		track.setValue(curr_pos); 
     }
-    public void blockTrack(boolean block) { track.setEnabled(block); }
+    public void unblockTrack(boolean block) { track.setEnabled(block); }
     
     public void setVolumeRange(int min, int max) { volume.setMinimum(min); volume.setMaximum(max); }
     public void setVolumePosition(int curr_pos) { volume.setValue(curr_pos); }
