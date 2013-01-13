@@ -80,6 +80,12 @@ public class MenuBar extends JMenuBar {
 					    }
 					}
 				}),
+				new ActionBind("player", new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						Common.drop_manager.player_panel.setVisible(!Common.drop_manager.player_panel.isVisible());
+					}
+				}),				
 				new ActionBind("torrent", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						final JLabel pathLabel = new JLabel("Torrent not set");

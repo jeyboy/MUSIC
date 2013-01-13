@@ -53,33 +53,30 @@ public class MainWnd {
 		c.gridheight = 1; c.gridwidth = 3; c.gridy = 0; c.gridx = 1;
         gridbag.setConstraints(wnd.add(Common.drop_manager.player_panel), c);
         
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 2; c.gridx = 2;
+		c.gridheight = 1; c.gridwidth = 1; c.gridy = 1; c.gridx = 2;
         gridbag.setConstraints(wnd.add(Common.drop_manager.drop_top), c);        
         
         c.ipady = 35;
         
-		c.gridheight = 1; c.gridwidth = 3; c.gridy = 6; c.gridx = 1;
+		c.gridheight = 1; c.gridwidth = 3; c.gridy = 5; c.gridx = 1;
         gridbag.setConstraints(wnd.add(Common.drop_manager.drop_bottom), c);
         
         c.ipady = c.ipadx = 0;
       
 		c.gridheight = 5; c.gridwidth = 1; c.gridy = 1; c.gridx = 1; 
-		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_left), c);
-
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 1; c.gridx = 2;
-		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_player), c); 		
+		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_left), c);		
 		
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 3; c.gridx = 2;
+		c.gridheight = 1; c.gridwidth = 1; c.gridy = 2; c.gridx = 2;
 		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_top), c);                
         
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 5; c.gridx = 2;
+		c.gridheight = 1; c.gridwidth = 1; c.gridy = 4; c.gridx = 2;
 		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_bottom), c);
         
 		c.gridheight = 5; c.gridwidth = 1; c.gridy = 1; c.gridx = 3;
 		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_right), c); 
         
         
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 4; c.gridx = 2; c.weightx = c.weighty = 1;
+		c.gridheight = 1; c.gridwidth = 1; c.gridy = 3; c.gridx = 2; c.weightx = c.weighty = 1;
         gridbag.setConstraints(wnd.add(Common.tabber), c);
 	}
 	

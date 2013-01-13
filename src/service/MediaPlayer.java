@@ -113,10 +113,18 @@ public class MediaPlayer implements JBPlayerListener {
 	}
 	public void stateUpdated(JBPlayerEvent event) {
 		switch(event.getCode()) {
-			case JBPlayerEvent.PLAYING : break;
+			case JBPlayerEvent.PLAYING :
+				panel.playProc();
+				break;
+			case JBPlayerEvent.STOPPED :
+				panel.reset();
+				break;
+			case JBPlayerEvent.PAUSED :
+				panel.pauseProc();
+				break;				
 			case JBPlayerEvent.EOM :
 		        panel.setTrackPosition(0);
-		        if (Common.raw_flag)
+		        if (Common.raw_flag())
 		        	Common.tabber.MoveSelectAndInit(true);				
 				break;
 			case JBPlayerEvent.GAIN :
@@ -128,11 +136,6 @@ public class MediaPlayer implements JBPlayerListener {
 			case JBPlayerEvent.VOLUME :
 				System.out.println("volume - value : " + event.getValue() + " - position : " + event.getPosition());
 //				panel.setVolumePosition((int) Math.round(event.getValue() * 100));
-				break;
-			case JBPlayerEvent.STOPPED :
-				System.out.println("playbackStoped()");
-				panel.setTrackPosition(0);
-				panel.setDefaultTime();
 				break;
 		}
 	}

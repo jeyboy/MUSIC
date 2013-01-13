@@ -20,8 +20,10 @@ public class Common {
 	static public Color color_foreground = Color.white;
 	
 	static public boolean save_flag = false;
-	static public boolean raw_flag = false;
-	static public boolean rand_play_flag = false;
+	static public boolean raw_flag() {
+		try { return drop_manager.player_panel.isVisible(); }
+		catch(Exception e) { return false;}
+	}
 	
 	static public Tabber tabber;
 	static public NamesLibrary library = new NamesLibrary();

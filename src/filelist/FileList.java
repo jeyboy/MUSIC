@@ -39,7 +39,7 @@ public class FileList extends JList<ListItem> {
     }	
 	
 	public void SetPlayed(ListItem item) 
-	{
+	{	
 		if (played != null)
 			played.SetStatusUnPlayed();
 		

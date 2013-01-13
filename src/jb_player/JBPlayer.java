@@ -74,6 +74,7 @@ public class JBPlayer implements Runnable {
 	                        nBytesRead = m_audioInputStream.read(abData, 0, abData.length);
 	                        if (nBytesRead >= 0) {
 	                        	m_line.write(abData, 0, nBytesRead);
+	                        	
 	                        	temp_millis = m_line.getMicrosecondPosition();
 	                        	process += (temp_millis - last_millis); 
 	                        	last_millis = temp_millis;

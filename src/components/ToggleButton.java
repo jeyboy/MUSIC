@@ -28,7 +28,7 @@ public class ToggleButton extends RoundButton {
 		super(icon);
 		alt_image = alt_icon;
 		states = elem_states;
-		addActionListener(new ActionListener() {  public void actionPerformed(ActionEvent arg0) { Toggle();	} });
+		addActionListener(new ActionListener() {  public void actionPerformed(ActionEvent arg0) { ToggleWithNotify(); } });
 		if (observer != null) registerObserver(observer);
 	}
 	
@@ -37,6 +37,12 @@ public class ToggleButton extends RoundButton {
 		setIcon(alt_image);
 		alt_image = temp;
 		default_value = !default_value;
-		notifyListeners();
 	}
+	
+	public void ToggleWithNotify() {
+		Toggle();
+		notifyListeners();
+	}	
+	
+	public boolean IsDefaultState() { return default_value; }
 }

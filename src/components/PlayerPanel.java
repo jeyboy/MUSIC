@@ -33,6 +33,7 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 	boolean lock_track_update = false;
 	
 	public void GUI() {
+		setVisible(false);
     	setBackground(Common.color_background);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		track.setUI(new SliderUI(track));
@@ -113,6 +114,12 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 		Common.player.setPanel(this);
     }
     
+    public void reset() {
+		setTrackPosition(0);
+		setDefaultTime();
+		pause.setVisible(false);
+    }
+    
     public void setTrackMax(long length) { track.setMaximum((int) length); }
     public void setTrackPosition(int curr_pos) {
     	if (!lock_track_update)
@@ -126,32 +133,34 @@ public class PlayerPanel extends JPanel implements ActionObserver {
     
     public void setTime(String current_time) { time.setText(current_time); }
     public void setDefaultTime() { time.setText(def_time); }
-
+    
+    public void playProc() {
+    	if (play.IsDefaultState())
+    		play.Toggle();
+		if (Common.player.isPaused())
+			play.setVisible(true);
+		
+		pause.setVisible(true);
+    }
+    public void pauseProc() { play.setVisible(true); }    
+    
+    
 	@Override
 	public void notify(int state) {
 		switch(state) {
 			case ActionObserver.PLAY:
-				if (Common.player.isPaused()) { 
+				if (Common.player.isPaused()) 
 					Common.player.resume();
-					play.setVisible(true);
-				}
-				else {
-					Common.raw_flag = true;
+				else
 					Common.tabber.PlaySelectedOrFirst();
-				}
 				break;
 			case ActionObserver.STOP:
-				Common.raw_flag = false;
 				Common.player.stop();
-				setTrackPosition(0);
-				setDefaultTime();
+				reset();
 				break;
 			case ActionObserver.PAUSE:
 				Common.player.pause();
-				play.setVisible(false);
 				break;			
 		}
-		
-		pause.setVisible(Common.raw_flag);
 	}    
 }

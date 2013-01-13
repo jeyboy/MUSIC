@@ -63,10 +63,12 @@ public class ListItem {
 	public String toString() { return title; }
 	
 	public void Exec() {
-		if (Common.raw_flag) InnerExec();
+		if (Common.raw_flag()) InnerExec();
 		else {
-			if (IOOperations.open(file))
+			if (IOOperations.open(file)) {
 				SetStatusListened();
+				Common.drop_manager.player_panel.setVisible(false);
+			}
 			else
 				InnerExec(); 
 		}
@@ -76,6 +78,7 @@ public class ListItem {
 		try {
 			Common.player.play(file);
 			SetStatusListened();
+			Common.drop_manager.player_panel.setVisible(true);
 		}
 		
 		catch (Exception e2) { 
