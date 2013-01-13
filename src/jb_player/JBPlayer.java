@@ -46,7 +46,7 @@ public class JBPlayer implements Runnable {
     
     private boolean close_player = false;
     private int m_status;
-    private int audioLength;
+    private long audioLength;
     
     private int lineBufferSize = -1;
     private static Log log = LogFactory.getLog(JBPlayer.class);
@@ -238,9 +238,7 @@ public class JBPlayer implements Runnable {
     		
     		if (m_audioFileFormat.getType().getExtension() == "ape") duration *= 1000;
     		
-    		audioLength = properties.containsKey(m_audioFileFormat.getType().getExtension() + ".length.bytes") ? 
-    				(int)properties.get(m_audioFileFormat.getType().getExtension() + ".length.bytes") :
-    				properties.containsKey("audio.length.bytes") ? (int)properties.get("audio.length.bytes") : 0; 
+    		initAudioLength(properties, m_audioFileFormat.getType().getExtension());
             
             for(JBPlayerListener listener : m_listeners)
             	listener.opened(m_dataSource, properties);
@@ -248,6 +246,15 @@ public class JBPlayer implements Runnable {
             notifyEvent(JBPlayerEvent.OPENED, 0, -1, null);
         }
         catch (Exception e) 		{ throw new JBPlayerException(e); }
+    }
+    
+    protected void initAudioLength(Map properties, String format) {
+    	Object o = properties.get(format + ".length.bytes");
+    	if (o == null)	o = properties.get("audio.length.bytes");    	
+		if (o != null) {
+    		if (o instanceof Long) audioLength = (Long) o;
+    		else audioLength = (Integer) o;    			
+		}
     }
 
     protected void closeStream() {

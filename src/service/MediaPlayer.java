@@ -140,35 +140,3 @@ public class MediaPlayer implements JBPlayerListener {
 		}
 	}
 }
-
-//protected void processSeek(double rate)
-//{
-//    try
-//    {
-//        if ((audioInfo != null) && (audioInfo.containsKey("audio.type")))
-//        {
-//            String type = (String) audioInfo.get("audio.type");
-//            // Seek support for MP3.
-//            if ((type.equalsIgnoreCase("mp3")) && (audioInfo.containsKey("audio.length.bytes")))
-//            {
-//                long skipBytes = (long) Math.round(((Integer) audioInfo.get("audio.length.bytes")).intValue() * rate);
-//                log.debug("Seek value (MP3) : " + skipBytes);
-//                theSoundPlayer.seek(skipBytes);
-//            }
-//            // Seek support for WAV.
-//            else if ((type.equalsIgnoreCase("wave")) && (audioInfo.containsKey("audio.length.bytes")))
-//            {
-//                long skipBytes = (long) Math.round(((Integer) audioInfo.get("audio.length.bytes")).intValue() * rate);
-//                log.debug("Seek value (WAVE) : " + skipBytes);
-//                theSoundPlayer.seek(skipBytes);
-//            }
-//            else posValueJump = false;
-//        }
-//        else posValueJump = false;
-//    }
-//    catch (BasicPlayerException ioe)
-//    {
-//        log.error("Cannot skip", ioe);
-//        posValueJump = false;
-//    }
-//}
