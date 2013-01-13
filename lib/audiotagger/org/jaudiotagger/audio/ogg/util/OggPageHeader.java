@@ -21,6 +21,7 @@ package org.jaudiotagger.audio.ogg.util;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.logging.ErrorMessage;
+import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -33,7 +34,7 @@ import java.nio.ByteBuffer;
 
 
 /**
- * $Id: OggPageHeader.java 822 2009-10-27 08:52:55Z paultaylor $
+ * $Id: OggPageHeader.java 965 2011-04-28 11:34:43Z paultaylor $
  * <p/>
  * reference:http://xiph.org/ogg/doc/framing.html
  *
@@ -100,6 +101,7 @@ public class OggPageHeader
     private List<PacketStartAndLength> packetList = new ArrayList<PacketStartAndLength>();
     private boolean lastPacketIncomplete = false;
 
+    private long startByte = 0;
     /**
      * Read next PageHeader from Buffer
      *
@@ -149,7 +151,21 @@ public class OggPageHeader
         raf.read(b);
         if (!(Arrays.equals(b, OggPageHeader.CAPTURE_PATTERN)))
         {
-            throw new CannotReadException(ErrorMessage.OGG_HEADER_CANNOT_BE_FOUND.getMsg(new String(b)));
+            raf.seek(start);
+            if(AbstractID3v2Tag.isId3Tag(raf))
+            {
+                logger.warning(ErrorMessage.OGG_CONTAINS_ID3TAG.getMsg(raf.getFilePointer() - start));
+                raf.read(b);
+                if ((Arrays.equals(b, OggPageHeader.CAPTURE_PATTERN)))
+                {
+                    //Go to the end of the ID3 header
+                    start=raf.getFilePointer() - OggPageHeader.CAPTURE_PATTERN.length;
+                }
+            }
+            else
+            {
+                throw new CannotReadException(ErrorMessage.OGG_HEADER_CANNOT_BE_FOUND.getMsg(new String(b)));
+            }
         }
 
         raf.seek(start + OggPageHeader.FIELD_PAGE_SEGMENTS_POS);
@@ -161,7 +177,7 @@ public class OggPageHeader
 
 
         OggPageHeader pageHeader = new OggPageHeader(b);
-
+        pageHeader.setStartByte(start);
         //Now just after PageHeader, ready for Packet Data
         return pageHeader;
     }
@@ -303,6 +319,21 @@ public class OggPageHeader
             out += packet.toString();
         }
         return out;
+    }
+
+    /** Startbyte of this pageHeader in the file
+     *
+     * This is useful for Ogg files that contain unsupported additional data at the start of the file such
+     * as ID3 data
+     */
+    public long getStartByte()
+    {
+        return startByte;
+    }
+
+    public void setStartByte(long startByte)
+    {
+        this.startByte = startByte;
     }
 
     /**

@@ -26,7 +26,7 @@ import java.util.EnumMap;
  * ID3v23Tag
  *
  * @author Paul Taylor
- * @version $Id: ID3v23Frames.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: ID3v23Frames.java 1007 2011-09-26 12:18:47Z paultaylor $
  */
 public class ID3v23Frames extends ID3Frames
 {
@@ -391,6 +391,7 @@ public class ID3v23Frames extends ID3Frames
         tagFieldToId3.put(FieldKey.MOOD,ID3v23FieldKey.MOOD);
         tagFieldToId3.put(FieldKey.MUSICBRAINZ_ARTISTID, ID3v23FieldKey.MUSICBRAINZ_ARTISTID);
         tagFieldToId3.put(FieldKey.MUSICBRAINZ_DISC_ID, ID3v23FieldKey.MUSICBRAINZ_DISC_ID);
+        tagFieldToId3.put(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID, ID3v23FieldKey.MUSICBRAINZ_ORIGINAL_RELEASEID);
         tagFieldToId3.put(FieldKey.MUSICBRAINZ_RELEASEARTISTID, ID3v23FieldKey.MUSICBRAINZ_RELEASEARTISTID);
         tagFieldToId3.put(FieldKey.MUSICBRAINZ_RELEASEID, ID3v23FieldKey.MUSICBRAINZ_RELEASEID);
         tagFieldToId3.put(FieldKey.MUSICBRAINZ_RELEASE_COUNTRY, ID3v23FieldKey.MUSICBRAINZ_RELEASE_COUNTRY);
@@ -429,6 +430,10 @@ public class ID3v23Frames extends ID3Frames
         tagFieldToId3.put(FieldKey.MIXER, ID3v23FieldKey.MIXER);
         tagFieldToId3.put(FieldKey.DJMIXER, ID3v23FieldKey.DJMIXER);
         tagFieldToId3.put(FieldKey.ARRANGER, ID3v23FieldKey.ARRANGER);
+        tagFieldToId3.put(FieldKey.ARTISTS, ID3v23FieldKey.ARTISTS);
+        tagFieldToId3.put(FieldKey.ACOUSTID_FINGERPRINT, ID3v23FieldKey.ACOUSTID_FINGERPRINT);
+        tagFieldToId3.put(FieldKey.ACOUSTID_ID, ID3v23FieldKey.ACOUSTID_ID);
+        tagFieldToId3.put(FieldKey.COUNTRY, ID3v23FieldKey.COUNTRY);
     }
 
 

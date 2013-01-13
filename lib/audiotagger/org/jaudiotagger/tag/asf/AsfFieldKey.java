@@ -64,7 +64,8 @@ public enum AsfFieldKey
     ALBUM_ARTIST_SORT("WM/AlbumArtistSortOrder", false),
     ALBUM_SORT("WM/AlbumSortOrder", false),
     AMAZON_ID("ASIN", false),
-    ARTIST_SORT("WM/ArtistSortOrder", false),           
+    ARTIST_SORT("WM/ArtistSortOrder", false),
+    ARTISTS("WM/ARTISTS", true),
     BARCODE("WM/Barcode", false),
     BPM("WM/BeatsPerMinute", false),
     CATALOG_NO("WM/CatalogNo", false),
@@ -100,6 +101,7 @@ public enum AsfFieldKey
     MOOD("WM/Mood", true),
     MUSICBRAINZ_ARTISTID("MusicBrainz/Artist Id", false),
     MUSICBRAINZ_DISC_ID("MusicBrainz/Disc Id", false),
+    MUSICBRAINZ_ORIGINAL_RELEASEID("MusicBrainz/Original Album Id", false),
     MUSICBRAINZ_RELEASE_COUNTRY("MusicBrainz/Album Release Country", false),
     MUSICBRAINZ_RELEASE_STATUS("MusicBrainz/Album Status", false),
     MUSICBRAINZ_RELEASE_TYPE("MusicBrainz/Album Type", false),
@@ -109,6 +111,9 @@ public enum AsfFieldKey
     MUSICBRAINZ_TRACK_ID("MusicBrainz/Track Id", false),
     MUSICBRAINZ_WORKID("MusicBrainz/Work Id", false),
     MUSICIP_ID("MusicIP/PUID", false),
+    ACOUSTID_FINGERPRINT("Acoustid/Fingerprint", false),
+    ACOUSTID_FINGERPRINT_OLD("AcoustId/Fingerprint", false),
+    ACOUSTID_ID("Acoustid/Id", false),
     OCCASION("Occasion", true),
     ORIGINAL_ALBUM("WM/OriginalAlbumTitle", true),
     ORIGINAL_ARTIST("WM/OriginalArtist", true),
@@ -116,6 +121,7 @@ public enum AsfFieldKey
     ORIGINAL_YEAR("WM/OriginalReleaseYear", true),
     PRODUCER("WM/Producer", false),
     QUALITY("Quality", true),
+    USER_RATING("WM/SharedUserRating", true),
     MM_RATING("SDB/Rating", true),
     RECORD_LABEL("WM/Publisher", false),
     REMIXER("WM/ModifiedBy", false),
@@ -140,6 +146,7 @@ public enum AsfFieldKey
     DJMIXER("WM/DJMixer",false),
     MIXER("WM/Mixer",false),
     ARRANGER("WM/Arranger",false),
+    COUNTRY("WM/Country", false),
 
     // Special field for all unknown field names, which will getFields maximum support
     CUSTOM ("___CUSTOM___", true);

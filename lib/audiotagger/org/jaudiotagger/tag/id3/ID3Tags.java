@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: ID3Tags.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: ID3Tags.java 919 2010-10-04 13:46:39Z paultaylor $
  */
 public class ID3Tags
 {

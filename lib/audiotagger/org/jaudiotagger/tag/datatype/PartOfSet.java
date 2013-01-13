@@ -98,7 +98,7 @@ public class PartOfSet extends AbstractString
 
         //SetSize, important this is correct for finding the next datatype
         setSize(arr.length - offset);
-        logger.info("Read SizeTerminatedString:" + value + " size:" + size);
+        logger.config("Read SizeTerminatedString:" + value + " size:" + size);
     }
 
     /**
@@ -130,7 +130,7 @@ public class PartOfSet extends AbstractString
             String charSetName = getTextEncodingCharSet();
             if (charSetName.equals(TextEncoding.CHARSET_UTF_16))
             {
-                charSetName = TextEncoding.CHARSET_UTF_16_ENCODING_FORMAT;
+                charSetName = TextEncoding.CHARSET_UTF_16_LE_ENCODING_FORMAT;
                 CharsetEncoder encoder = Charset.forName(charSetName).newEncoder();
                 //Note remember LE BOM is ff fe but this is handled by encoder Unicode char is fe ff
                 ByteBuffer bb = encoder.encode(CharBuffer.wrap('\ufeff' +  value));
@@ -202,21 +202,28 @@ public class PartOfSet extends AbstractString
          */
         public PartOfSetValue(String value)
         {
-            
-            Matcher m = trackNoPatternWithTotalCount.matcher(value);
-            if (m.matches())
+            try
             {
-                this.count = Integer.parseInt(m.group(1));
-                this.total = Integer.parseInt(m.group(2));
-                this.extra = m.group(3);
-                return;
-            }
+                Matcher m = trackNoPatternWithTotalCount.matcher(value);
+                if (m.matches())
+                {
+                    this.extra = m.group(3);
+                    this.count = Integer.parseInt(m.group(1));
+                    this.total = Integer.parseInt(m.group(2));
+                    return;
+                }
 
-            m = trackNoPattern.matcher(value);
-            if (m.matches())
+                m = trackNoPattern.matcher(value);
+                if (m.matches())
+                {
+                    this.extra = m.group(2);
+                    this.count = Integer.parseInt(m.group(1));
+                }
+            }
+            catch(NumberFormatException nfe)
             {
-                this.count = Integer.parseInt(m.group(1));
-                this.extra = m.group(2);
+                //#JAUDIOTAGGER-366 Could occur if actually value is a long not an int
+                this.count = 0;
             }
         }
 

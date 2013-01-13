@@ -25,7 +25,7 @@ public interface JBPlayerListener {
      * @param microseconds elapsed (<b>reseted after a seek !</b>).
      * @param pcmdata PCM samples.
      * @param properties audio stream parameters. */
-    public void progress(int bytesread, long microseconds, byte[] pcmdata, Map<?, ?> properties);
+    public void progress(int progress, long microsecPos);
 
     /** Notification callback for basicplayer events such as opened, eom ...
      *  

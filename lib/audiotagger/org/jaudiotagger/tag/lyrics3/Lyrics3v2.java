@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: Lyrics3v2.java 836 2009-11-12 15:44:07Z paultaylor $
+ *  Version @version:$Id: Lyrics3v2.java 976 2011-06-08 10:05:34Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -441,9 +441,9 @@ public class Lyrics3v2 extends AbstractLyrics3
 
         if (this.getSize() != size)
         {
-            //logger.info("Lyrics3v2 size didn't match up while writing.");
-            //logger.info("this.getsize()     = " + this.getSize());
-            //logger.info("size (filePointer) = " + size);
+            //logger.config("Lyrics3v2 size didn't match up while writing.");
+            //logger.config("this.getsize()     = " + this.getSize());
+            //logger.config("size (filePointer) = " + size);
         }
 
         str = Long.toString(size);

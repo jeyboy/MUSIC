@@ -302,7 +302,7 @@ public abstract class AudioFileWriter
     // but would impose a performance overhead if the original file is on a networked drive
     public synchronized void write(AudioFile af) throws CannotWriteException
     {
-        logger.info("Started writing tag data for file:" + af.getFile().getName());
+        logger.config("Started writing tag data for file:" + af.getFile().getName());
 
         // Prechecks
         precheckWrite(af);
@@ -494,6 +494,11 @@ public abstract class AudioFileWriter
                 logger
                         .log(Level.SEVERE, ErrorMessage.GENERAL_WRITE_FAILED_TO_RENAME_ORIGINAL_FILE_TO_BACKUP
                                 .getMsg(af.getFile().getAbsolutePath(), originalFileBackup.getName()));
+                //Delete the temp file because write has failed
+                if(newFile!=null)
+                {
+                    newFile.delete();
+                }
                 throw new CannotWriteException(ErrorMessage.GENERAL_WRITE_FAILED_TO_RENAME_ORIGINAL_FILE_TO_BACKUP
                         .getMsg(af.getFile().getPath(), originalFileBackup.getName()));
             }

@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: AbstractID3Tag.java 836 2009-11-12 15:44:07Z paultaylor $
+ *  Version @version:$Id: AbstractID3Tag.java 973 2011-06-07 13:51:31Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -58,6 +58,7 @@ public abstract class AbstractID3Tag extends AbstractTag
 
     /**
      * Retrieve the Release
+     *
      * @return
      */
     public abstract byte getRelease();
@@ -65,12 +66,14 @@ public abstract class AbstractID3Tag extends AbstractTag
 
     /**
      * Retrieve the Major Version
+     *
      * @return
      */
     public abstract byte getMajorVersion();
 
     /**
      * Retrieve the Revision
+     *
      * @return
      */
     public abstract byte getRevision();
@@ -81,10 +84,7 @@ public abstract class AbstractID3Tag extends AbstractTag
         super(copyObject);
     }
 
-    public String toString()
-    {
-        return "";
-    }
+
 
     /**
      * Retrieve the logging filename to be used in debugging

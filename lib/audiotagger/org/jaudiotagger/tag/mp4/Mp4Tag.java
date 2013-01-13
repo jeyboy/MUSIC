@@ -22,10 +22,11 @@ import org.jaudiotagger.audio.generic.AbstractTag;
 import org.jaudiotagger.audio.mp4.atom.Mp4BoxHeader;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.*;
-import org.jaudiotagger.tag.datatype.Artwork;
+import org.jaudiotagger.tag.images.Artwork;
 import static org.jaudiotagger.tag.mp4.Mp4FieldKey.*;
+
+import org.jaudiotagger.tag.images.ArtworkFactory;
 import org.jaudiotagger.tag.mp4.field.*;
-import org.jaudiotagger.tag.vorbiscomment.VorbisCommentFieldKey;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -50,6 +51,7 @@ public class Mp4Tag extends AbstractTag
         tagFieldToMp4Field.put(FieldKey.AMAZON_ID, Mp4FieldKey.ASIN);
         tagFieldToMp4Field.put(FieldKey.ARTIST, Mp4FieldKey.ARTIST);
         tagFieldToMp4Field.put(FieldKey.ARTIST_SORT, Mp4FieldKey.ARTIST_SORT);
+        tagFieldToMp4Field.put(FieldKey.ARTISTS, Mp4FieldKey.ARTISTS);
         tagFieldToMp4Field.put(FieldKey.BARCODE, Mp4FieldKey.BARCODE);
         tagFieldToMp4Field.put(FieldKey.BPM, Mp4FieldKey.BPM);
         tagFieldToMp4Field.put(FieldKey.CATALOG_NO, Mp4FieldKey.CATALOGNO);
@@ -79,6 +81,7 @@ public class Mp4Tag extends AbstractTag
         tagFieldToMp4Field.put(FieldKey.MOOD, Mp4FieldKey.MOOD);
         tagFieldToMp4Field.put(FieldKey.MUSICBRAINZ_ARTISTID, Mp4FieldKey.MUSICBRAINZ_ARTISTID);
         tagFieldToMp4Field.put(FieldKey.MUSICBRAINZ_DISC_ID, Mp4FieldKey.MUSICBRAINZ_DISCID);
+        tagFieldToMp4Field.put(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID, Mp4FieldKey.MUSICBRAINZ_ORIGINALALBUMID);
         tagFieldToMp4Field.put(FieldKey.MUSICBRAINZ_RELEASEARTISTID, Mp4FieldKey.MUSICBRAINZ_ALBUMARTISTID);
         tagFieldToMp4Field.put(FieldKey.MUSICBRAINZ_RELEASEID, Mp4FieldKey.MUSICBRAINZ_ALBUMID);
         tagFieldToMp4Field.put(FieldKey.MUSICBRAINZ_RELEASE_COUNTRY, Mp4FieldKey.RELEASECOUNTRY);
@@ -88,12 +91,12 @@ public class Mp4Tag extends AbstractTag
         tagFieldToMp4Field.put(FieldKey.MUSICBRAINZ_TRACK_ID, Mp4FieldKey.MUSICBRAINZ_TRACKID);
         tagFieldToMp4Field.put(FieldKey.MUSICBRAINZ_WORK_ID, Mp4FieldKey.MUSICBRAINZ_WORKID);
         tagFieldToMp4Field.put(FieldKey.MUSICIP_ID, Mp4FieldKey.MUSICIP_PUID);
-        tagFieldToMp4Field.put(FieldKey.OCCASION, Mp4FieldKey.OCCASION);
+        tagFieldToMp4Field.put(FieldKey.OCCASION, Mp4FieldKey.MM_OCCASION);
         tagFieldToMp4Field.put(FieldKey.ORIGINAL_ALBUM, Mp4FieldKey.MM_ORIGINAL_ALBUM_TITLE);
         tagFieldToMp4Field.put(FieldKey.ORIGINAL_ARTIST, Mp4FieldKey.MM_ORIGINAL_ARTIST);
         tagFieldToMp4Field.put(FieldKey.ORIGINAL_LYRICIST, Mp4FieldKey.MM_ORIGINAL_LYRICIST);
         tagFieldToMp4Field.put(FieldKey.ORIGINAL_YEAR, Mp4FieldKey.MM_ORIGINAL_YEAR);
-        tagFieldToMp4Field.put(FieldKey.QUALITY, Mp4FieldKey.QUALITY);
+        tagFieldToMp4Field.put(FieldKey.QUALITY, Mp4FieldKey.MM_QUALITY);
         tagFieldToMp4Field.put(FieldKey.RATING, Mp4FieldKey.SCORE);
         tagFieldToMp4Field.put(FieldKey.RECORD_LABEL, Mp4FieldKey.LABEL);
         tagFieldToMp4Field.put(FieldKey.REMIXER, Mp4FieldKey.REMIXER);
@@ -117,6 +120,9 @@ public class Mp4Tag extends AbstractTag
         tagFieldToMp4Field.put(FieldKey.DJMIXER, Mp4FieldKey.DJMIXER);
         tagFieldToMp4Field.put(FieldKey.MIXER, Mp4FieldKey.MIXER);
         tagFieldToMp4Field.put(FieldKey.ARRANGER, Mp4FieldKey.ARRANGER);
+        tagFieldToMp4Field.put(FieldKey.ACOUSTID_FINGERPRINT, Mp4FieldKey.ACOUSTID_FINGERPRINT);
+        tagFieldToMp4Field.put(FieldKey.ACOUSTID_ID, Mp4FieldKey.ACOUSTID_ID);
+        tagFieldToMp4Field.put(FieldKey.COUNTRY, Mp4FieldKey.COUNTRY);
     }
 
     /**
@@ -135,6 +141,13 @@ public class Mp4Tag extends AbstractTag
         {
             throw new IllegalArgumentException(ErrorMessage.GENERAL_INVALID_NULL_ARGUMENT.getMsg());
         }
+
+        //Always write as text
+        if(TagOptionSingleton.getInstance().isWriteMp4GenresAsText())
+        {
+            return new Mp4TagTextField(GENRE_CUSTOM.getFieldName(), content);
+        }
+
         if (Mp4GenreField.isValidGenre(content))
         {
             return new Mp4GenreField(content);
@@ -155,6 +168,26 @@ public class Mp4Tag extends AbstractTag
         return "Mpeg4 " + super.toString();
     }
 
+    /**
+     *
+     * @param genericKey
+     * @return
+     */
+    public boolean hasField(FieldKey genericKey)
+    {
+        Mp4FieldKey mp4FieldKey = tagFieldToMp4Field.get(genericKey);
+        return getFields(mp4FieldKey.getFieldName()).size() != 0;
+    }
+
+    /**
+     *
+     * @param mp4FieldKey
+     * @return
+     */
+    public boolean hasField(Mp4FieldKey mp4FieldKey)
+    {
+        return getFields(mp4FieldKey.getFieldName()).size() != 0;
+    }
 
     /**
      * Maps the generic key to the mp4 key and return the list of values for this field
@@ -578,7 +611,7 @@ public class Mp4Tag extends AbstractTag
         for(TagField next:coverartList)
         {
             Mp4TagCoverField mp4CoverArt = (Mp4TagCoverField)next;
-            Artwork artwork = new Artwork();
+            Artwork artwork = ArtworkFactory.getNew();
             artwork.setBinaryData(mp4CoverArt.getData());
             artwork.setMimeType(Mp4TagCoverField.getMimeTypeForImageType(mp4CoverArt.getFieldType()));
             artworkList.add(artwork);

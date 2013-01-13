@@ -66,7 +66,7 @@ public class Fix202
                     try
                     {
                           //Read as broken dir, and save to fix
-                          OggFileReader fileReader = new OggFileReader(Fix.FIX_OGG_VORBIS_COMMENT_NOT_COUNTING_EMPTY_COLUMNS);
+                          OggFileReader fileReader = new OggFileReader();
                           AudioFile audioFile = fileReader.read(oggFile);
                           audioFile.commit();
 

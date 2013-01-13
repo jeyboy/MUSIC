@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: AbstractTagFrameBody.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: AbstractTagFrameBody.java 895 2010-04-15 15:21:45Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *

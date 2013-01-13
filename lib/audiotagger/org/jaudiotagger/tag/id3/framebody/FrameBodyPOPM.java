@@ -56,7 +56,7 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyPOPM.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: FrameBodyPOPM.java 938 2010-12-10 13:17:22Z paultaylor $
  * @todo : Counter should be optional, whereas we always expect it although allow a size of zero
  * needs testing.
  */
@@ -64,7 +64,7 @@ public class FrameBodyPOPM extends AbstractID3v2FrameBody implements ID3v24Frame
 {
     private static final int    RATING_FIELD_SIZE = 1;
     private static final int    COUNTER_MINIMUM_FIELD_SIZE = 0;
-    private static final String MEDIA_MONKEY_NO_EMAIL = "no@email";
+    public  static final String MEDIA_MONKEY_NO_EMAIL = "no@email";
     /**
      * Creates a new FrameBodyPOPM datatype.
      */

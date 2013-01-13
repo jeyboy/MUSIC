@@ -1,7 +1,7 @@
 /**
  *  @author : Paul Taylor
  *
- *  Version @version:$Id: MP3AudioHeader.java 836 2009-11-12 15:44:07Z paultaylor $
+ *  Version @version:$Id: MP3AudioHeader.java 996 2011-09-12 14:41:43Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -152,6 +152,8 @@ public class MP3AudioHeader implements AudioHeader
      */
     public boolean seek(final File seekFile, long startByte) throws IOException
     {
+        //References to Xing/VRbi Header
+        ByteBuffer header;
 
         //This is substantially faster than updating the filechannels position
         long filePointerCount;
@@ -205,7 +207,8 @@ public class MP3AudioHeader implements AudioHeader
                         mp3FrameHeader = MPEGFrameHeader.parseMPEGHeader(bb);
                         syncFound = true;
                         //if(2==1) use this line when you want to test getting the next frame without using xing
-                        if (XingFrame.isXingFrame(bb, mp3FrameHeader))
+
+                        if ((header = XingFrame.isXingFrame(bb, mp3FrameHeader))!=null)
                         {
                             if (MP3AudioHeader.logger.isLoggable(Level.FINEST))
                             {
@@ -214,7 +217,7 @@ public class MP3AudioHeader implements AudioHeader
                             try
                             {
                                 //Parses Xing frame without modifying position of main buffer
-                                mp3XingFrame = XingFrame.parseXingFrame();
+                                mp3XingFrame = XingFrame.parseXingFrame(header);
                             }
                             catch (InvalidAudioFrameException ex)
                             {
@@ -223,7 +226,7 @@ public class MP3AudioHeader implements AudioHeader
                             }
                             break;
                         }
-                        else if (VbriFrame.isVbriFrame(bb, mp3FrameHeader))
+                        else if ((header = VbriFrame.isVbriFrame(bb, mp3FrameHeader))!=null)
                         {
                             if (MP3AudioHeader.logger.isLoggable(Level.FINEST))
                             {
@@ -232,7 +235,7 @@ public class MP3AudioHeader implements AudioHeader
                             try
                             {
                                 //Parses Vbri frame without modifying position of main buffer
-                                mp3VbriFrame = VbriFrame.parseVBRIFrame();
+                                mp3VbriFrame = VbriFrame.parseVBRIFrame(header);
                             }
                             catch (InvalidAudioFrameException ex)
                             {
@@ -471,19 +474,6 @@ public class MP3AudioHeader implements AudioHeader
     protected void setTimePerFrame()
     {
         timePerFrame = mp3FrameHeader.getNoOfSamples() / mp3FrameHeader.getSamplingRate().doubleValue();
-
-        //Because when calculating framelength we may have altered the calculation slightly for MPEGVersion2
-        //to account for mono/stero we seem to have to make a corresponding modification to get the correct time
-        if ((mp3FrameHeader.getVersion() == MPEGFrameHeader.VERSION_2) || (mp3FrameHeader.getVersion() == MPEGFrameHeader.VERSION_2_5))
-        {
-            if ((mp3FrameHeader.getLayer() == MPEGFrameHeader.LAYER_II) || (mp3FrameHeader.getLayer() == MPEGFrameHeader.LAYER_III))
-            {
-                if (mp3FrameHeader.getNumberOfChannels() == 1)
-                {
-                    timePerFrame = timePerFrame / 2;
-                }
-            }
-        }
     }
 
     /**
@@ -763,7 +753,7 @@ public class MP3AudioHeader implements AudioHeader
 
 
     /**
-     * @return a string represntation
+     * @return a string representation
      */
     public String toString()
     {

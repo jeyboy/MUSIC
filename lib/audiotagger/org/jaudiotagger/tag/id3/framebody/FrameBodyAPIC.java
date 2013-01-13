@@ -85,7 +85,7 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyAPIC.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: FrameBodyAPIC.java 895 2010-04-15 15:21:45Z paultaylor $
  */
 public class FrameBodyAPIC extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody
 {

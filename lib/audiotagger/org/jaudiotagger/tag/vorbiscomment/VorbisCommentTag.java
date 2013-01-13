@@ -24,21 +24,20 @@ import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.ogg.util.VorbisHeader;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.*;
-import org.jaudiotagger.tag.datatype.Artwork;
+import org.jaudiotagger.tag.images.Artwork;
 
 import static org.jaudiotagger.tag.vorbiscomment.VorbisCommentFieldKey.VENDOR;
 
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
-import org.jaudiotagger.tag.reference.Tagger;
+import org.jaudiotagger.tag.images.ArtworkFactory;
+import org.jaudiotagger.tag.mp4.Mp4FieldKey;
 import org.jaudiotagger.tag.vorbiscomment.util.Base64Coder;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -55,6 +54,7 @@ public class VorbisCommentTag extends AbstractTag
         tagFieldToOggField.put(FieldKey.ALBUM_ARTIST_SORT, VorbisCommentFieldKey.ALBUMARTISTSORT);
         tagFieldToOggField.put(FieldKey.ALBUM_SORT, VorbisCommentFieldKey.ALBUMSORT);
         tagFieldToOggField.put(FieldKey.ARTIST, VorbisCommentFieldKey.ARTIST);
+        tagFieldToOggField.put(FieldKey.ARTISTS, VorbisCommentFieldKey.ARTISTS);
         tagFieldToOggField.put(FieldKey.AMAZON_ID, VorbisCommentFieldKey.ASIN);
         tagFieldToOggField.put(FieldKey.ARTIST_SORT, VorbisCommentFieldKey.ARTISTSORT);
         tagFieldToOggField.put(FieldKey.BARCODE, VorbisCommentFieldKey.BARCODE);
@@ -87,6 +87,7 @@ public class VorbisCommentTag extends AbstractTag
         tagFieldToOggField.put(FieldKey.MUSICBRAINZ_ARTISTID, VorbisCommentFieldKey.MUSICBRAINZ_ARTISTID);
         tagFieldToOggField.put(FieldKey.MUSICBRAINZ_DISC_ID, VorbisCommentFieldKey.MUSICBRAINZ_DISCID);
         tagFieldToOggField.put(FieldKey.MUSICBRAINZ_RELEASEARTISTID, VorbisCommentFieldKey.MUSICBRAINZ_ALBUMARTISTID);
+        tagFieldToOggField.put(FieldKey.MUSICBRAINZ_ORIGINAL_RELEASE_ID, VorbisCommentFieldKey.MUSICBRAINZ_ORIGINAL_ALBUMID);
         tagFieldToOggField.put(FieldKey.MUSICBRAINZ_RELEASEID, VorbisCommentFieldKey.MUSICBRAINZ_ALBUMID);
         tagFieldToOggField.put(FieldKey.MUSICBRAINZ_RELEASE_GROUP_ID, VorbisCommentFieldKey.MUSICBRAINZ_RELEASEGROUPID);
         tagFieldToOggField.put(FieldKey.MUSICBRAINZ_RELEASE_COUNTRY, VorbisCommentFieldKey.RELEASECOUNTRY);
@@ -125,6 +126,9 @@ public class VorbisCommentTag extends AbstractTag
         tagFieldToOggField.put(FieldKey.DJMIXER, VorbisCommentFieldKey.DJMIXER);
         tagFieldToOggField.put(FieldKey.MIXER, VorbisCommentFieldKey.MIXER);
         tagFieldToOggField.put(FieldKey.ARRANGER, VorbisCommentFieldKey.ARRANGER);
+        tagFieldToOggField.put(FieldKey.ACOUSTID_FINGERPRINT, VorbisCommentFieldKey.ACOUSTID_FINGERPRINT);
+        tagFieldToOggField.put(FieldKey.ACOUSTID_ID, VorbisCommentFieldKey.ACOUSTID_ID);
+        tagFieldToOggField.put(FieldKey.COUNTRY, VorbisCommentFieldKey.COUNTRY);
     }
 
     //This is the vendor string that will be written if no other is supplied. Should be the name of the software
@@ -301,6 +305,27 @@ public class VorbisCommentTag extends AbstractTag
     }
 
     /**
+     *
+     * @param genericKey
+     * @return
+     */
+    public boolean hasField(FieldKey genericKey)
+    {
+        VorbisCommentFieldKey vorbisFieldKey = tagFieldToOggField.get(genericKey);
+        return getFields(vorbisFieldKey.getFieldName()).size() != 0;
+    }
+
+    /**
+     *
+     * @param vorbisFieldKey
+     * @return
+     */
+    public boolean hasField(VorbisCommentFieldKey vorbisFieldKey)
+    {
+        return getFields(vorbisFieldKey.getFieldName()).size() != 0;
+    }
+
+    /**
      * Delete fields with this generic key
      *
      * @param genericKey
@@ -406,7 +431,7 @@ public class VorbisCommentTag extends AbstractTag
         //Read Old Format
         if(getArtworkBinaryData()!=null & getArtworkBinaryData().length>0)
         {
-            Artwork artwork=new Artwork();
+            Artwork artwork= ArtworkFactory.getNew();
             artwork.setMimeType(getArtworkMimeType());
             artwork.setBinaryData(getArtworkBinaryData());
             artworkList.add(artwork);
@@ -421,7 +446,7 @@ public class VorbisCommentTag extends AbstractTag
             {
                 byte[] imageBinaryData = Base64Coder.decode(((TagTextField)tagField).getContent());
                 MetadataBlockDataPicture coverArt = new MetadataBlockDataPicture(ByteBuffer.wrap(imageBinaryData));
-                Artwork artwork=Artwork.createArtworkFromMetadataBlockDataPicture(coverArt);
+                Artwork artwork=ArtworkFactory.createArtworkFromMetadataBlockDataPicture(coverArt);
                 artworkList.add(artwork);
             }
             catch(IOException ioe)
@@ -459,22 +484,16 @@ public class VorbisCommentTag extends AbstractTag
           }
           else
           {
-              BufferedImage image;
-              try
+              if(!artwork.setImageFromData())
               {
-                  image = artwork.getImage();
+                  throw new FieldDataInvalidException("Unable to create MetadataBlockDataPicture from buffered");
               }
-              catch(IOException ioe)
-              {
-                  throw new FieldDataInvalidException("Unable to create MetadataBlockDataPicture from buffered:"+ioe.getMessage());
-              }
-
               return new MetadataBlockDataPicture(artwork.getBinaryData(),
                       artwork.getPictureType(),
                       artwork.getMimeType(),
                       artwork.getDescription(),
-                      image.getWidth(),
-                      image.getHeight(),
+                      artwork.getWidth(),
+                      artwork.getHeight(),
                       0,
                       0);
           }

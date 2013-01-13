@@ -22,7 +22,8 @@ import java.nio.ByteBuffer;
 
 /**
  * Original filename Text information frame.
- * <p>The 'Original filename' frame contains the preferred filename for the file, since some media doesn't allow the desired length of the filename. The filename is case sensitive and includes its suffix.
+ * <p>The 'Original filename' frame contains the preferred filename for the file, since some media doesn't allow the
+ * desired length of the filename. The filename is case sensitive and includes its suffix.
  * <p/>
  * <p>For more details, please refer to the ID3 specifications:
  * <ul>
@@ -31,9 +32,9 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyTOFN.java 832 2009-11-12 13:25:38Z paultaylor $
+ * @version $Id: FrameBodyTOFN.java 947 2011-01-17 13:53:20Z paultaylor $
  */
-public class FrameBodyTOFN extends AbstractFrameBodyTextInfo implements ID3v23FrameBody
+public class FrameBodyTOFN extends AbstractFrameBodyTextInfo implements ID3v23FrameBody, ID3v24FrameBody
 {
     /**
      * Creates a new FrameBodyTOFN datatype.

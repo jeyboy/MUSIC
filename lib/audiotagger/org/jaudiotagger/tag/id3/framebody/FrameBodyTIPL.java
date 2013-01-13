@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: FrameBodyTIPL.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: FrameBodyTIPL.java 1005 2011-09-26 11:47:39Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -106,7 +106,7 @@ public class FrameBodyTIPL extends AbstractID3v2FrameBody implements ID3v24Frame
     }
 
     /**
-     * Set the text, decoded as pairs of involvee - involvment
+     * Set the text, decoded as pairs of involvee - involvement
      *
      * @param text
      */
@@ -127,14 +127,40 @@ public class FrameBodyTIPL extends AbstractID3v2FrameBody implements ID3v24Frame
         setObjectValue(DataTypes.OBJ_TEXT, value);
     }
 
+    /**
+     * Parse text as a null separated pairing of name and function
+     *
+     * @param text
+     */
     public void addPair(String text)
     {
-        PairedTextEncodedStringNullTerminated.ValuePairs value = ((PairedTextEncodedStringNullTerminated) getObject(DataTypes.OBJ_TEXT)).getValue();
         StringTokenizer stz = new StringTokenizer(text, "\0");
-        if (stz.hasMoreTokens())
+        if (stz.countTokens()==2)
         {
-            value.add(stz.nextToken(),stz.nextToken());
+            addPair(stz.nextToken(),stz.nextToken());
         }
+    }
+
+    /**
+     * Add pair
+     *
+     * @param function
+     * @param name
+     */
+    public void addPair(String function,String name)
+    {
+        PairedTextEncodedStringNullTerminated.ValuePairs value = ((PairedTextEncodedStringNullTerminated) getObject(DataTypes.OBJ_TEXT)).getValue();
+        value.add(function, name);
+
+    }
+
+    /**
+     * Remove all Pairs
+     */
+    public void resetPairs()
+    {
+        PairedTextEncodedStringNullTerminated.ValuePairs value = ((PairedTextEncodedStringNullTerminated) getObject(DataTypes.OBJ_TEXT)).getValue();
+        value.getMapping().clear();
     }
 
     /**

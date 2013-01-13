@@ -68,12 +68,12 @@ public class OggVorbisTagWriter
 
     public void write(Tag tag, RandomAccessFile raf, RandomAccessFile rafTemp) throws CannotReadException, CannotWriteException, IOException
     {
-        logger.info("Starting to write file:");
+        logger.config("Starting to write file:");
 
         //1st Page:Identification Header
         logger.fine("Read 1st Page:identificationHeader:");
         OggPageHeader pageHeader = OggPageHeader.read(raf);
-        raf.seek(0);
+        raf.seek(pageHeader.getStartByte());
 
         //Write 1st page (unchanged) and place writer pointer at end of data
         rafTemp.getChannel().transferFrom(raf.getChannel(), 0, pageHeader.getPageLength() + OggPageHeader.OGG_PAGE_HEADER_FIXED_LENGTH + pageHeader.getSegmentTable().length);
@@ -295,7 +295,7 @@ public class OggVorbisTagWriter
 
         //We need to work out how to split the newcommentlength over the pages
         int noOfCompletePagesNeededForComment = newCommentLength / OggPageHeader.MAXIMUM_PAGE_DATA_SIZE;
-        logger.info("Comment requires:" + noOfCompletePagesNeededForComment + " complete pages");
+        logger.config("Comment requires:" + noOfCompletePagesNeededForComment + " complete pages");
 
         //Create the Pages
         int newCommentOffset = 0;

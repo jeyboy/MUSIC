@@ -31,9 +31,9 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyTOWN.java 832 2009-11-12 13:25:38Z paultaylor $
+ * @version $Id: FrameBodyTOWN.java 947 2011-01-17 13:53:20Z paultaylor $
  */
-public class FrameBodyTOWN extends AbstractFrameBodyTextInfo implements ID3v23FrameBody
+public class FrameBodyTOWN extends AbstractFrameBodyTextInfo implements ID3v23FrameBody, ID3v24FrameBody
 {
     /**
      * Creates a new FrameBodyTOWN datatype.

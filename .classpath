@@ -5,7 +5,7 @@
 	<classpathentry kind="src" path="lib/entagged"/>
 	<classpathentry kind="src" path="lib/jkeymaster"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="audiotagger/|jna/|jkeymaster/|entagged/|jkeymaster/|jkeymaster/|jna/|jna/|audiotagger/|entagged/|javazoom/|javazoom/|basic_player/|jb_player/" kind="src" path="lib"/>
+	<classpathentry excluding="audiotagger/|jna/|jkeymaster/|entagged/|jkeymaster/|jkeymaster/|jna/|jna/|audiotagger/|entagged/|javazoom/|javazoom/|basic_player/|jb_player/|audiotagger/" kind="src" path="lib"/>
 	<classpathentry kind="lib" path="lib/commons-logging-api.jar"/>
 	<classpathentry kind="lib" path="lib/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jmactritonusspi1.74.jar"/>

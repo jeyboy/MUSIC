@@ -1,7 +1,7 @@
 /**
  *  @author : Paul Taylor
  *
- *  Version @version:$Id: ImageFormats.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: ImageFormats.java 924 2010-10-18 09:52:40Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *

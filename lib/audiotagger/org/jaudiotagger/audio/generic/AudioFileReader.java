@@ -38,7 +38,7 @@ import java.util.logging.Level;
  * These two method have to be implemented in the subclass.
  * 
  *@author	Raphael Slinckx
- *@version	$Id: AudioFileReader.java 813 2009-09-03 09:23:25Z paultaylor $
+ *@version	$Id: AudioFileReader.java 976 2011-06-08 10:05:34Z paultaylor $
  *@since	v0.02
  */
 
@@ -80,9 +80,9 @@ public abstract class AudioFileReader
       */
     public AudioFile read(File f) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
-        if(logger.isLoggable(Level.INFO))
+        if(logger.isLoggable(Level.CONFIG))
         {
-            logger.info(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()));   
+            logger.config(ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()));
         }
 
         if (!f.canRead())
@@ -113,7 +113,7 @@ public abstract class AudioFileReader
         }
         catch (Exception e)
         {
-            //TODO is this masking exceptions, i.e NullBoxIDException get converted to CannotReadException
+            logger.log(Level.SEVERE, ErrorMessage.GENERAL_READ.getMsg(f.getAbsolutePath()),e);
             throw new CannotReadException(f.getAbsolutePath()+":" + e.getMessage(), e);
         }
         finally

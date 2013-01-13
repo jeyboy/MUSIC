@@ -1,7 +1,7 @@
 /**
  * @author : Paul Taylor
  * <p/>
- * Version @version:$Id: MPEGFrameHeader.java 836 2009-11-12 15:44:07Z paultaylor $
+ * Version @version:$Id: MPEGFrameHeader.java 970 2011-05-06 12:34:36Z paultaylor $
  * Date :${DATE}
  * <p/>
  * Jaikoz Copyright Copyright (C) 2003 -2005 JThink Ltd
@@ -41,6 +41,7 @@ public class MPEGFrameHeader
 
     public static final int SYNC_BYTE1 = 0xFF;
     public static final int SYNC_BYTE2 = 0xE0;
+    public static final int SYNC_BIT_ANDSAMPING_BYTE3 = 0xFC;
 
     private static final byte[] header = new byte[HEADER_SIZE];
 
@@ -184,7 +185,7 @@ public class MPEGFrameHeader
     /**
      * Constants for Channel mode
      */
-    protected static final Map<Integer, String> modeMap = new HashMap<Integer, String>();
+    public static final Map<Integer, String> modeMap = new HashMap<Integer, String>();
     public final static int MODE_STEREO = 0;
     public final static int MODE_JOINT_STEREO = 1;
     public final static int MODE_DUAL_CHANNEL = 2;
@@ -282,11 +283,11 @@ public class MPEGFrameHeader
 
         samplesPerFrameV2Map.put(LAYER_I, 384);
         samplesPerFrameV2Map.put(LAYER_II, 1152);
-        samplesPerFrameV2Map.put(LAYER_III, 1152);
+        samplesPerFrameV2Map.put(LAYER_III, 576);
 
         samplesPerFrameV25Map.put(LAYER_I, 384);
         samplesPerFrameV25Map.put(LAYER_II, 1152);
-        samplesPerFrameV25Map.put(LAYER_III, 1152);
+        samplesPerFrameV25Map.put(LAYER_III, 576);
 
         samplesPerFrameMap.put(VERSION_1, samplesPerFrameV1Map);
         samplesPerFrameMap.put(VERSION_2, samplesPerFrameV2Map);
@@ -712,19 +713,12 @@ public class MPEGFrameHeader
                         return (LAYER_I_FRAME_SIZE_COEFFICIENT * (getBitRate() * SCALE_BY_THOUSAND) / getSamplingRate() + getPaddingLength()) * LAYER_I_SLOT_SIZE;
 
                     case LAYER_II:
-                        if (this.getChannelMode() == MODE_MONO)
-                        {
-                            return (LAYER_II_FRAME_SIZE_COEFFICIENT / 2) * (getBitRate() * SCALE_BY_THOUSAND) / getSamplingRate() + getPaddingLength() * LAYER_II_SLOT_SIZE;
-                        }
-                        else
-                        {
-                            return (LAYER_II_FRAME_SIZE_COEFFICIENT) * (getBitRate() * SCALE_BY_THOUSAND) / getSamplingRate() + getPaddingLength() * LAYER_II_SLOT_SIZE;
-                        }
+                        return (LAYER_II_FRAME_SIZE_COEFFICIENT ) * (getBitRate() * SCALE_BY_THOUSAND) / getSamplingRate() + getPaddingLength() * LAYER_II_SLOT_SIZE;
 
                     case LAYER_III:
                         if (this.getChannelMode() == MODE_MONO)
                         {
-                            return (LAYER_III_FRAME_SIZE_COEFFICIENT / 2) * (getBitRate() * SCALE_BY_THOUSAND) / getSamplingRate() + getPaddingLength() * LAYER_III_SLOT_SIZE;
+                            return (LAYER_III_FRAME_SIZE_COEFFICIENT / 2 ) * (getBitRate() * SCALE_BY_THOUSAND) / getSamplingRate() + getPaddingLength() * LAYER_III_SLOT_SIZE;
                         }
                         else
                         {
@@ -838,10 +832,10 @@ public class MPEGFrameHeader
     private MPEGFrameHeader(byte[] b) throws InvalidAudioFrameException
     {
         mpegBytes = b;
+        setBitrate();
         setVersion();
         setLayer();
         setProtected();
-        setBitrate();
         setSamplingRate();
         setPadding();
         setPrivate();
@@ -878,8 +872,9 @@ public class MPEGFrameHeader
     public static boolean isMPEGFrame(ByteBuffer bb)
     {
         int position = bb.position();
-        return (((bb.get(position) & SYNC_BYTE1) == SYNC_BYTE1) && ((bb.get(position + 1) & SYNC_BYTE2) == SYNC_BYTE2));
-
+        return (((bb.get(position) & SYNC_BYTE1) == SYNC_BYTE1)
+                && ((bb.get(position + 1) & SYNC_BYTE2) == SYNC_BYTE2)
+                && ((bb.get(position + 2) & SYNC_BIT_ANDSAMPING_BYTE3) != SYNC_BIT_ANDSAMPING_BYTE3));
     }
 
     /**

@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: NumberFixedLength.java 836 2009-11-12 15:44:07Z paultaylor $
+ *  Version @version:$Id: NumberFixedLength.java 976 2011-06-08 10:05:34Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -143,7 +143,7 @@ public class NumberFixedLength extends AbstractDataType
             lvalue += (arr[i] & 0xff);
         }
         value = lvalue;
-        logger.info("Read NumberFixedlength:" + value);
+        logger.config("Read NumberFixedlength:" + value);
     }
 
 

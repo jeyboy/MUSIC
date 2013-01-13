@@ -28,7 +28,7 @@ import java.util.TreeSet;
  * Here we specify how frames are mapped between different Tag Versions
  *
  * @author Paul Taylor
- * @version $Id: ID3Frames.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: ID3Frames.java 932 2010-11-26 13:13:15Z paultaylor $
  */
 public abstract class ID3Frames extends AbstractStringStringValuePair
 {
@@ -170,6 +170,8 @@ public abstract class ID3Frames extends AbstractStringStringValuePair
         forcev24Tov23.put(ID3v24Frames.FRAME_ID_INVOLVED_PEOPLE, ID3v23Frames.FRAME_ID_V3_IPLS);
         //No Mood frame in v23 so use a TXXX frame
         forcev24Tov23.put(ID3v24Frames.FRAME_ID_MOOD, ID3v23Frames.FRAME_ID_V3_USER_DEFINED_INFO);
+        //Release time can be mapped to release year (but can only hold year)
+        forcev24Tov23.put(ID3v24Frames.FRAME_ID_ORIGINAL_RELEASE_TIME, ID3v23Frames.FRAME_ID_V3_TORY);
 
     }
 

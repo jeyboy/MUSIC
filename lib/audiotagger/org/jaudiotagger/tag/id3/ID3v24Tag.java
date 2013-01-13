@@ -19,9 +19,10 @@ import org.jaudiotagger.FileConstants;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.*;
-import org.jaudiotagger.tag.datatype.Artwork;
+import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.datatype.DataTypes;
 import org.jaudiotagger.tag.id3.framebody.*;
+import org.jaudiotagger.tag.images.ArtworkFactory;
 import org.jaudiotagger.tag.lyrics3.AbstractLyrics3;
 import org.jaudiotagger.tag.lyrics3.Lyrics3v2;
 import org.jaudiotagger.tag.lyrics3.Lyrics3v2Field;
@@ -30,6 +31,7 @@ import org.jaudiotagger.tag.reference.PictureTypes;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.util.*;
@@ -40,7 +42,7 @@ import java.util.logging.Level;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: ID3v24Tag.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: ID3v24Tag.java 976 2011-06-08 10:05:34Z paultaylor $
  */
 public class ID3v24Tag extends AbstractID3v2Tag
 {
@@ -316,7 +318,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
      */
     protected void copyPrimitives(AbstractID3v2Tag copyObj)
     {
-        logger.info("Copying primitives");
+        logger.config("Copying primitives");
         super.copyPrimitives(copyObj);
 
         if (copyObj instanceof ID3v24Tag)
@@ -388,7 +390,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
                    //Two different frames both converted to TDRCFrames, now if this is the case one of them
                    //may have actually have been created as a FrameUnsupportedBody because TDRC is only
                    //supported in ID3v24, but is often created in v23 tags as well together with the valid TYER
-                   //frame
+                   //frame OR it might be that we have two v23 frames that map to TDRC such as TYER,TIME or TDAT
                    if (newFrame.getBody() instanceof FrameBodyTDRC)
                    {
                        if (firstFrame.getBody() instanceof FrameBodyTDRC)
@@ -405,20 +407,19 @@ public class ID3v24Tag extends AbstractID3v2Tag
                            //Just add the data to the frame
                            if (newBody.getOriginalID().equals(ID3v23Frames.FRAME_ID_V3_TYER))
                            {
-                               body.setYear(newBody.getText());
+                               body.setYear(newBody.getYear());
                            }
                            else if (newBody.getOriginalID().equals(ID3v23Frames.FRAME_ID_V3_TDAT))
                            {
-                               body.setDate(newBody.getText());
+                               body.setDate(newBody.getDate());
+                               body.setMonthOnly(newBody.isMonthOnly());
                            }
                            else if (newBody.getOriginalID().equals(ID3v23Frames.FRAME_ID_V3_TIME))
                            {
-                               body.setTime(newBody.getText());
+                               body.setTime(newBody.getTime());
+                               body.setHoursOnly(newBody.isHoursOnly());
                            }
-                           else if (newBody.getOriginalID().equals(ID3v23Frames.FRAME_ID_V3_TRDA))
-                           {
-                               body.setReco(newBody.getText());
-                           }
+                           body.setObjectValue(DataTypes.OBJ_TEXT,body.getFormattedText());
                        }
                        // The first frame was a TDRC frame that was not really allowed, this new frame was probably a
                        // valid frame such as TYER which has been converted to TDRC, replace the firstframe with this frame
@@ -459,7 +460,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
      */
     public ID3v24Tag(ID3v24Tag copyObject)
     {
-        logger.info("Creating tag from another tag of same type");
+        logger.config("Creating tag from another tag of same type");
         copyPrimitives(copyObject);
         copyFrames(copyObject);
     }
@@ -471,7 +472,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
      */
     public ID3v24Tag(AbstractTag mp3tag)
     {
-        logger.info("Creating tag from a tag of a different version");
+        logger.config("Creating tag from a tag of a different version");
         frameMap = new LinkedHashMap();
         encryptedFrameMap = new LinkedHashMap();
 
@@ -699,26 +700,6 @@ public class ID3v24Tag extends AbstractID3v2Tag
     }
 
     /**
-     * Read the size of a tag, based on  the value written in the tag header
-     *
-     * @param buffer
-     * @return
-     * @throws TagException
-     */
-    public int readSize(ByteBuffer buffer)
-    {
-
-        //Skip over flags
-        buffer.get();
-
-        // Read the size, this is size of tag not including  the tag header
-        int size = ID3SyncSafeInteger.bufferToValue(buffer);
-
-        //Return the exact size of tag as set in the tag header
-        return size + TAG_HEADER_LENGTH;
-    }
-
-    /**
      * Read header flags
      * <p/>
      * <p>Log info messages for falgs that have been set and log warnings when bits have been set for unknown flags</p>
@@ -759,17 +740,17 @@ public class ID3v24Tag extends AbstractID3v2Tag
 
         if (isUnsynchronization())
         {
-            logger.info(ErrorMessage.ID3_TAG_UNSYNCHRONIZED.getMsg(getLoggingFilename()));
+            logger.config(ErrorMessage.ID3_TAG_UNSYNCHRONIZED.getMsg(getLoggingFilename()));
         }
 
         if (extended)
         {
-            logger.info(ErrorMessage.ID3_TAG_EXTENDED.getMsg(getLoggingFilename()));
+            logger.config(ErrorMessage.ID3_TAG_EXTENDED.getMsg(getLoggingFilename()));
         }
 
         if (experimental)
         {
-            logger.info(ErrorMessage.ID3_TAG_EXPERIMENTAL.getMsg(getLoggingFilename()));
+            logger.config(ErrorMessage.ID3_TAG_EXPERIMENTAL.getMsg(getLoggingFilename()));
         }
 
         if (footer)
@@ -844,6 +825,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
         }
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -856,12 +838,12 @@ public class ID3v24Tag extends AbstractID3v2Tag
         {
             throw new TagNotFoundException(getLoggingFilename() + ":" + getIdentifier() + " tag not found");
         }
-        logger.info(getLoggingFilename() + ":" + "Reading ID3v24 tag");
+        logger.config(getLoggingFilename() + ":" + "Reading ID3v24 tag");
         readHeaderFlags(byteBuffer);
 
         // Read the size, this is size of tag apart from tag header
         size = ID3SyncSafeInteger.bufferToValue(byteBuffer);
-        logger.info(getLoggingFilename() + ":" + "Reading tag from file size set in header is" + size);
+        logger.config(getLoggingFilename() + ":" + "Reading tag from file size set in header is" + size);
 
         if (extended)
         {
@@ -915,7 +897,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
             }
             catch (InvalidFrameIdentifierException ifie)
             {
-                logger.info(getLoggingFilename() + ":" + "Invalid Frame Identifier:" + ifie.getMessage());
+                logger.config(getLoggingFilename() + ":" + "Invalid Frame Identifier:" + ifie.getMessage());
                 this.invalidFrames++;
                 //Don't try and find any more frames
                 break;
@@ -1092,7 +1074,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
     public void write(File file, long audioStartLocation) throws IOException
     {
         setLoggingFilename(file.getName());
-        logger.info("Writing tag to file:"+getLoggingFilename());
+        logger.config("Writing tag to file:"+getLoggingFilename());
 
         //Write Body Buffer
         byte[] bodyByteBuffer = writeFramesToBuffer().toByteArray();
@@ -1113,7 +1095,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
     @Override
     public void write(WritableByteChannel channel) throws IOException
     {
-        logger.info("Writing tag to channel");
+        logger.config("Writing tag to channel");
 
         byte[] bodyByteBuffer = writeFramesToBuffer().toByteArray();
         ByteBuffer headerBuffer = writeHeaderToBuffer(0, bodyByteBuffer.length);
@@ -1298,7 +1280,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
         for (TagField next : coverartList)
         {
             FrameBodyAPIC coverArt = (FrameBodyAPIC) ((AbstractID3v2Frame) next).getBody();
-            Artwork artwork = new Artwork();
+            Artwork artwork = ArtworkFactory.getNew();
             artwork.setMimeType(coverArt.getMimeType());
             artwork.setPictureType(coverArt.getPictureType());
             if (coverArt.isImageUrl())
@@ -1319,11 +1301,29 @@ public class ID3v24Tag extends AbstractID3v2Tag
     {
         AbstractID3v2Frame frame = createFrame(getFrameAndSubIdFromGenericKey(FieldKey.COVER_ART).getFrameId());
         FrameBodyAPIC body = (FrameBodyAPIC) frame.getBody();
-        body.setObjectValue(DataTypes.OBJ_PICTURE_DATA, artwork.getBinaryData());
-        body.setObjectValue(DataTypes.OBJ_PICTURE_TYPE, artwork.getPictureType());
-        body.setObjectValue(DataTypes.OBJ_MIME_TYPE, artwork.getMimeType());
-        body.setObjectValue(DataTypes.OBJ_DESCRIPTION, "");
-        return frame;
+        if(!artwork.isLinked())
+        {
+            body.setObjectValue(DataTypes.OBJ_PICTURE_DATA, artwork.getBinaryData());
+            body.setObjectValue(DataTypes.OBJ_PICTURE_TYPE, artwork.getPictureType());
+            body.setObjectValue(DataTypes.OBJ_MIME_TYPE, artwork.getMimeType());
+            body.setObjectValue(DataTypes.OBJ_DESCRIPTION, "");
+            return frame;
+        }
+        else
+        {
+            try
+            {
+                body.setObjectValue(DataTypes.OBJ_PICTURE_DATA,artwork.getImageUrl().getBytes("ISO-8859-1"));
+            }
+            catch(UnsupportedEncodingException uoe)
+            {
+                throw new RuntimeException(uoe.getMessage());
+            }
+            body.setObjectValue(DataTypes.OBJ_PICTURE_TYPE, artwork.getPictureType());
+            body.setObjectValue(DataTypes.OBJ_MIME_TYPE, FrameBodyAPIC.IMAGE_IS_URL);
+            body.setObjectValue(DataTypes.OBJ_DESCRIPTION, "");
+            return frame;
+        }
     }
 
     /**
@@ -1344,4 +1344,7 @@ public class ID3v24Tag extends AbstractID3v2Tag
         body.setObjectValue(DataTypes.OBJ_DESCRIPTION, "");
         return frame;
     }
+
+
+
 }

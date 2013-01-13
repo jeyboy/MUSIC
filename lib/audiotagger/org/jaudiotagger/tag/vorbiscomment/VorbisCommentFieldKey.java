@@ -22,9 +22,11 @@ public enum VorbisCommentFieldKey
 {
     ALBUM("ALBUM", EnumSet.of(Tagger.XIPH,Tagger.PICARD,Tagger.JAIKOZ)),
     ALBUMARTIST("ALBUMARTIST",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
+    ALBUM_ARTIST("ALBUM_ARTIST",EnumSet.of(Tagger.MEDIA_MONKEY)),
     ALBUMARTISTSORT("ALBUMARTISTSORT",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
     ALBUMSORT("ALBUMSORT",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
     ARTIST("ARTIST", EnumSet.of(Tagger.XIPH,Tagger.PICARD,Tagger.JAIKOZ)),
+    ARTISTS("ARTISTS", EnumSet.of(Tagger.JAIKOZ)),
     ARTISTSORT("ARTISTSORT",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
     ASIN("ASIN",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
     BARCODE("BARCODE",EnumSet.of(Tagger.JAIKOZ)),
@@ -71,6 +73,7 @@ public enum VorbisCommentFieldKey
     MUSICBRAINZ_ALBUMTYPE("MUSICBRAINZ_ALBUMTYPE",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
     MUSICBRAINZ_ARTISTID("MUSICBRAINZ_ARTISTID",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
     MUSICBRAINZ_DISCID("MUSICBRAINZ_DISCID",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
+    MUSICBRAINZ_ORIGINAL_ALBUMID("MUSICBRAINZ_ORIGINALALBUMID",EnumSet.of(Tagger.JAIKOZ)),
     MUSICBRAINZ_RELEASEGROUPID("MUSICBRAINZ_RELEASEGROUPID",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
     MUSICBRAINZ_TRACKID("MUSICBRAINZ_TRACKID",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
     MUSICBRAINZ_WORKID("MUSICBRAINZ_WORKID",EnumSet.of(Tagger.PICARD,Tagger.JAIKOZ)),
@@ -110,7 +113,11 @@ public enum VorbisCommentFieldKey
     DJMIXER("DJMIXER",EnumSet.of(Tagger.PICARD)),
     MIXER("MIXER",EnumSet.of(Tagger.PICARD)),
     ARRANGER("ARRANGER",EnumSet.of(Tagger.PICARD)),
+    ACOUSTID_FINGERPRINT("ACOUSTID_FINGERPRINT",EnumSet.of(Tagger.PICARD)),
+    ACOUSTID_ID("ACOUSTID_ID",EnumSet.of(Tagger.PICARD)),
+    COUNTRY("COUNTRY",EnumSet.of(Tagger.PICARD)),
     ;
+
 
     private String fieldName;
     private EnumSet<Tagger> taggers;

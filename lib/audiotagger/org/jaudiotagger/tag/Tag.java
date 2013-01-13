@@ -18,7 +18,7 @@
  */
 package org.jaudiotagger.tag;
 
-import org.jaudiotagger.tag.datatype.Artwork;
+import org.jaudiotagger.tag.images.Artwork;
 
 import java.util.Iterator;
 import java.util.List;
@@ -186,6 +186,14 @@ public interface Tag {
      *         field is present.
      */
     public boolean hasCommonFields();
+
+    /**
+     * Determines whether the tag has at least one field with the specified field key.
+     *
+     * @param fieldKey
+     * @return
+     */
+    public boolean hasField(FieldKey fieldKey);
 
     /**
      * Determines whether the tag has at least one field with the specified

@@ -118,12 +118,14 @@ public class PlayerPanel extends JPanel implements ActionObserver {
     	if (!lock_track_update)
     		track.setValue(curr_pos); 
     }
+    public void blockTrack(boolean block) { track.setEnabled(block); }
     
     public void setVolumeRange(int min, int max) { volume.setMinimum(min); volume.setMaximum(max); }
     public void setVolumePosition(int curr_pos) { volume.setValue(curr_pos); }
     public void blockVolume(boolean block) { volume.setEnabled(block); }
     
     public void setTime(String current_time) { time.setText(current_time); }
+    public void setDefaultTime() { time.setText(def_time); }
 
 	@Override
 	public void notify(int state) {
@@ -141,7 +143,8 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 			case ActionObserver.STOP:
 				Common.raw_flag = false;
 				Common.player.stop();
-				setTime(def_time);
+				setTrackPosition(0);
+				setDefaultTime();
 				break;
 			case ActionObserver.PAUSE:
 				Common.player.pause();

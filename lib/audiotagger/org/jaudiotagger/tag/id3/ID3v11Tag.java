@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: ID3v11Tag.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: ID3v11Tag.java 976 2011-06-08 10:05:34Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -543,7 +543,7 @@ public class ID3v11Tag extends ID3v1Tag
      */
     public void write(RandomAccessFile file) throws IOException
     {
-        logger.info("Saving ID3v11 tag to file");
+        logger.config("Saving ID3v11 tag to file");
         byte[] buffer = new byte[TAG_LENGTH];
         int i;
         String str;
@@ -604,7 +604,7 @@ public class ID3v11Tag extends ID3v1Tag
         }
         file.write(buffer);
 
-        logger.info("Saved ID3v11 tag to file");
+        logger.config("Saved ID3v11 tag to file");
     }
 
 

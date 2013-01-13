@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: FrameBodyPIC.java 836 2009-11-12 15:44:07Z paultaylor $
+ *  Version @version:$Id: FrameBodyPIC.java 975 2011-06-08 09:27:24Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -23,6 +23,7 @@
  */
 package org.jaudiotagger.tag.id3.framebody;
 
+import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.tag.InvalidTagException;
 import org.jaudiotagger.tag.datatype.*;
 import org.jaudiotagger.tag.id3.ID3v22Frames;
@@ -235,6 +236,31 @@ public class FrameBodyPIC extends AbstractID3v2FrameBody implements ID3v22FrameB
     public boolean isImageUrl()
     {
         return getFormatType() != null && getFormatType().equals(IMAGE_IS_URL);
+    }
+
+    /**
+     * Get mimetype
+     *
+     * @return a description of the image
+     */
+    public String getMimeType()
+    {
+        return (String) getObjectValue(DataTypes.OBJ_MIME_TYPE);
+    }
+
+    /**
+     * @return the image url if there is otherwise return an empty String
+     */
+    public String getImageUrl()
+    {
+        if (isImageUrl())
+        {
+            return Utils.getString(((byte[]) getObjectValue(DataTypes.OBJ_PICTURE_DATA)), 0, ((byte[]) getObjectValue(DataTypes.OBJ_PICTURE_DATA)).length, TextEncoding.CHARSET_ISO_8859_1);
+        }
+        else
+        {
+            return "";
+        }
     }
 
     /**

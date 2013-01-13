@@ -33,7 +33,7 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyTOPE.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: FrameBodyTOPE.java 922 2010-10-14 13:31:09Z paultaylor $
  */
 public class FrameBodyTOPE extends AbstractFrameBodyTextInfo implements ID3v23FrameBody, ID3v24FrameBody
 {

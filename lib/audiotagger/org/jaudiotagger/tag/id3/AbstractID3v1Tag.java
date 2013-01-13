@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: AbstractID3v1Tag.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: AbstractID3v1Tag.java 976 2011-06-08 10:05:34Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -121,7 +121,7 @@ abstract public class AbstractID3v1Tag extends AbstractID3Tag
     public void delete(RandomAccessFile file) throws IOException
     {
         //Read into Byte Buffer
-        logger.info("Deleting ID3v1 from file if exists");
+        logger.config("Deleting ID3v1 from file if exists");
 
         FileChannel fc;
         ByteBuffer byteBuffer;

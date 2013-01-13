@@ -22,6 +22,7 @@ import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.flac.metadatablock.*;
 import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.flac.FlacTag;
 
 import java.io.IOException;
@@ -76,7 +77,7 @@ public class FlacTagWriter
      */
     public void write(Tag tag, RandomAccessFile raf, RandomAccessFile rafTemp) throws CannotWriteException, IOException
     {
-        logger.info("Writing tag");
+        logger.config("Writing tag");
 
         //Clean up old data
         streamInfoBlock=null;
@@ -160,7 +161,7 @@ public class FlacTagWriter
         //Go to start of Flac within file
         raf.seek(flacStream.getStartOfFlacInFile());
 
-        logger.info("Writing tag available bytes:" + availableRoom + ":needed bytes:" + neededRoom);
+        logger.config("Writing tag available bytes:" + availableRoom + ":needed bytes:" + neededRoom);
 
         //There is enough room to fit the tag without moving the audio just need to
         //adjust padding accordingly need to allow space for padding header if padding required
@@ -169,7 +170,7 @@ public class FlacTagWriter
             //Jump over Id3 (if exists) Flac and StreamInfoBlock
             raf.seek(flacStream.getStartOfFlacInFile() + FlacStreamReader.FLAC_STREAM_IDENTIFIER_LENGTH);
 
-            //Write StreamInfo, we always write this first even if wasnt first in original spec
+            //Write StreamInfo, we always write this first even if wasn't first in original spec
             raf.write(streamInfoBlock.getHeader().getBytesWithoutIsLastBlockFlag());
             raf.write(streamInfoBlock.getData().getBytes());
 
@@ -201,10 +202,32 @@ public class FlacTagWriter
         else
         {
             //Skip to start of Audio
-            //Write FlacStreamReader and StreamIfoMetablock to new file
-            int dataStartSize = flacStream.getStartOfFlacInFile() + FlacStreamReader.FLAC_STREAM_IDENTIFIER_LENGTH + MetadataBlockHeader.HEADER_LENGTH + MetadataBlockDataStreamInfo.STREAM_INFO_DATA_LENGTH;
-            raf.seek(0);
-            rafTemp.getChannel().transferFrom(raf.getChannel(), 0, dataStartSize);
+
+            //If Flac tag contains ID3header or something before start of official Flac header copy it over
+            if(flacStream.getStartOfFlacInFile()>0)
+            {
+                raf.seek(0);
+                rafTemp.getChannel().transferFrom(raf.getChannel(), 0, flacStream.getStartOfFlacInFile());
+                rafTemp.seek(flacStream.getStartOfFlacInFile());
+            }
+            rafTemp.writeBytes(FlacStreamReader.FLAC_STREAM_IDENTIFIER);
+            rafTemp.writeByte(0);  //To ensure never set Last-metadata-block flag even if was before
+
+            int uptoStreamHeaderSize = flacStream.getStartOfFlacInFile()
+                    + FlacStreamReader.FLAC_STREAM_IDENTIFIER_LENGTH
+                    + MetadataBlockHeader.BLOCK_TYPE_LENGTH;
+            rafTemp.seek(uptoStreamHeaderSize);
+            raf.seek(uptoStreamHeaderSize);
+
+            rafTemp.getChannel().transferFrom(
+                    raf.getChannel(),
+                    uptoStreamHeaderSize,
+                    MetadataBlockHeader.BLOCK_LENGTH + MetadataBlockDataStreamInfo.STREAM_INFO_DATA_LENGTH);
+
+            int dataStartSize = flacStream.getStartOfFlacInFile()
+                    + FlacStreamReader.FLAC_STREAM_IDENTIFIER_LENGTH
+                    + MetadataBlockHeader.HEADER_LENGTH
+                    + MetadataBlockDataStreamInfo.STREAM_INFO_DATA_LENGTH;
             rafTemp.seek(dataStartSize);
 
             //Write all the metadatablocks
@@ -230,12 +253,30 @@ public class FlacTagWriter
             rafTemp.write(tc.convert(tag, FlacTagCreator.DEFAULT_PADDING).array());
             //Write audio to new file
             raf.seek(dataStartSize + availableRoom);
-            rafTemp.getChannel().transferFrom(raf.getChannel(), rafTemp.getChannel().position(), raf.getChannel().size());
+
+            //Issue #385
+            //Transfer 'size' bytes from raf at its current position to rafTemp at position but do it in batches
+            //to prevent OutOfMemory exceptions
+            long amountToBeWritten=raf.getChannel().size() - raf.getChannel().position();
+            long written   = 0;
+            long chunksize = TagOptionSingleton.getInstance().getWriteChunkSize();
+            long count = amountToBeWritten / chunksize;
+            long mod   = amountToBeWritten % chunksize;
+            for(int i = 0; i<count; i++)
+            {
+                written+=rafTemp.getChannel().transferFrom(raf.getChannel(), rafTemp.getChannel().position(), chunksize);
+                rafTemp.getChannel().position(rafTemp.getChannel().position() + chunksize);
+            }
+            written+=rafTemp.getChannel().transferFrom(raf.getChannel(), rafTemp.getChannel().position(), mod);
+            if(written!=amountToBeWritten)
+            {
+                throw new CannotWriteException("Was meant to write "+amountToBeWritten+" bytes but only written "+written+" bytes");
+            }
         }
     }
 
     /**
-     * @return space currently availble for writing all Flac metadatablocks exceprt for StreamInfo which is fixed size
+     * @return space currently available for writing all Flac metadatablocks except for StreamInfo which is fixed size
      */
     private int computeAvailableRoom()
     {

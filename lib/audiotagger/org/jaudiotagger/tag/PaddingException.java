@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: PaddingException.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: PaddingException.java 917 2010-09-27 18:34:30Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *

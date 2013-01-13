@@ -1,12 +1,10 @@
 package org.jaudiotagger.tag.datatype;
 
-import org.jaudiotagger.logging.Hex;
 import org.jaudiotagger.tag.InvalidDataTypeException;
 import org.jaudiotagger.tag.TagOptionSingleton;
 import org.jaudiotagger.tag.id3.AbstractTagFrameBody;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.*;
@@ -121,7 +119,7 @@ public class TextEncodedStringSizeTerminated extends AbstractString
         }
         //SetSize, important this is correct for finding the next datatype
         setSize(arr.length - offset);
-        logger.info("Read SizeTerminatedString:" + value + " size:" + size);
+        logger.config("Read SizeTerminatedString:" + value + " size:" + size);
 
     }
 
@@ -171,9 +169,38 @@ public class TextEncodedStringSizeTerminated extends AbstractString
     private ByteBuffer writeStringUTF16LEBOM( String next, int i, int noOfValues)
             throws CharacterCodingException
     {
-        CharsetEncoder encoder = Charset.forName(TextEncoding.CHARSET_UTF_16_ENCODING_FORMAT).newEncoder();
+        CharsetEncoder encoder = Charset.forName(TextEncoding.CHARSET_UTF_16_LE_ENCODING_FORMAT).newEncoder();
         ByteBuffer bb = null;
         //Note remember LE BOM is ff fe but this is handled by encoder Unicode char is fe ff
+        if(( i + 1)==noOfValues)
+        {
+            bb = encoder.encode(CharBuffer.wrap('\ufeff' + next ));
+        }
+        else
+        {
+            bb = encoder.encode(CharBuffer.wrap('\ufeff' + next + '\0'));
+        }
+        bb.rewind();
+        return bb;
+    }
+
+    /**
+     * Write String in UTF-BEBOM format
+     *
+     * When this is called multiple times, all but the last value has a trailing null
+     *
+     * @param next
+     * @param i
+     * @param noOfValues
+     * @return
+     * @throws CharacterCodingException
+     */
+    private ByteBuffer writeStringUTF16BEBOM( String next, int i, int noOfValues)
+            throws CharacterCodingException
+    {
+        CharsetEncoder encoder = Charset.forName(TextEncoding.CHARSET_UTF_16_BE_ENCODING_FORMAT).newEncoder();
+        ByteBuffer bb = null;
+        //Add BOM
         if(( i + 1)==noOfValues)
         {
             bb = encoder.encode(CharBuffer.wrap('\ufeff' + next ));
@@ -216,7 +243,7 @@ public class TextEncodedStringSizeTerminated extends AbstractString
     {
         if(!TagOptionSingleton.getInstance().isRemoveTrailingTerminatorOnWrite())
         {
-            if (stringValue.charAt(stringValue.length() - 1) == '\0')
+            if (stringValue.length() > 0 && stringValue.charAt(stringValue.length() - 1) == '\0')
             {
                 String lastVal = values.get(values.size() - 1);
                 String newLastVal = lastVal + '\0';
@@ -243,11 +270,19 @@ public class TextEncodedStringSizeTerminated extends AbstractString
             stripTrailingNull();
 
             //Special Handling because there is no UTF16 BOM LE charset
-            String stringValue = (String)value;
-            String charSetName = getTextEncodingCharSet();
+            String stringValue   = (String)value;
+            String charSetName   = getTextEncodingCharSet();
+            String actualCharSet = null;
             if (charSetName.equals(TextEncoding.CHARSET_UTF_16))
             {
-                charSetName = TextEncoding.CHARSET_UTF_16_ENCODING_FORMAT;
+                if(TagOptionSingleton.getInstance().isEncodeUTF16BomAsLittleEndian())
+                {
+                    actualCharSet = TextEncoding.CHARSET_UTF_16_LE_ENCODING_FORMAT;
+                }
+                else
+                {
+                    actualCharSet = TextEncoding.CHARSET_UTF_16_BE_ENCODING_FORMAT;
+                }
             }
 
             //Ensure large enough for any encoding
@@ -261,9 +296,16 @@ public class TextEncodedStringSizeTerminated extends AbstractString
             for(int i=0;i<values.size();i++)
             {
                 String next = values.get(i);
-                if (charSetName.equals(TextEncoding.CHARSET_UTF_16_ENCODING_FORMAT))
+                if(actualCharSet!=null)
                 {
-                    outputBuffer.put(writeStringUTF16LEBOM( next, i, values.size()));
+                    if (actualCharSet.equals(TextEncoding.CHARSET_UTF_16_LE_ENCODING_FORMAT))
+                    {
+                        outputBuffer.put(writeStringUTF16LEBOM( next, i, values.size()));
+                    }
+                    else if (actualCharSet.equals(TextEncoding.CHARSET_UTF_16_BE_ENCODING_FORMAT))
+                    {
+                        outputBuffer.put(writeStringUTF16BEBOM( next, i, values.size()));
+                    }
                 }
                 else
                 {

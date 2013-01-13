@@ -1,12 +1,10 @@
 package org.jaudiotagger.tag.asf;
 
 import org.jaudiotagger.audio.asf.data.MetadataDescriptor;
-import org.jaudiotagger.tag.asf.AsfTagField;
-import org.jaudiotagger.tag.asf.AsfFieldKey;
 import org.jaudiotagger.tag.TagField;
+import org.jaudiotagger.tag.images.ImageHandlingFactory;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

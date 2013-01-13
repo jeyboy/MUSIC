@@ -59,7 +59,7 @@ import org.jaudiotagger.tag.id3.ID3v23Frames;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyEQUA.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: FrameBodyEQUA.java 905 2010-05-14 19:37:31Z paultaylor $
  */
 public class FrameBodyEQUA extends AbstractID3v2FrameBody implements ID3v23FrameBody
 {

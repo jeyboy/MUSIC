@@ -87,7 +87,7 @@ public class Mp4TagReader
 
         //Get to the facts everything we are interested in is within the moov box, so just load data from file
         //once so no more file I/O needed
-        Mp4BoxHeader moovHeader = Mp4BoxHeader.seekWithinLevel(raf, Mp4NotMetaFieldKey.MOOV.getFieldName());
+        Mp4BoxHeader moovHeader = Mp4BoxHeader.seekWithinLevel(raf, Mp4AtomIdentifier.MOOV.getFieldName());
         if (moovHeader == null)
         {
             throw new CannotReadException(ErrorMessage.MP4_FILE_NOT_CONTAINER.getMsg());
@@ -97,11 +97,11 @@ public class Mp4TagReader
         moovBuffer.rewind();
 
         //Level 2-Searching for "udta" within "moov"
-        Mp4BoxHeader boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4NotMetaFieldKey.UDTA.getFieldName());
+        Mp4BoxHeader boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4AtomIdentifier.UDTA.getFieldName());
         if (boxHeader != null)
         {
             //Level 3-Searching for "meta" within udta
-            boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4NotMetaFieldKey.META.getFieldName());
+            boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4AtomIdentifier.META.getFieldName());
             if (boxHeader == null)
             {
                 logger.warning(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
@@ -111,7 +111,7 @@ public class Mp4TagReader
             meta.processData();
 
             //Level 4- Search for "ilst" within meta
-            boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4NotMetaFieldKey.ILST.getFieldName());
+            boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4AtomIdentifier.ILST.getFieldName());
              //This file does not actually contain a tag
             if (boxHeader == null)
             {
@@ -122,7 +122,7 @@ public class Mp4TagReader
         else
         {
             //Level 2-Searching for "meta" not within udta
-            boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4NotMetaFieldKey.META.getFieldName());
+            boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4AtomIdentifier.META.getFieldName());
             if (boxHeader == null)
             {
                 logger.warning(ErrorMessage.MP4_FILE_HAS_NO_METADATA.getMsg());
@@ -133,7 +133,7 @@ public class Mp4TagReader
 
 
             //Level 3- Search for "ilst" within meta
-            boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4NotMetaFieldKey.ILST.getFieldName());
+            boxHeader = Mp4BoxHeader.seekWithinLevel(moovBuffer, Mp4AtomIdentifier.ILST.getFieldName());
             //This file does not actually contain a tag
             if (boxHeader == null)
             {
@@ -147,9 +147,9 @@ public class Mp4TagReader
         int length = boxHeader.getLength() - Mp4BoxHeader.HEADER_LENGTH;
         ByteBuffer metadataBuffer = moovBuffer.slice();
         //Datalength is longer are there boxes after ilst at this level?
-        logger.info("headerlengthsays:" + length + "datalength:" + metadataBuffer.limit());
+        logger.config("headerlengthsays:" + length + "datalength:" + metadataBuffer.limit());
         int read = 0;
-        logger.info("Started to read metadata fields at position is in metadata buffer:" + metadataBuffer.position());
+        logger.config("Started to read metadata fields at position is in metadata buffer:" + metadataBuffer.position());
         while (read < length)
         {
             //Read the boxHeader
@@ -157,7 +157,7 @@ public class Mp4TagReader
 
             //Create the corresponding datafield from the id, and slice the buffer so position of main buffer
             //wont get affected
-            logger.info("Next position is at:" + metadataBuffer.position());
+            logger.config("Next position is at:" + metadataBuffer.position());
             createMp4Field(tag, boxHeader, metadataBuffer.slice());
 
             //Move position in buffer to the start of the next parentHeader
@@ -208,7 +208,7 @@ public class Mp4TagReader
                 //Need this to decide what type of Field to create
                 int type = Utils.getIntBE(raw, Mp4DataBox.TYPE_POS_INCLUDING_HEADER, Mp4DataBox.TYPE_POS_INCLUDING_HEADER + Mp4DataBox.TYPE_LENGTH - 1);
                 Mp4FieldType fieldType = Mp4FieldType.getFieldType(type);
-                logger.info("Box Type id:" + header.getId() + ":type:" + fieldType);
+                logger.config("Box Type id:" + header.getId() + ":type:" + fieldType);
 
                 //Special handling for some specific identifiers otherwise just base on class id
                 if (header.getId().equals(Mp4FieldKey.TRACK.getFieldName()))
@@ -237,7 +237,8 @@ public class Mp4TagReader
                         //for each subimage (if there are more than one image)
                         if (imageCount > 0)
                         {
-                            type = Utils.getIntBE(raw, processedDataSize + Mp4DataBox.TYPE_POS_INCLUDING_HEADER, processedDataSize + Mp4DataBox.TYPE_POS_INCLUDING_HEADER + Mp4DataBox.TYPE_LENGTH - 1);
+                            type = Utils.getIntBE(raw, processedDataSize + Mp4DataBox.TYPE_POS_INCLUDING_HEADER,
+                                    processedDataSize + Mp4DataBox.TYPE_POS_INCLUDING_HEADER + Mp4DataBox.TYPE_LENGTH - 1);
                             fieldType = Mp4FieldType.getFieldType(type);
                         }
                         Mp4TagCoverField field = new Mp4TagCoverField(raw,fieldType);

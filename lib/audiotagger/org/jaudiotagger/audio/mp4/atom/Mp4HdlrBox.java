@@ -1,7 +1,7 @@
 package org.jaudiotagger.audio.mp4.atom;
 
 import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.mp4.Mp4NotMetaFieldKey;
+import org.jaudiotagger.audio.mp4.Mp4AtomIdentifier;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -150,13 +150,13 @@ public class Mp4HdlrBox extends AbstractMp4Box
      *
      * <p>Useful when writing to mp4 that previously didn't contain an mp4 meta atom</p>
      *
-     * <p>Doesnt write the child data but uses it to se the header length, only sets the atoms immediate
+     * <p>Doesnt write the child data but uses it to set the header length, only sets the atoms immediate
      * data</p
      * @return
      */
     public static Mp4HdlrBox createiTunesStyleHdlrBox()
     {
-        Mp4BoxHeader hdlrHeader = new Mp4BoxHeader(Mp4NotMetaFieldKey.HDLR.getFieldName());
+        Mp4BoxHeader hdlrHeader = new Mp4BoxHeader(Mp4AtomIdentifier.HDLR.getFieldName());
         hdlrHeader.setLength(Mp4BoxHeader.HEADER_LENGTH + Mp4HdlrBox.ITUNES_META_HDLR_DAT_LENGTH);
 
         ByteBuffer hdlrData = ByteBuffer.allocate(Mp4HdlrBox.ITUNES_META_HDLR_DAT_LENGTH);

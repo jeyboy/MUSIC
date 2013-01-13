@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: ID3v1Tag.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: ID3v1Tag.java 1011 2011-12-07 11:08:21Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -27,7 +27,7 @@ import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.logging.ErrorMessage;
 import org.jaudiotagger.tag.*;
-import org.jaudiotagger.tag.datatype.Artwork;
+import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.reference.GenreTypes;
 
 import java.io.IOException;
@@ -280,7 +280,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
      *
      * @return album
      */
-    protected String getFirstAlbum()
+    public String getFirstAlbum()
     {
         return album;
     }
@@ -323,7 +323,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
      *
      * @return artist
      */
-    protected String getFirstArtist()
+    public String getFirstArtist()
     {
         return artist;
     }
@@ -594,15 +594,32 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
         return true;
     }
 
+    public boolean hasField(FieldKey genericKey)
+    {
+        return getFirst(genericKey).length() > 0;
+    }
+
     public boolean hasField(String id)
     {
-        //TODO
-        throw new UnsupportedOperationException("TODO:Not done yet");
+        try
+        {
+            FieldKey key = FieldKey.valueOf(id.toUpperCase());
+            return hasField(key);
+        }
+        catch(java.lang.IllegalArgumentException iae)
+        {
+            return false;
+        }
     }
 
     public boolean isEmpty()
     {
-        return !(getFirst(FieldKey.TITLE).length() > 0 || getFirstArtist().length() > 0 || getFirstAlbum().length() > 0 || getFirst(FieldKey.GENRE).length() > 0 || getFirst(FieldKey.YEAR).length() > 0 || getFirstComment().length() > 0);
+        return !(getFirst(FieldKey.TITLE).length() > 0 ||
+                getFirstArtist().length() > 0 ||
+                getFirstAlbum().length() > 0 ||
+                getFirst(FieldKey.GENRE).length() > 0 ||
+                getFirst(FieldKey.YEAR).length() > 0 ||
+                getFirstComment().length() > 0);
     }
 
 
@@ -943,7 +960,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
      */
     public void write(RandomAccessFile file) throws IOException
     {
-        logger.info("Saving ID3v1 tag to file");
+        logger.config("Saving ID3v1 tag to file");
         byte[] buffer = new byte[TAG_LENGTH];
         int i;
         String str;
@@ -1002,7 +1019,7 @@ public class ID3v1Tag extends AbstractID3v1Tag implements Tag
             buffer[offset] = genre;
         }
         file.write(buffer);
-        logger.info("Saved ID3v1 tag to file");
+        logger.config("Saved ID3v1 tag to file");
     }
 
     /**

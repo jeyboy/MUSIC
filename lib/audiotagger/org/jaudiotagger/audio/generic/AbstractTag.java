@@ -18,7 +18,7 @@
 package org.jaudiotagger.audio.generic;
 
 import org.jaudiotagger.tag.*;
-import org.jaudiotagger.tag.datatype.Artwork;
+import org.jaudiotagger.tag.images.Artwork;
 
 import java.util.*;
 
@@ -251,6 +251,11 @@ public abstract class AbstractTag implements Tag
     public boolean hasField(String id)
     {
         return getFields(id).size() != 0;
+    }
+
+    public boolean hasField(FieldKey fieldKey)
+    {
+        return hasField(fieldKey.name());
     }
 
     /**

@@ -43,7 +43,7 @@ import org.jaudiotagger.tag.flac.FlacTag;
  * <p>To get the meta-data contained in this file you have to get the <code>Tag</code> of this <code>AudioFile</code></p>
  *
  * @author Raphael Slinckx
- * @version $Id: AudioFile.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: AudioFile.java 976 2011-06-08 10:05:34Z paultaylor $
  * @see AudioFileIO
  * @see Tag
  * @since v0.01
@@ -182,7 +182,7 @@ public class AudioFile
      */
     public void checkFileExists(File file)throws FileNotFoundException
     {
-        logger.info("Reading file:" + "path" + file.getPath() + ":abs:" + file.getAbsolutePath());
+        logger.config("Reading file:" + "path" + file.getPath() + ":abs:" + file.getAbsolutePath());
         if (!file.exists())
         {
             logger.severe("Unable to find:" + file.getPath());
@@ -248,7 +248,7 @@ public class AudioFile
      * @return
      */
     //TODO might be better to instantiate classes such as Mp4File,FlacFile ecetera
-    //TODO Generic tag is very misleading because soem of these formats cannot actually save the tag
+    //TODO Generic tag is very misleading because some of these formats cannot actually save the tag
     public Tag createDefaultTag()
     {
         if(SupportedFileFormat.FLAC.getFilesuffix().equals(file.getName().substring(file.getName().lastIndexOf('.'))))

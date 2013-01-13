@@ -82,7 +82,7 @@ import java.util.logging.Logger;
  * </p>
  *
  * @author Raphael Slinckx
- * @version $Id: AudioFileIO.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: AudioFileIO.java 976 2011-06-08 10:05:34Z paultaylor $
  * @see AudioFile
  * @see org.jaudiotagger.tag.Tag
  * @since v0.01
@@ -294,7 +294,7 @@ public class AudioFileIO
      */
     public void checkFileExists(File file)throws FileNotFoundException
     {
-        logger.info("Reading file:" + "path" + file.getPath() + ":abs:" + file.getAbsolutePath());
+        logger.config("Reading file:" + "path" + file.getPath() + ":abs:" + file.getAbsolutePath());
         if (!file.exists())
         {
             logger.severe("Unable to find:" + file.getPath());

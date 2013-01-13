@@ -27,11 +27,13 @@ import org.jaudiotagger.tag.*;
 import org.jaudiotagger.tag.datatype.*;
 import org.jaudiotagger.tag.id3.framebody.*;
 import org.jaudiotagger.tag.id3.valuepair.TextEncoding;
+import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.reference.Languages;
 import org.jaudiotagger.tag.reference.PictureTypes;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.WritableByteChannel;
@@ -43,7 +45,7 @@ import java.util.logging.Level;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: AbstractID3v2Tag.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: AbstractID3v2Tag.java 1011 2011-12-07 11:08:21Z paultaylor $
  */
 public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
 {
@@ -113,6 +115,53 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
     protected int invalidFrames = 0;
 
     /**
+     * True if files has a ID3v2 header
+     *
+     * @param raf
+     * @return
+     * @throws IOException
+     */
+    private static boolean isID3V2Header(RandomAccessFile raf) throws IOException
+    {
+        long start = raf.getFilePointer();
+        byte[] tagIdentifier = new byte[FIELD_TAGID_LENGTH];
+        raf.read(tagIdentifier);
+        raf.seek(start);
+        if (!(Arrays.equals(tagIdentifier, TAG_ID)))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Determines if file contain an id3 tag and if so positions the file pointer just after the end
+     * of the tag.
+     *
+     * This method is used by non mp3s (such as .ogg and .flac) to determine if they contain an id3 tag
+     *
+     * @param raf
+     * @return
+     * @throws IOException
+     */
+    public static boolean isId3Tag(RandomAccessFile raf) throws IOException
+    {
+        if(!isID3V2Header(raf))
+        {
+            return false;
+        }
+        //So we have a tag
+        byte[] tagHeader = new byte[FIELD_TAG_SIZE_LENGTH];
+        raf.seek(raf.getFilePointer() + 6);
+        raf.read(tagHeader);
+        ByteBuffer bb = ByteBuffer.wrap(tagHeader);
+
+        int size = ID3SyncSafeInteger.bufferToValue(bb);
+        raf.seek(size + TAG_HEADER_LENGTH);
+        return true;
+    }
+
+    /**
      * Empty Constructor
      */
     public AbstractID3v2Tag()
@@ -136,7 +185,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
      */
     protected void copyPrimitives(AbstractID3v2Tag copyObject)
     {
-        logger.info("Copying Primitives");
+        logger.config("Copying Primitives");
         //Primitives type variables common to all IDv2 Tags
         this.duplicateFrameId = copyObject.duplicateFrameId;
         this.duplicateBytes = copyObject.duplicateBytes;
@@ -233,7 +282,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
     /**
      * Return whether tag has frame with this identifier
      * <p/>
-     * Warning the match is only done against the identifier so if a tag contains a frame with an unsuported body
+     * Warning the match is only done against the identifier so if a tag contains a frame with an unsupported body
      * but happens to have an identifier that is valid for another version of the tag it will return true
      *
      * @param identifier frameId to lookup
@@ -928,7 +977,16 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
     {
     }
 
-
+    /**
+     * Write tag to output stream
+     *
+     * @param outputStream
+     * @throws IOException
+     */
+    public void write(OutputStream outputStream) throws IOException
+    {
+        write(Channels.newChannel(outputStream));
+    }
     /**
      * Checks to see if the file contains an ID3tag and if so return its size as reported in
      * the tag header  and return the size of the tag (including header), if no such tag exists return
@@ -1009,7 +1067,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
     public boolean seek(ByteBuffer byteBuffer)
     {
         byteBuffer.rewind();
-        logger.info("ByteBuffer pos:" + byteBuffer.position() + ":limit" + byteBuffer.limit() + ":cap" + byteBuffer.capacity());
+        logger.config("ByteBuffer pos:" + byteBuffer.position() + ":limit" + byteBuffer.limit() + ":cap" + byteBuffer.capacity());
 
 
         byte[] tagIdentifier = new byte[FIELD_TAGID_LENGTH];
@@ -1066,7 +1124,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
      */
     public void adjustPadding(File file, int paddingSize, long audioStart) throws FileNotFoundException, IOException
     {
-        logger.finer("Need to move audio file to accomodate tag");
+        logger.finer("Need to move audio file to accommodate tag");
         FileChannel fcIn = null;
         FileChannel fcOut;
 
@@ -1078,7 +1136,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
 
         try
         {
-            paddedFile = File.createTempFile(Utils.getMinBaseFilenameAllowedForTempFile(file), ".new", file.getParentFile());
+            paddedFile = File.createTempFile(Utils.getBaseFilenameForTempFile(file), ".new", file.getParentFile());
             logger.finest("Created temp file:" + paddedFile.getName() + " for " + file.getName());
         }
         //Vista:Can occur if have Write permission on folder this file would be created in Denied
@@ -1126,7 +1184,8 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
             long audiolength = file.length() - audioStart;
             if (audiolength <= MAXIMUM_WRITABLE_CHUNK_SIZE)
             {
-                long written2 = fcIn.transferTo(audioStart, audiolength, fcOut);
+                fcIn.position(audioStart);
+                long written2 = fcOut.transferFrom(fcIn, paddingSize, audiolength);
                 logger.finer("Written padding:" + written + " Data:" + written2);
                 if (written2 != audiolength)
                 {
@@ -1176,6 +1235,11 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
             //Update modification time
             //TODO is this the right file ?
             paddedFile.setLastModified(lastModified);
+        }
+        catch(UnableToRenameFileException ure)
+        {
+            paddedFile.delete();
+            throw ure;
         }
         finally
         {
@@ -1280,7 +1344,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
     /**
      * Replace originalFile with the contents of newFile
      * <p/>
-     * Both files must exist in the same folder so that there are no problems with fileystem mount points
+     * Both files must exist in the same folder so that there are no problems with filesystem mount points
      *
      * @param newFile
      * @param originalFile
@@ -1303,6 +1367,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
         if (!renameOriginalResult)
         {
             logger.warning(ErrorMessage.GENERAL_WRITE_FAILED_TO_RENAME_ORIGINAL_FILE_TO_BACKUP.getMsg(originalFile.getAbsolutePath(), originalFileBackup.getName()));
+            newFile.delete();
             throw new UnableToRenameFileException(ErrorMessage.GENERAL_WRITE_FAILED_TO_RENAME_ORIGINAL_FILE_TO_BACKUP.getMsg(originalFile.getAbsolutePath(), originalFileBackup.getName()));
         }
 
@@ -1327,6 +1392,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
 
 
             logger.warning(ErrorMessage.GENERAL_WRITE_FAILED_TO_RENAME_TO_ORIGINAL_FILE.getMsg(originalFile.getAbsolutePath(), newFile.getName()));
+            newFile.delete();
             throw new UnableToRenameFileException(ErrorMessage.GENERAL_WRITE_FAILED_TO_RENAME_TO_ORIGINAL_FILE.getMsg(originalFile.getAbsolutePath(), newFile.getName()));
         }
         else
@@ -1342,7 +1408,7 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
     }
 
     /*
-    * Copy framne into map, whilst accounting for multiple frame of same type which can occur even if there were
+    * Copy frame into map, whilst accounting for multiple frame of same type which can occur even if there were
     * not frames of the same type in the original tag
     */
 
@@ -1623,13 +1689,24 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
     }
 
     /**
+     * Does this tag contain a field with the specified key
+     *
+     * @param key The field id to look for.
+     * @return
+     */
+    public boolean   hasField(FieldKey key)
+    {
+        return getFirstField(key)!=null;
+    }
+
+    /**
      * Does this tag contain a field with the specified id
      *
      * @see org.jaudiotagger.tag.Tag#hasField(java.lang.String)
      */
-    public boolean hasField(String id)
+    public boolean   hasField(String id)
     {
-        return getFields(id).size() != 0;
+        return hasFrame(id);
     }
 
     /**
@@ -2467,5 +2544,24 @@ public abstract class AbstractID3v2Tag extends AbstractID3Tag implements Tag
     public void deleteArtworkField() throws KeyNotFoundException
     {
         this.deleteField(FieldKey.COVER_ART);
+    }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder out = new StringBuilder();
+        out.append("Tag content:\n");
+        final Iterator<TagField> it = getFields();
+        while (it.hasNext())
+        {
+            final TagField field = it.next();
+            out.append("\t");
+            out.append(field.getId());
+            out.append(":");
+            out.append(field.toString());
+            out.append("\n");
+        }
+
+        return out.toString();
     }
 }

@@ -39,7 +39,7 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyTPOS.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: FrameBodyTPOS.java 895 2010-04-15 15:21:45Z paultaylor $
  */
 public class FrameBodyTPOS extends AbstractID3v2FrameBody implements ID3v23FrameBody, ID3v24FrameBody
 {

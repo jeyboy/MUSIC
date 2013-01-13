@@ -32,10 +32,11 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyTIME.java 832 2009-11-12 13:25:38Z paultaylor $
+ * @version $Id: FrameBodyTIME.java 932 2010-11-26 13:13:15Z paultaylor $
  */
 public class FrameBodyTIME extends AbstractFrameBodyTextInfo implements ID3v23FrameBody
 {
+    private boolean hoursOnly;
     /**
      * Creates a new FrameBodyTIME datatype.
      */
@@ -79,5 +80,15 @@ public class FrameBodyTIME extends AbstractFrameBodyTextInfo implements ID3v23Fr
     public String getIdentifier()
     {
         return ID3v23Frames.FRAME_ID_V3_TIME;
+    }
+
+    public boolean isHoursOnly()
+    {
+        return hoursOnly;
+    }
+
+    public void setHoursOnly(boolean hoursOnly)
+    {
+        this.hoursOnly = hoursOnly;
     }
 }

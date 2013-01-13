@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: BooleanByte.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: BooleanByte.java 920 2010-10-04 13:47:19Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *

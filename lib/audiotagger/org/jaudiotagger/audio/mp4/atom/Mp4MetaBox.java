@@ -1,14 +1,14 @@
 package org.jaudiotagger.audio.mp4.atom;
 
 import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.mp4.Mp4NotMetaFieldKey;
+import org.jaudiotagger.audio.mp4.Mp4AtomIdentifier;
 import org.jaudiotagger.logging.ErrorMessage;
 
 import java.nio.ByteBuffer;
 
 /**
  * This MP4 MetaBox is the parent of metadata, it usually contains four bytes of data
- * that needs to be processed before we can examine the children. But I also have a file that caontsins
+ * that needs to be processed before we can examine the children. But I also have a file that contains
  * meta (and no udta) that does not have this children data.
  */
 public class Mp4MetaBox extends AbstractMp4Box
@@ -17,7 +17,7 @@ public class Mp4MetaBox extends AbstractMp4Box
 
     /**
      * @param header     header info
-     * @param dataBuffer data of box (doesnt include header data)
+     * @param dataBuffer data of box (doesn't include header data)
      */
     public Mp4MetaBox(Mp4BoxHeader header, ByteBuffer dataBuffer)
     {
@@ -46,7 +46,7 @@ public class Mp4MetaBox extends AbstractMp4Box
      */
     public static Mp4MetaBox createiTunesStyleMetaBox(int childrenSize)
     {
-        Mp4BoxHeader metaHeader = new Mp4BoxHeader(Mp4NotMetaFieldKey.META.getFieldName());
+        Mp4BoxHeader metaHeader = new Mp4BoxHeader(Mp4AtomIdentifier.META.getFieldName());
         metaHeader.setLength(Mp4BoxHeader.HEADER_LENGTH + Mp4MetaBox.FLAGS_LENGTH + childrenSize);
         ByteBuffer metaData = ByteBuffer.allocate(Mp4MetaBox.FLAGS_LENGTH);     
         Mp4MetaBox metaBox = new Mp4MetaBox(metaHeader,metaData);

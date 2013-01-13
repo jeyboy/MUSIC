@@ -32,7 +32,7 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyTENC.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: FrameBodyTENC.java 905 2010-05-14 19:37:31Z paultaylor $
  */
 public class FrameBodyTENC extends AbstractFrameBodyTextInfo implements ID3v24FrameBody, ID3v23FrameBody
 {

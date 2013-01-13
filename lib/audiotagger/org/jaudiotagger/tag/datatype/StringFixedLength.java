@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: StringFixedLength.java 836 2009-11-12 15:44:07Z paultaylor $
+ *  Version @version:$Id: StringFixedLength.java 976 2011-06-08 10:05:34Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -87,7 +87,7 @@ public class StringFixedLength extends AbstractString
      */
     public void readByteArray(byte[] arr, int offset) throws InvalidDataTypeException
     {
-        logger.info("Reading from array from offset:" + offset);
+        logger.config("Reading from array from offset:" + offset);
         try
         {
             String charSetName = getTextEncodingCharSet();
@@ -114,7 +114,7 @@ public class StringFixedLength extends AbstractString
             logger.severe(ce.getMessage());
             value = "";
         }
-        logger.info("Read StringFixedLength:" + value);
+        logger.config("Read StringFixedLength:" + value);
     }
 
     /**
@@ -148,7 +148,7 @@ public class StringFixedLength extends AbstractString
             String charSetName = getTextEncodingCharSet();
             if (charSetName.equals(TextEncoding.CHARSET_UTF_16))
             {
-                charSetName = TextEncoding.CHARSET_UTF_16_ENCODING_FORMAT;
+                charSetName = TextEncoding.CHARSET_UTF_16_LE_ENCODING_FORMAT;
                 CharsetEncoder encoder = Charset.forName(charSetName).newEncoder();
                 //Note remember LE BOM is ff fe but tis is handled by encoder Unicode char is fe ff
                 dataBuffer = encoder.encode(CharBuffer.wrap('\ufeff' + (String) value));

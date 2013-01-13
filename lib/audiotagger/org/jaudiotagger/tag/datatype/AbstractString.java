@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: AbstractString.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: AbstractString.java 899 2010-04-19 14:32:20Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *

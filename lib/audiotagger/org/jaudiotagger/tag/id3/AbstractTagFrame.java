@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: AbstractTagFrame.java 857 2009-12-03 11:21:11Z paultaylor $
+ *  Version @version:$Id: AbstractTagFrame.java 973 2011-06-07 13:51:31Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -128,5 +128,11 @@ public abstract class AbstractTagFrame extends AbstractTagItem
               EqualsUtil.areEqual(this.frameBody, that.frameBody) &&
               super.equals(that);
 
+    }
+
+    @Override
+    public String toString ()
+    {
+        return getBody ().toString ();
     }
 }

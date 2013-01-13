@@ -22,7 +22,6 @@ package org.jaudiotagger.tag.vorbiscomment;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.generic.Utils;
 import org.jaudiotagger.audio.ogg.util.VorbisHeader;
-import org.jaudiotagger.fix.Fix;
 import org.jaudiotagger.logging.ErrorMessage;
 
 import java.io.IOException;
@@ -61,8 +60,6 @@ public class VorbisCommentReader
     public static final int FIELD_USER_COMMENT_LIST_LENGTH = 4;
     public static final int FIELD_COMMENT_LENGTH_LENGTH = 4;
 
-    private Fix fix;
-
     /**
      * max comment length that jaudiotagger can handle, this isnt the maximum column length allowed but we dont
      * dont allow comments larger than this because of problem with allocating memory  (10MB shoudl be fine for all apps)
@@ -72,11 +69,6 @@ public class VorbisCommentReader
     public VorbisCommentReader()
     {
 
-    }
-
-    public VorbisCommentReader(Fix fix)
-    {
-        this.fix = fix;
     }
 
     /**
@@ -100,18 +92,15 @@ public class VorbisCommentReader
         System.arraycopy(rawdata, pos, b, 0, vendorStringLength);
         pos += vendorStringLength;
         tag.setVendor(new String(b, VorbisHeader.CHARSET_UTF_8));
-        logger.info("Vendor is:"+tag.getVendor());
+        logger.config("Vendor is:"+tag.getVendor());
         
         b = new byte[FIELD_USER_COMMENT_LIST_LENGTH];
         System.arraycopy(rawdata, pos, b, 0, FIELD_USER_COMMENT_LIST_LENGTH);
         pos += FIELD_USER_COMMENT_LIST_LENGTH;
 
         int userComments = Utils.getIntLE(b);
-        logger.info("Number of user comments:" + userComments);
-        if (fix == Fix.FIX_OGG_VORBIS_COMMENT_NOT_COUNTING_EMPTY_COLUMNS)
-        {
-            userComments++;
-        }
+        logger.config("Number of user comments:" + userComments);
+        
         for (int i = 0; i < userComments; i++)
         {
             b = new byte[FIELD_COMMENT_LENGTH_LENGTH];
@@ -119,7 +108,7 @@ public class VorbisCommentReader
             pos += FIELD_COMMENT_LENGTH_LENGTH;
 
             int commentLength = Utils.getIntLE(b);
-            logger.info("Next Comment Length:" + commentLength);
+            logger.config("Next Comment Length:" + commentLength);
 
             if(commentLength> JAUDIOTAGGER_MAX_COMMENT_LENGTH)
             {
@@ -138,7 +127,7 @@ public class VorbisCommentReader
                 pos += commentLength;
 
                 VorbisCommentTagField fieldComment = new VorbisCommentTagField(b);
-                logger.info("Adding:" + fieldComment.getId());
+                logger.config("Adding:" + fieldComment.getId());
                 tag.addField(fieldComment);
             }
         }

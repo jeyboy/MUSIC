@@ -48,7 +48,7 @@ import java.util.StringTokenizer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyIPLS.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: FrameBodyIPLS.java 923 2010-10-16 21:59:49Z paultaylor $
  */
 public class FrameBodyIPLS extends AbstractID3v2FrameBody implements ID3v23FrameBody
 {

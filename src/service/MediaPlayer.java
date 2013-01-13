@@ -15,7 +15,6 @@ public class MediaPlayer implements JBPlayerListener {
     private JBPlayer player;
     private PlayerPanel panel;
     
-    private long byteLength;
     private long duration;
 
 
@@ -87,17 +86,11 @@ public class MediaPlayer implements JBPlayerListener {
 		try { player.setVolume(volume);}
 		catch (JBPlayerException e) { Errorist.printLog(e); }
 	}
-	public void opened(Object stream, Map properties) {
-		if (properties.containsKey("audio.length.bytes"))
-			byteLength = (long)properties.get("audio.length.bytes");
-		else
-			byteLength = 0;	
-		
-		
-//		System.out.println("properties : ");
-//	    for (Object me : properties.entrySet()) {
-//	        System.out.print("\t" + me);    	
-//	    }
+	public void opened(Object stream, Map properties) {		
+		System.out.println("properties : ");
+	    for (Object me : properties.entrySet()) {
+	        System.out.print("\t" + me);    	
+	    }
 		
 //		properties.get("audio.framerate.fps");
 //		properties.get("audio.samplerate.hz");
@@ -109,22 +102,14 @@ public class MediaPlayer implements JBPlayerListener {
 //		properties.get("bitrate");
 //		properties.get("author");
 		
-		if (properties.containsKey("duration")) {
-			Object raw_duration = properties.get("duration");
-			if (raw_duration instanceof Long)
-				duration = (long) properties.get("duration");
-			else
-				duration = (int) properties.get("duration");
-		}
-		else
-			duration = Math.round((float)(int)properties.get("audio.length.frames")/(float)properties.get("audio.framerate.fps") * 1000000);
-
+	    	
+	    duration = player.getDuration();
+	    panel.blockTrack(duration != 0);
 		InitVolume();
-		panel.setTrackMax(byteLength);
 	}
-	public void progress(int bytesread, long microseconds, byte[] pcmdata, Map properties) {
-		panel.setTrackPosition(bytesread);
-		panel.setTime(Utils.MilliToTime(duration - microseconds));
+	public void progress(int progress, long microsecPos) {
+		panel.setTrackPosition(progress);
+		panel.setTime(Utils.MilliToTime(duration - microsecPos));
 	}
 	public void stateUpdated(JBPlayerEvent event) {
 		switch(event.getCode()) {
@@ -145,7 +130,11 @@ public class MediaPlayer implements JBPlayerListener {
 			case JBPlayerEvent.VOLUME :
 				System.out.println("volume - value : " + event.getValue() + " - position : " + event.getPosition());
 //				panel.setVolumePosition((int) Math.round(event.getValue() * 100));
-				break;				
+				break;
+			case JBPlayerEvent.STOPPED :
+				panel.setTrackPosition(0);
+				panel.setDefaultTime();
+				break;
 		}
 	}
 }

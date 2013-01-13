@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Represents the Track No field
  * <p/>
- * <p>There are a number of reseved fields makeing matters more complicated
+ * <p>There are a number of reserved fields making matters more complicated
  * Reserved:2 bytes
  * Track Number:2 bytes
  * No of Tracks:2 bytes (or zero if not known)
@@ -134,14 +134,19 @@ public class Mp4TrackField extends Mp4TagTextNumberField
         Mp4DataBox databox = new Mp4DataBox(header, data);
         dataSize = header.getDataLength();
         numbers = databox.getNumbers();
-
         //Track number always hold three values, we can discard the first one, the second one is the track no
         //and the third is the total no of tracks so only use if not zero
         StringBuffer sb = new StringBuffer();
-        sb.append(numbers.get(TRACK_NO_INDEX));
-        if (numbers.get(TRACK_TOTAL_INDEX) > 0)
+        if(numbers!=null)
         {
-            sb.append("/").append(numbers.get(TRACK_TOTAL_INDEX));
+            if ((numbers.size() > TRACK_NO_INDEX) && (numbers.get(TRACK_NO_INDEX) > 0))
+            {
+                sb.append(numbers.get(TRACK_NO_INDEX));
+            }
+            if ((numbers.size() > TRACK_TOTAL_INDEX) && (numbers.get(TRACK_TOTAL_INDEX) > 0))
+            {
+                sb.append("/").append(numbers.get(TRACK_TOTAL_INDEX));
+            }
         }
         content = sb.toString();
     }
@@ -159,6 +164,10 @@ public class Mp4TrackField extends Mp4TagTextNumberField
      */
     public Short getTrackTotal()
     {
+        if(numbers.size()<=TRACK_TOTAL_INDEX)
+        {
+            return 0;
+        }
         return numbers.get(TRACK_TOTAL_INDEX);
     }
 

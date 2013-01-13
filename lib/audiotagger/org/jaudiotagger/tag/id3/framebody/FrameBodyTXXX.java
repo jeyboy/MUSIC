@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: FrameBodyTXXX.java 929 2010-11-17 12:36:46Z paultaylor $
+ *  Version @version:$Id: FrameBodyTXXX.java 1007 2011-09-26 12:18:47Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -56,6 +56,7 @@ public class FrameBodyTXXX extends AbstractFrameBodyTextInfo implements ID3v24Fr
     public static final String MUSICBRAINZ_ARTISTID         = "MusicBrainz Artist Id";
     public static final String MUSICBRAINZ_ALBUM_ARTISTID   = "MusicBrainz Album Artist Id";
     public static final String MUSICBRAINZ_ALBUMID          = "MusicBrainz Album Id";
+    public static final String MUSICBRAINZ_ORIGINAL_ALBUMID = "MusicBrainz Original Album Id";
     public static final String MUSICBRAINZ_RELEASE_GROUPID  = "MusicBrainz Release Group Id";
     public static final String MUSICBRAINZ_DISCID           = "MusicBrainz Disc Id";
     public static final String MUSICBRAINZ_ALBUM_TYPE       = "MusicBrainz Album Type";
@@ -69,7 +70,11 @@ public class FrameBodyTXXX extends AbstractFrameBodyTextInfo implements ID3v24Fr
     public static final String MOOD                         = "MOOD";          //ID3 v23 only
     public static final String TAGS                         = "TAGS";
     public static final String FBPM                         = "FBPM";
-    public static final String SCRIPT                       = "SCRIPT";    
+    public static final String SCRIPT                       = "Script";
+    public static final String ARTISTS                      = "ARTISTS";
+    public static final String ACOUSTID_FINGERPRINT         = "Acoustid Fingerprint";
+    public static final String ACOUSTID_ID                  = "Acoustid Id";
+    public static final String COUNTRY                      = "Country";
 
     //used by Foobar 20000
     public static final String ALBUM_ARTIST = "ALBUM ARTIST";

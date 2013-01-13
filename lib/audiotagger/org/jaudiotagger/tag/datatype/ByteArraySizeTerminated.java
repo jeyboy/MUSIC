@@ -2,7 +2,7 @@
  *  @author : Paul Taylor
  *  @author : Eric Farng
  *
- *  Version @version:$Id: ByteArraySizeTerminated.java 836 2009-11-12 15:44:07Z paultaylor $
+ *  Version @version:$Id: ByteArraySizeTerminated.java 976 2011-06-08 10:05:34Z paultaylor $
  *
  *  MusicTag Copyright (C)2003,2004
  *
@@ -113,7 +113,7 @@ public class ByteArraySizeTerminated extends AbstractDataType
      */
     public byte[] writeByteArray()
     {
-        logger.info("Writing byte array" + this.getIdentifier());
+        logger.config("Writing byte array" + this.getIdentifier());
         return (byte[]) value;
     }
 }

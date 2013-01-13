@@ -35,12 +35,12 @@ public class JBPlayer implements Runnable {
     protected Thread m_thread = null;
     
     protected Object m_dataSource;
-    protected AudioInputStream m_audioInputStream, m_encodedaudioInputStream;
+    protected AudioInputStream m_audioInputStream;
     
     protected SourceDataLine m_line;
     protected AudioFormat audioFormat;
     
-    protected int encodedLength = -1;
+    protected float duration = 0, process = 0, last_millis;
     protected FloatControl m_gainControl, m_panControl, m_volumeControl, m_sampleRateControl;
     protected String m_mixerName = null;
     
@@ -63,7 +63,8 @@ public class JBPlayer implements Runnable {
     /** Main loop. */
     public void run() {
         int nBytesRead;
-        byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];    	
+        byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
+        long temp_millis;
     	
     	while(!close_player)
     		switch(m_status) {
@@ -73,15 +74,18 @@ public class JBPlayer implements Runnable {
 	                        nBytesRead = m_audioInputStream.read(abData, 0, abData.length);
 	                        if (nBytesRead >= 0) {
 	                        	m_line.write(abData, 0, nBytesRead);
+	                        	temp_millis = m_line.getMicrosecondPosition();
+	                        	process += (temp_millis - last_millis); 
+	                        	last_millis = temp_millis;
                             
 	                            for(JBPlayerListener bpl : m_listeners)
-	                            	bpl.progress(getStreamPosition(), m_line.getMicrosecondPosition(), abData, empty_map);
+	                            	bpl.progress(getStreamProgress(), temp_millis);
 	                        } 
-	                        else notifyEvent(JBPlayerEvent.EOM, getStreamPosition(), -1, null);
+	                        else notifyEvent(JBPlayerEvent.EOM, getStreamProgress(), -1, null);
 	                    }
 	                    catch (IOException e) {
 	                        log.error("Thread cannot run()", e);
-	                        notifyEvent(JBPlayerEvent.STOPPED, getStreamPosition(), -1, null);
+	                        notifyEvent(JBPlayerEvent.STOPPED, getStreamProgress(), -1, null);
 	                    }
     		        }
     				
@@ -150,6 +154,12 @@ public class JBPlayer implements Runnable {
      * @return -1 maximum buffer size.*/
     public int getLineBufferSize() { return lineBufferSize; }
     
+    protected AudioFormat GetAFormat() { return audioFormat;}
+    public long getDuration() {return (long)duration;}
+    
+    public String getMixerName() 			{ return m_mixerName; }
+    public void setMixerName(String name) 	{ m_mixerName = name; }    
+    
     
     //////////////////////////////////////////////////////////
     // Streaming
@@ -179,7 +189,7 @@ public class JBPlayer implements Runnable {
     protected void initStream() throws JBPlayerException {
         try {
             reset();
-            notifyEvent(JBPlayerEvent.OPENING, getStreamPosition(), -1, m_dataSource);
+            notifyEvent(JBPlayerEvent.OPENING, 0, -1, m_dataSource);
             
             AudioFileFormat m_audioFileFormat;
             if (sourceIsURL())
@@ -212,10 +222,23 @@ public class JBPlayer implements Runnable {
             if (GetAFormat() instanceof TAudioFormat)
                 properties.putAll(((TAudioFormat)GetAFormat()).properties());
             
+            
+    		if (properties.containsKey("duration")) {
+    			Object raw_duration = properties.get("duration");
+    			if (raw_duration instanceof Long)
+    				duration = (long) properties.get("duration");
+    			else
+    				duration = (int) properties.get("duration");
+    		}
+    		else if (properties.containsKey("audio.length.frames") && properties.containsKey("audio.framerate.fps"))
+    			duration = Math.round((float)(int)properties.get("audio.length.frames")/(float)properties.get("audio.framerate.fps") * 1000000);
+    		
+    		if (m_audioFileFormat.getType().getExtension() == "ape") duration *= 1000;
+            
             for(JBPlayerListener listener : m_listeners)
             	listener.opened(m_dataSource, properties);
             
-            notifyEvent(JBPlayerEvent.OPENED, getStreamPosition(), -1, null);
+            notifyEvent(JBPlayerEvent.OPENED, 0, -1, null);
         }
         catch (Exception e) 		{ throw new JBPlayerException(e); }
     }
@@ -229,53 +252,62 @@ public class JBPlayer implements Runnable {
         catch (IOException e) { log.info("Cannot close stream", e); }
     }
     
-    /** return position in range 0..1000*/
-    protected int getStreamPosition() {
-        if (sourceIsFile()) {
-            try {
-                if (m_encodedaudioInputStream != null)
-                    return encodedLength - m_encodedaudioInputStream.available();
-            }
-            catch (IOException e) { }
-        }
-        return 0;    	
-    }    
+    protected int getStreamProgress() {
+    	if (m_line != null) {
+    		log.info(Math.round(process/duration * 1000) + " = " + process + " / " + duration);
+    		return Math.round(process/duration * 1000);
+    	}
+    	return 0;
+    }       
+    
+    
+//    /** return position*/
+//    protected int getStreamPosition() {
+//        if (sourceIsFile()) {
+//            try {
+//                if (m_encodedaudioInputStream != null)
+//                    return encodedLength - m_encodedaudioInputStream.available();
+//            }
+//            catch (IOException e) { }
+//        }
+//        return 0;    	
+//    }    
     
     /** Skip bytes in the File inputstream.
      * It will skip N frames matching to bytes, so it will never skip given bytes length exactly.
-     * @param bytes
+     * @param percentage (0 ... 1000)
      * @return value>0 for File and value=0 for URL and InputStream
      * @throws JBPlayerException */
-    protected long skipBytes(long bytes) throws Exception {
-    	bytes -= getStreamPosition();
-        long totalSkipped = 0;
-        if (sourceIsFile()) {
-            log.info("Bytes to skip : " + bytes);
-            int previousStatus = m_status;
-            long skipped = 0;
-            try {
-            	pausePlayback();
-//                synchronized (m_audioInputStream) {
-                    notifyEvent(JBPlayerEvent.SEEKING, getStreamPosition(), -1, null);
-                    if (m_audioInputStream != null) {
-                        while (true) {
-                            skipped = m_audioInputStream.skip(bytes - totalSkipped);
-                            if (skipped == 0) break;
-                            totalSkipped = totalSkipped + skipped;
-                            if (totalSkipped == -1) throw new JBPlayerException(JBPlayerException.SKIPNOTSUPPORTED);
-                        }
-                    }
-//                }
-                
-                notifyEvent(JBPlayerEvent.SEEKED, getStreamPosition(), -1, null);
-                
-                startPlayback();
-                if (previousStatus == JBPlayerEvent.PAUSED)
-                    pausePlayback();
-            }
-            catch (IOException e) { throw new JBPlayerException(e); }
-        }
-        return totalSkipped;
+    protected long skipBytes(long percentage) throws Exception {
+//    	bytes -= getStreamProgress();
+//        long totalSkipped = 0;
+//        if (sourceIsFile()) {
+//            int previousStatus = m_status;
+//            long skipped = 0;
+//            try {
+//            	pausePlayback();
+////                synchronized (m_audioInputStream) {
+//                    notifyEvent(JBPlayerEvent.SEEKING, getStreamProgress(), -1, null);
+//                    if (m_audioInputStream != null) {
+//                        while (true) {
+//                            skipped = m_audioInputStream.skip(bytes - totalSkipped);
+//                            if (skipped == 0) break;
+//                            totalSkipped = totalSkipped + skipped;
+//                            if (totalSkipped == -1) throw new JBPlayerException(JBPlayerException.SKIPNOTSUPPORTED);
+//                        }
+//                    }
+////                }
+//                
+//                notifyEvent(JBPlayerEvent.SEEKED, getStreamProgress(), -1, null);
+//                
+//                startPlayback();
+//                if (previousStatus == JBPlayerEvent.PAUSED)
+//                    pausePlayback();
+//            }
+//            catch (IOException e) { throw new JBPlayerException(e); }
+//        }
+//        return totalSkipped;
+    	return 0;
     }
     
     
@@ -331,11 +363,6 @@ public class JBPlayer implements Runnable {
             
             AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sourceFormat.getSampleRate(), nSampleSizeInBits, sourceFormat.getChannels(), sourceFormat.getChannels() * (nSampleSizeInBits / 8), sourceFormat.getSampleRate(), false);
             
-            m_encodedaudioInputStream = m_audioInputStream;
-            // Get total length in bytes of the encoded stream.
-            try { encodedLength = m_encodedaudioInputStream.available(); }
-            catch (IOException e) { log.error("Cannot get encoded length", e); }
-            
             // Create decoded stream.
             m_audioInputStream = AudioSystem.getAudioInputStream(targetFormat, m_audioInputStream);
             AudioFormat audioFormat = m_audioInputStream.getFormat();
@@ -384,7 +411,7 @@ public class JBPlayer implements Runnable {
     
     /** Stops the playback. */
     protected void stopPlayback() {
-        notifyEvent(JBPlayerEvent.STOPPED, getStreamPosition(), -1, null);
+        notifyEvent(JBPlayerEvent.STOPPED, getStreamProgress(), -1, null);
         log.info("stopPlayback() completed");
     }
 
@@ -393,7 +420,7 @@ public class JBPlayer implements Runnable {
         if (m_line != null)
             if (IsPlaying()) {
                 log.info("pausePlayback() completed");
-                notifyEvent(JBPlayerEvent.PAUSED, getStreamPosition(), -1, null);
+                notifyEvent(JBPlayerEvent.PAUSED, getStreamProgress(), -1, null);
             }
     }
 
@@ -403,7 +430,7 @@ public class JBPlayer implements Runnable {
             if (IsPaused()) {
                 m_line.start();
                 log.info("resumePlayback() completed");
-                notifyEvent(JBPlayerEvent.RESUMED, getStreamPosition(), -1, null);
+                notifyEvent(JBPlayerEvent.RESUMED, getStreamProgress(), -1, null);
             }
     }
 
@@ -413,7 +440,7 @@ public class JBPlayer implements Runnable {
     		case JBPlayerEvent.STOPPED:	initStream(); break;
     		case JBPlayerEvent.OPENED:
                 m_line.start();
-                notifyEvent(JBPlayerEvent.PLAYING, getStreamPosition(), -1, null);   			
+                notifyEvent(JBPlayerEvent.PLAYING, 0, -1, null);   			
     	}
     }    
     
@@ -439,7 +466,7 @@ public class JBPlayer implements Runnable {
             double cste = Math.log(10.0) / 20;
             double valueDB = minGainDB + (1 / cste) * Math.log(1 + (Math.exp(cste * ampGainDB) - 1) * fGain);
             m_gainControl.setValue((float) valueDB);
-            notifyEvent(JBPlayerEvent.GAIN, getStreamPosition(), fGain, null);
+            notifyEvent(JBPlayerEvent.GAIN, getStreamProgress(), fGain, null);
         }
         else throw new JBPlayerException(JBPlayerException.GAINCONTROLNOTSUPPORTED);
     }
@@ -454,7 +481,7 @@ public class JBPlayer implements Runnable {
     public void setVolume(double fVolume) throws JBPlayerException {
         if (hasVolumeControl()) {
             m_volumeControl.setValue((float) fVolume);
-            notifyEvent(JBPlayerEvent.VOLUME, getStreamPosition(), fVolume, null);
+            notifyEvent(JBPlayerEvent.VOLUME, getStreamProgress(), fVolume, null);
         }
     }
     
@@ -486,7 +513,7 @@ public class JBPlayer implements Runnable {
         if (hasPanControl()) {
             log.debug("Pan : " + fPan);
             m_panControl.setValue((float)fPan);
-            notifyEvent(JBPlayerEvent.PAN, getStreamPosition(), fPan, null);
+            notifyEvent(JBPlayerEvent.PAN, getStreamProgress(), fPan, null);
         }
         else throw new JBPlayerException(JBPlayerException.PANCONTROLNOTSUPPORTED);
     }
@@ -550,17 +577,15 @@ public class JBPlayer implements Runnable {
         try { Thread.sleep(millis); }
         catch (InterruptedException e) { log.error("Thread cannot sleep(1000)", e); }     	
     }    
-    
-    protected AudioFormat GetAFormat() { return audioFormat;}
-    
+       
     protected void reset() {
     	m_status = JBPlayerEvent.UNKNOWN;
         if (m_audioInputStream != null)
             synchronized (m_audioInputStream) { closeStream(); }    	
     	CloseLine();
 
-    	encodedLength = 0;
-        m_audioInputStream = m_encodedaudioInputStream = null;
+    	last_millis = process = duration = 0;
+        m_audioInputStream = null;
         m_sampleRateControl = m_volumeControl = m_gainControl = m_panControl = null;
     }    
     
@@ -585,10 +610,7 @@ public class JBPlayer implements Runnable {
         }
         return null;
     }
-    
-    public String getMixerName() 			{ return m_mixerName; }
-    public void setMixerName(String name) 	{ m_mixerName = name; }
-    
+        
     public boolean sourceIsFile() 			{ return m_dataSource instanceof File;}
     public boolean sourceIsURL() 			{ return m_dataSource instanceof URL;}
     public boolean sourceIsInputStream() 	{ return m_dataSource instanceof InputStream;}   

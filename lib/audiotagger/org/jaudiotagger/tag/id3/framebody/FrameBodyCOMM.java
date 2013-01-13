@@ -50,7 +50,7 @@ import java.nio.ByteBuffer;
  *
  * @author : Paul Taylor
  * @author : Eric Farng
- * @version $Id: FrameBodyCOMM.java 929 2010-11-17 12:36:46Z paultaylor $
+ * @version $Id: FrameBodyCOMM.java 926 2010-10-21 15:49:06Z paultaylor $
  */
 public class FrameBodyCOMM extends AbstractID3v2FrameBody implements ID3v24FrameBody, ID3v23FrameBody
 {

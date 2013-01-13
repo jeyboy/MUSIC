@@ -57,6 +57,7 @@ public enum Mp4FieldKey
     MUSICBRAINZ_ARTISTID("com.apple.iTunes", "MusicBrainz Artist Id", TEXT, Tagger.PICARD),
     MUSICBRAINZ_ALBUMID("com.apple.iTunes", "MusicBrainz Album Id", TEXT, Tagger.PICARD),
     MUSICBRAINZ_ALBUMARTISTID("com.apple.iTunes", "MusicBrainz Album Artist Id", TEXT, Tagger.PICARD),
+    MUSICBRAINZ_ORIGINALALBUMID("com.apple.iTunes", "MusicBrainz Original Album Id", TEXT, Tagger.JAIKOZ),
     MUSICBRAINZ_RELEASE_GROUPID("com.apple.iTunes", "MusicBrainz Release Group Id", TEXT, Tagger.PICARD),
     MUSICBRAINZ_TRACKID("com.apple.iTunes", "MusicBrainz Track Id", TEXT, Tagger.PICARD),
     MUSICBRAINZ_WORKID("com.apple.iTunes", "MusicBrainz Work Id", TEXT, Tagger.PICARD),
@@ -75,6 +76,10 @@ public enum Mp4FieldKey
     LANGUAGE("com.apple.iTunes", "LANGUAGE", TEXT, Tagger.JAIKOZ),
     KEY("com.apple.iTunes", "KEY", TEXT, Tagger.JAIKOZ),
     FBPM("com.apple.iTunes", "fBPM", TEXT, Tagger.JAIKOZ),
+    ACOUSTID_FINGERPRINT("com.apple.iTunes", "Acoustid Fingerprint", TEXT, Tagger.PICARD),
+    ACOUSTID_FINGERPRINT_OLD("com.apple.iTunes", "AcoustId Fingerprint", TEXT, Tagger.PICARD),
+    ACOUSTID_ID("com.apple.iTunes", "Acoustid Id", TEXT, Tagger.PICARD),
+    COUNTRY("com.apple.iTunes", "Country", TEXT, Tagger.PICARD),
 
     //AFAIK These arent actually used by Audio Only files, but there is nothing to prevent them being used
     CONTENT_TYPE("stik",Mp4TagFieldSubType.BYTE, INTEGER, 1),
@@ -158,6 +163,7 @@ public enum Mp4FieldKey
     URL_WIKIPEDIA_ARTIST_SITE("com.apple.iTunes", "URL_WIKIPEDIA_ARTIST_SITE", TEXT, Tagger.JAIKOZ),
     SCRIPT("com.apple.iTunes", "SCRIPT", TEXT, Tagger.JAIKOZ),
     TAGS("com.apple.iTunes", "TAGS", TEXT, Tagger.JAIKOZ),
+    ARTISTS("com.apple.iTunes", "ARTISTS", TEXT, Tagger.JAIKOZ),
 
     //Winamp
     WINAMP_PUBLISHER("com.nullsoft.winamp", "publisher", TEXT, Tagger.WINAMP),
