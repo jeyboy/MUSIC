@@ -8,8 +8,6 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
@@ -73,12 +71,8 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 			          Transferable data = evt.getTransferable();
 			          if (data.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 			              List<File> files = (List<File>) data.getTransferData(DataFlavor.javaFileListFlavor);
-			              for(File file : files) {
-			            	  if (!evt.isLocalTransfer())
-			            	  {
-			            		  //parse droped and add to active list
-			            	  }
-			              }
+		            	  if (!evt.isLocalTransfer())
+		            		  Common._drop_initer.ProceedDrop(Common.tabber.GetCurrentTab().Files(), (File [])files.toArray());
 			          }
 			          evt.dropComplete(true);
 			      }
