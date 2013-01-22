@@ -9,19 +9,17 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="F:/Programing/JAVA/MUSIC/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/basicplayer3.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/commons-logging-api.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jflac-1.2.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jl1.0.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jmactritonusspi1.74.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jogg-0.0.7.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jorbis-0.0.15.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jspeex0.9.7.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/kj_dsp1.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/mp3spi1.9.4.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/tritonus_share.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/vorbisspi1.0.2.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jna.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/mp3spi1.9.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jorbis-0.0.17.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/vorbisspi1.0.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jflac-1.2.jar"/>
         </jar>
     </target>
 </project>
