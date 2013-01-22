@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -89,17 +91,25 @@ public class Utils {
     
     ////////////////////////////////////////////////
     
+    static String prepareOutput(long h, long m, long s, boolean attr) {
+    	if (h > 0)
+    		return String.format(attr ? "%02d h %02d m %02d s" : "%02d:%02d:%02d", h, m, s);
+    	else return String.format(attr ? "%02d m %02d s" : "%02d:%02d", m, s);
+    } 
+    
     public static String MilliToTime(long millis) {
-    	long h = Math.abs(millis / 3600000000l) % 24;
-    	
-    	return h > 0 ?
-    			String.format("%02d:%02d:%02d", 
-    			h,
+    	return prepareOutput(
+    			Math.abs(millis / 3600000000l) % 24,
     			Math.abs((millis / (60000000)) % 60),
-    			Math.abs(millis / 1000000) % 60)
-    			:
-    			String.format("%02d:%02d", 
-    			Math.abs((millis / (60000000)) % 60),
-    			Math.abs(millis / 1000000) % 60);
+    			Math.abs(millis / 1000000) % 60,
+    			false);
     }
+    
+	public static String TimeFormatter(long time) {
+		long t_h = TimeUnit.SECONDS.toHours(time);
+		long t_m = TimeUnit.SECONDS.toMinutes(time -= TimeUnit.HOURS.toSeconds(t_h));
+		long t_s = time - TimeUnit.MINUTES.toSeconds(t_m);		
+		
+    	return prepareOutput(t_h, t_m, t_s, true);		
+	}     
 }

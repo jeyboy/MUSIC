@@ -4,8 +4,6 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.TimeUnit;
-
 import org.jaudiotagger.audio.AudioHeader;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
@@ -14,10 +12,10 @@ import entagged.audioformats.AudioFileIO;
 import entagged.audioformats.exceptions.CannotReadException;
 
 public class MediaInfo {
-	static public String SitesFilter(String title)	{ return title.replaceAll("([\\(\\[](http:\\/\\/)*(www\\.)*([a-z0-9р-џ])+\\.[a-z]+[\\]\\)])", ""); }
+	static public String SitesFilter(String title)				{ return title.replaceAll("([\\(\\[](http:\\/\\/)*(www\\.)*([a-z0-9р-џ])+\\.[a-z]+[\\]\\)])", ""); }
 	static public String ForwardNumberPreFilter(String title)	{ return title.replaceAll("\\A\\d{1,}.|\\(\\w*\\d{1,}\\w*\\)", ""); }
-	static public String SpacesFilter(String title) { return title.replaceAll("[^0-9A-Za-zР-пр-џР-пр-џ]", ""); }
-	static public String ForwardNumberFilter(String title)	{ return title.replaceAll("\\A\\d{1,}", ""); }
+	static public String SpacesFilter(String title) 			{ return title.replaceAll("[^0-9A-Za-zР-пр-џР-пр-џ]", ""); }
+	static public String ForwardNumberFilter(String title)		{ return title.replaceAll("\\A\\d{1,}", ""); }
 	
 	static Vector<String> InitExtsList() {
 		Vector<String> ret = new Vector<String>();
@@ -25,21 +23,11 @@ public class MediaInfo {
 		// entagged // 		"flac", "ape", "mp3", "ogg", "wma", "wav", "mpc", "mp+"
 		// jaudiotagger //	
 //		"wsz,snd,aifc,aif,wav,au,mp1,mp2,mp3,ogg,spx,flac,ape,mac"
-		for(String ext : new String [] {"flac", "ape", "mp3", "mp4", "m4a", "m4p", "ogg", "wma", "wav", "asf", "mpc", "mp+", "rmf"})
+		for(String ext : new String [] {"flac", "ape", "mp3", "mp4", "m4a", "m4p", "ogg", "wma", "wav", "asf", "mpc", "mp+", "rmf"}) //ape
 			ret.add(ext);
 	
 		return ret;
 	}
-	
-	static String subform(String num) { return num.length() > 1 ? num : ("0" + num); }
-	
-	public static String TimeFormatter(long time) {
-		long t_h = TimeUnit.SECONDS.toHours(time);
-		long t_m = TimeUnit.SECONDS.toMinutes(time -= TimeUnit.HOURS.toSeconds(t_h));
-		long t_s = time - TimeUnit.MINUTES.toSeconds(t_m);
-		
-		return (t_h > 0 ? subform(t_h + "") + " h  " : "") + (t_m > 0 ? subform(t_m + "") + " m  " : "") + (t_s > 0 ? subform(t_s + "") + " s  " : "");
-	} 
 	
 	public Vector<String> exts = InitExtsList();
 
@@ -54,9 +42,7 @@ public class MediaInfo {
 	public Integer TimeLength = -1;
 	public boolean VariableBitrate = false;
 	
-	public boolean CheckFormat(String title, String ext) {
-		return exts.contains(ext);
-	}
+	public boolean CheckFormat(String title, String ext) { return exts.contains(ext); }
 	
 	void AddTitleHelper(String gipoTitle) {
 		String temp = SitesFilter(gipoTitle);  
@@ -90,7 +76,7 @@ public class MediaInfo {
 				"Bitrate \t: " + (VariableBitrate ? "~" : "") + Bitrate + "\n" +
 				"Channels \t: " + Channels + "\n" +
 				"SampleRate \t: " + SampleRate + "\n" +
-				"Time \t\t: " + TimeFormatter(TimeLength) + "\n";
+				"Time \t\t: " + Utils.TimeFormatter(TimeLength) + "\n";
 	}
 	
 	@SuppressWarnings("unchecked")
