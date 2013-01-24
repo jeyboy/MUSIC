@@ -9,7 +9,6 @@ import service.Common;
 import service.Errorist;
 import service.Utils;
 
-import components.PlayerPanel;
 import jb_player.JBPlayer;
 import jb_player.JBPlayerEvent;
 import jb_player.JBPlayerException;
