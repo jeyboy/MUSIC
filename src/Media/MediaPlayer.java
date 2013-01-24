@@ -1,9 +1,13 @@
-package service;
+package Media;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Map;
 import java.util.Vector;
+
+import service.Common;
+import service.Errorist;
+import service.Utils;
 
 import components.PlayerPanel;
 import jb_player.JBPlayer;

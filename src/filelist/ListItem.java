@@ -2,10 +2,11 @@ package filelist;
 
 import java.io.File;
 
+import Media.MediaInfo;
+
 import service.Common;
 import service.Errorist;
 import service.IOOperations;
-import service.MediaInfo;
 
 public class ListItem {
 	final static byte default_status = (byte)128;

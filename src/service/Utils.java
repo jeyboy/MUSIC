@@ -43,9 +43,7 @@ public class Utils {
     
     //////////////////////////////////////////////////
     
-    public static Dimension GetScreenSize() {
-        return Toolkit.getDefaultToolkit().getScreenSize();
-    }
+    public static Dimension GetScreenSize() { return Toolkit.getDefaultToolkit().getScreenSize(); }
     
     //////////////////////////////////////////////////
     

@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import Media.MediaInfo;
+
 import components.MainWnd;
 
 import filelist.ListItem;

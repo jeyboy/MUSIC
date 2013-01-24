@@ -29,10 +29,10 @@ import java.util.*;
 
 public class FlacTagWriter {
 	
-	private Vector metadataBlockPadding = new Vector(1);
-	private Vector metadataBlockApplication = new Vector(1);
-	private Vector metadataBlockSeekTable = new Vector(1);
-	private Vector metadataBlockCueSheet = new Vector(1);
+	private Vector<MetadataBlock> metadataBlockPadding = new Vector<MetadataBlock>(1);
+	private Vector<MetadataBlock> metadataBlockApplication = new Vector<MetadataBlock>(1);
+	private Vector<MetadataBlock> metadataBlockSeekTable = new Vector<MetadataBlock>(1);
+	private Vector<MetadataBlock> metadataBlockCueSheet = new Vector<MetadataBlock>(1);
 
 	private FlacTagCreator tc = new FlacTagCreator();
 	private FlacTagReader reader = new FlacTagReader();

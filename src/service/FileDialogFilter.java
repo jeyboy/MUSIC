@@ -11,7 +11,6 @@ public class FileDialogFilter extends javax.swing.filechooser.FileFilter {
 		description = descr;
 	}
 
-
 	public String getExtension(File f) {
 		if (f != null) {
 			String filename = f.getName();
