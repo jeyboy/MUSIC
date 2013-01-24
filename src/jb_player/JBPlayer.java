@@ -236,6 +236,7 @@ public class JBPlayer implements Runnable {
     		else if (properties.containsKey("audio.length.frames") && properties.containsKey("audio.framerate.fps"))
     			duration = Math.round((float)(int)properties.get("audio.length.frames")/(float)properties.get("audio.framerate.fps") * 1000000);
     		
+    		//ape change duration to milliseconds
     		if (m_audioFileFormat.getType().getExtension() == "ape") duration *= 1000;
     		
     		initAudioLength(properties, m_audioFileFormat.getType().getExtension());
@@ -248,7 +249,7 @@ public class JBPlayer implements Runnable {
         catch (Exception e) 		{ throw new JBPlayerException(e); }
     }
     
-    protected void initAudioLength(Map properties, String format) {
+    protected void initAudioLength(Map<String, Object> properties, String format) {
     	Object o = properties.get(format + ".length.bytes");
     	if (o == null)	o = properties.get("audio.length.bytes");    	
 		if (o != null) {

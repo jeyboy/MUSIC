@@ -8,6 +8,8 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
@@ -18,19 +20,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import controls.Label;
-import controls.ToggleButton;
-
+import controls.RoundButton;
 import service.Common;
 import service.Utils;
 import service.Errorist;
 import uis.SliderUI;
 
-public class PlayerPanel extends JPanel implements ActionObserver {
+public class PlayerPanel extends JPanel {
 	private static final long serialVersionUID = -9051505855046492589L;
 	
 	Label time;
 	JSlider track, volume;
-	ToggleButton pause, play;
+	RoundButton pause, play, stop;
 	String def_time = "00:00";
 	boolean lock_track_update = false;
 	
@@ -91,28 +92,33 @@ public class PlayerPanel extends JPanel implements ActionObserver {
 			public void dragOver(DropTargetDragEvent dtde) {}
 			public void dragExit(DropTargetEvent dte) {}
 			public void dragEnter(DropTargetDragEvent dtde) {}
-		});			
+		});
+		
+		play.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) { PlayerPanel.this.Play(); }
+		});
+		
+		pause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) { PlayerPanel.this.Pause(); }
+		});
+		
+		stop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) { PlayerPanel.this.Stop(); }
+		});		
 	}
 	
 	
-    public PlayerPanel() {		
-		play = new ToggleButton(Utils.GetIcon("player/play.png"),
-				Utils.GetIcon("player/stop.png"),
-				this, ActionObserver.STOP, ActionObserver.PLAY);
-		this.add(play);
-		
-		pause = new ToggleButton(Utils.GetIcon("player/pause.png"),
-				Utils.GetIcon("player/play.png"),
-				this, ActionObserver.PLAY, ActionObserver.PAUSE);
-		pause.setVisible(false);
-		this.add(pause);
-		
+    public PlayerPanel() {
+		this.add((play = new RoundButton(Utils.GetIcon("player/play.png"))));
+		this.add((pause = new RoundButton(Utils.GetIcon("player/pause.png"))));
+		this.add((stop = new RoundButton(Utils.GetIcon("player/stop.png"))));		
+			
 		this.add((time = new Label(def_time, 10, 0)));
 		this.add(new Label("", 20, 4));
 		this.add((track = new JSlider(0, 1000)));
 		
-		this.add(new Label("Volume", 20, 4));
-		this.add((volume = new JSlider(0, 100)));
+		this.add(new Label("Volume", 20, 4)).setVisible(false);
+		this.add((volume = new JSlider(0, 100))).setVisible(false);
 		GUI();
 		Events();
 		Common.player.setPanel(this);
@@ -121,7 +127,6 @@ public class PlayerPanel extends JPanel implements ActionObserver {
     public void reset() {
 		setTrackPosition(0);
 		setDefaultTime();
-		pause.setVisible(false);
     }
     
     public void setTrackMax(long length) { track.setMaximum((int) length); }
@@ -136,35 +141,19 @@ public class PlayerPanel extends JPanel implements ActionObserver {
     public void blockVolume(boolean block) { volume.setEnabled(block); }
     
     public void setTime(String current_time) { time.setText(current_time); }
-    public void setDefaultTime() { time.setText(def_time); }
+    public void setDefaultTime() { time.setText(def_time); }   
     
-    public void playProc() {
-    	if (play.IsDefaultState())
-    		play.Toggle();
-		if (Common.player.isPaused())
-			play.setVisible(true);
-		
-		pause.setVisible(true);
+    public void Play() {
+		if (Common.player.isPaused()) 
+			Common.player.resume();
+		else
+			Common.tabber.PlaySelectedOrFirst();    	
     }
-    public void pauseProc() { play.setVisible(true); }    
     
+    public void Pause() { Common.player.pause();  }
     
-	@Override
-	public void notify(int state) {
-		switch(state) {
-			case ActionObserver.PLAY:
-				if (Common.player.isPaused()) 
-					Common.player.resume();
-				else
-					Common.tabber.PlaySelectedOrFirst();
-				break;
-			case ActionObserver.STOP:
-				Common.player.stop();
-				reset();
-				break;
-			case ActionObserver.PAUSE:
-				Common.player.pause();
-				break;			
-		}
-	}    
+    public void Stop() {
+		Common.player.stop();
+		reset();
+    }  
 }

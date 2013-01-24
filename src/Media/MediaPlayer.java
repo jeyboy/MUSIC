@@ -89,7 +89,7 @@ public class MediaPlayer implements JBPlayerListener {
 		try { player.setVolume(volume);}
 		catch (JBPlayerException e) { Errorist.printLog(e); }
 	}
-	public void opened(Object stream, Map properties) {		
+	public void opened(Object stream, Map<?, ?> properties) {		
 //		System.out.println("properties : ");
 //	    for (Object me : properties.entrySet()) {
 //	        System.out.print("\t" + me);    	
@@ -117,13 +117,11 @@ public class MediaPlayer implements JBPlayerListener {
 	public void stateUpdated(JBPlayerEvent event) {
 		switch(event.getCode()) {
 			case JBPlayerEvent.PLAYING :
-				panel.playProc();
 				break;
 			case JBPlayerEvent.STOPPED :
 				panel.reset();
 				break;
 			case JBPlayerEvent.PAUSED :
-				panel.pauseProc();
 				break;				
 			case JBPlayerEvent.EOM :
 		        panel.setTrackPosition(0);

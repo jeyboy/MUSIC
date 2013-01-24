@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 
 import service.Errorist;
 import service.IOOperations;
+import uis.VerticalButtonUI;
 
 public class DropPanel extends JScrollPane {
 	private static final long serialVersionUID = -9051505855046492589L;

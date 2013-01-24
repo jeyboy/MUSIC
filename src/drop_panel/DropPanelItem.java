@@ -38,6 +38,7 @@ public class DropPanelItem extends JButton implements DropTargetListener {
 	
 	public DropPanelItem(String text, String path) {
 //		setBorder(BorderFactory.createEmptyBorder());
+		setFocusPainted(false);
 		setPath(path);
 		super.setText(text);
 		addActionListener(new ActionListener() {          
