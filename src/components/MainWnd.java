@@ -29,8 +29,11 @@ public class MainWnd {
 	static public void init(Container window) 	{ wnd = window; initializeWnd(); }
 	
 	static void SetState(boolean show) {
-		((JFrame)wnd).setState((show ? JFrame.NORMAL : JFrame.ICONIFIED));	
-		wnd.setVisible(show);		
+		JFrame temp = ((JFrame)wnd);
+		if (show) temp.setAlwaysOnTop(true);
+		temp.setState((show ? JFrame.NORMAL : JFrame.ICONIFIED));	
+		wnd.setVisible(show);
+		temp.setAlwaysOnTop(false);
 	}
 	static public void Show() 					{ SetState(true); }
 	static public void Toggle() 				{ SetState(!wnd.isVisible()); }
