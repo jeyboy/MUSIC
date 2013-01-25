@@ -44,9 +44,11 @@ public class JBPlayer implements Runnable {
     protected FloatControl m_gainControl, m_panControl, m_volumeControl, m_sampleRateControl;
     protected String m_mixerName = null;
     
-    private boolean close_player = false;
+    private boolean close_player = false, seekable = false;
     private int m_status;
     private long audioLength;
+    
+    private Vector<String> seek_whitelist = new Vector<String>(); 
     
     private int lineBufferSize = -1;
     private static Log log = LogFactory.getLog(JBPlayer.class);
@@ -57,6 +59,9 @@ public class JBPlayer implements Runnable {
 
     /** Constructs a Basic Player. */
     public JBPlayer() {
+    	seek_whitelist.add("mp3");
+    	seek_whitelist.add("wav");
+    	
         m_listeners = new Vector<JBPlayerListener>();       
         (m_thread = new Thread(this, "JBPlayer")).start();
     }
@@ -238,6 +243,7 @@ public class JBPlayer implements Runnable {
     		
     		//ape change duration to milliseconds
     		if (m_audioFileFormat.getType().getExtension() == "ape") duration *= 1000;
+    		seekable = seek_whitelist.contains(m_audioFileFormat.getType().getExtension());
     		
     		initAudioLength(properties, m_audioFileFormat.getType().getExtension());
             
@@ -267,15 +273,9 @@ public class JBPlayer implements Runnable {
         catch (IOException e) { log.info("Cannot close stream", e); }
     }
     
-    protected int getStreamProgress() {
-    	if (m_line != null)
-    		return Math.round(process/duration * 1000);
-    	return 0;
-    }
+    protected int getStreamProgress() { return (m_line != null) ? Math.round(process/duration * 1000) : 0; }
     
-    protected void recalcStreamProgress(int new_percentage) {
-    	process = duration * ((float)new_percentage/1000f);
-    }
+    protected void recalcStreamProgress(int new_percentage) { process = duration * ((float)new_percentage/1000f); }
     
     
     /** Skip bytes in the File inputstream.
@@ -283,10 +283,10 @@ public class JBPlayer implements Runnable {
      * @param percentage (0 ... 1000)
      * @return value>0 for File and value=0 for URL and InputStream
      * @throws JBPlayerException */
-    protected long seekStream(int percentage) throws Exception {
+    protected void seekStream(int percentage) throws Exception {
+    	if (!seekable) return;
     	long bytes = calsOffset(percentage);
     	
-        long totalSkipped = 0;
         if (sourceIsFile()) {
             int previousStatus = m_status;
             long skipped = 0;
@@ -296,10 +296,10 @@ public class JBPlayer implements Runnable {
                     notifyEvent(JBPlayerEvent.SEEKING, getStreamProgress(), -1, null);
                     if (m_audioInputStream != null) {
                         while (true) {
-                            skipped = m_audioInputStream.skip(bytes - totalSkipped);
+                            skipped = m_audioInputStream.skip(bytes);
                             if (skipped == 0) break;
-                            totalSkipped = totalSkipped + skipped;
-                            if (totalSkipped == -1) throw new JBPlayerException(JBPlayerException.SKIPNOTSUPPORTED);
+                            bytes -= skipped;
+                            if (bytes == -1) throw new JBPlayerException(JBPlayerException.SKIPNOTSUPPORTED);
                         }
                     }
                 }
@@ -313,7 +313,6 @@ public class JBPlayer implements Runnable {
             }
             catch (IOException e) { throw new JBPlayerException(e); }
         }
-        return totalSkipped;
     }
     
     
@@ -455,8 +454,7 @@ public class JBPlayer implements Runnable {
     // Controls
     //////////////////////////////////////////////////////////    
     
-    
-    public boolean isTracking() { return audioLength > 0 && sourceIsFile(); }
+    public boolean isTracking() { return audioLength > 0 && sourceIsFile() && seekable; }
     
     public boolean hasGainControl() { return m_gainControl != null; }
     
@@ -551,7 +549,7 @@ public class JBPlayer implements Runnable {
 
     /** @throws Exception 
      * @see javazoom.jlgui.JBPlayer.BasicController#seek(long) */
-    public long seek(int new_progress) throws Exception { return seekStream(new_progress); }
+    public void seek(int new_progress) throws Exception { seekStream(new_progress); }
 
     /** @see javazoom.jlgui.JBPlayer.BasicController#play() */
     public void play() throws JBPlayerException { startPlayback(); }
