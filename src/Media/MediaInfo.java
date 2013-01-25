@@ -65,7 +65,9 @@ public class MediaInfo {
 		else AddTitleHelper(IOOperations.name_without_extension(title, ext));
 		
 		if (CheckFormat(f.getName(), ext))
-			InitInfo(f);
+			if (ext.equals("m4a"))
+				TryGetInfo(f);	
+			else InitInfo(f);
 	}
 	
 	public MediaInfo(	String bitrate, String channels, String type, String samplerate,
