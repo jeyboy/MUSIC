@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project MUSIC">
+<project default="create_run_jar" name="Create Runnable Jar for Project MUSIC with Jar-in-Jar Loader">
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="C:/Users/JB/Desktop/MUSIC.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="C:/Users/JB/Desktop/MUSIC.jar">
             <manifest>
-                <attribute name="Main-Class" value="UserLocal"/>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="UserLocal"/>
                 <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ jl1.0.1.jar jmactritonusspi1.74.jar jspeex0.9.7.jar kj_dsp1.1.jar tritonus_share.jar jna.jar mp3spi1.9.5.jar jorbis-0.0.17.jar vorbisspi1.0.3.jar jflac-1.2.jar jogg-0.0.7.jar"/>
             </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="F:/Programing/JAVA/MUSIC/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/commons-logging-api.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jl1.0.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jmactritonusspi1.74.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jspeex0.9.7.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/kj_dsp1.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/tritonus_share.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jna.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/mp3spi1.9.5.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jorbis-0.0.17.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/vorbisspi1.0.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jflac-1.2.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="F:/Programing/JAVA/MUSIC/lib/jaad-0.8.4.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="jl1.0.1.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="jmactritonusspi1.74.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="jspeex0.9.7.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="kj_dsp1.1.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="tritonus_share.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="jna.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="mp3spi1.9.5.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="jorbis-0.0.17.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="vorbisspi1.0.3.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="jflac-1.2.jar"/>
+            <zipfileset dir="F:\Programing\JAVA\MUSIC\lib" includes="jogg-0.0.7.jar"/>
         </jar>
     </target>
 </project>

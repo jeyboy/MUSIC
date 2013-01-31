@@ -40,7 +40,7 @@ public class JBPlayer implements Runnable {
     protected String m_mixerName = null;
     
     private boolean close_player = false, seekable = false;
-    private int m_status;
+    private int m_status = JBPlayerEvent.UNKNOWN;
     private long audioLength;
     
     private Vector<String> seek_whitelist = new Vector<String>(); 

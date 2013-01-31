@@ -15,7 +15,7 @@ public class DropIniter extends BaseThread {
 	
     public DropIniter() {
 		setDaemon(true);
-		setPriority(Thread.MAX_PRIORITY);
+//		setPriority(Thread.MAX_PRIORITY);
 		start();
     }
 
