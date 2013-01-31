@@ -12,8 +12,8 @@ import service.Errorist;
 import service.IOOperations;
 import service.Utils;
 
-import entagged.audioformats.AudioFileIO;
-import entagged.audioformats.exceptions.CannotReadException;
+import outag.audioformats.AudioFileIO;
+import outag.audioformats.exceptions.CannotReadException;
 
 public class MediaInfo {
 	static public String SitesFilter(String title)				{ return title.replaceAll("([\\(\\[](http:\\/\\/)*(www\\.)*([a-z0-9à-ÿ])+\\.[a-z]+[\\]\\)])", ""); }
@@ -88,8 +88,8 @@ public class MediaInfo {
 	@SuppressWarnings("unchecked")
 	void InitInfo(File file) {
 		try {
-			entagged.audioformats.AudioFile f = AudioFileIO.read(file);
-			entagged.audioformats.Tag tag = f.getTag();
+			outag.audioformats.AudioFile f = AudioFileIO.read(file);
+			outag.audioformats.Tag tag = f.getTag();
 			
 			String t1;
 			Artists = tag.getArtist();
