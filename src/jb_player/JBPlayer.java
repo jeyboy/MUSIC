@@ -12,7 +12,6 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Control;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
@@ -22,10 +21,6 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javazoom.spi.PropertiesContainer;
 
-///////////////Errorist////////////////
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-//////////////////////////////
 import org.tritonus.share.sampled.TAudioFormat;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
 
@@ -51,7 +46,6 @@ public class JBPlayer implements Runnable {
     private Vector<String> seek_whitelist = new Vector<String>(); 
     
     private int lineBufferSize = -1;
-    private static Log log = LogFactory.getLog(JBPlayer.class);
 
     // Listeners to be notified.
     private Collection<JBPlayerListener> m_listeners = null;
@@ -91,7 +85,6 @@ public class JBPlayer implements Runnable {
 	                        else notifyEvent(JBPlayerEvent.EOM, getStreamProgress(), -1, null);
 	                    }
 	                    catch (IOException e) {
-	                        log.error("Thread cannot run()", e);
 	                        notifyEvent(JBPlayerEvent.STOPPED, getStreamProgress(), -1, null);
 	                    }
     		        }
@@ -268,9 +261,8 @@ public class JBPlayer implements Runnable {
         try {
       		m_audioInputStream.close();
         	m_status = JBPlayerEvent.UNKNOWN;
-            log.info("Stream closed");
         }
-        catch (IOException e) { log.info("Cannot close stream", e); }
+        catch (IOException e) {  }
     }
     
     protected int getStreamProgress() { return (m_line != null) ? Math.round(process/duration * 1000) : 0; }
@@ -375,7 +367,6 @@ public class JBPlayer implements Runnable {
             
             Mixer mixer = getMixer(m_mixerName);
             if (mixer != null) {
-                log.info("Mixer : "+mixer.getMixerInfo().toString());
                 m_line = (SourceDataLine) mixer.getLine(info);
             } else {
                 m_line = (SourceDataLine) AudioSystem.getLine(info);
@@ -404,8 +395,8 @@ public class JBPlayer implements Runnable {
             m_sampleRateControl = (FloatControl) m_line.getControl(FloatControl.Type.SAMPLE_RATE);        
         
         /*-- Display supported controls --*/
-        for (Control c : m_line.getControls())
-            log.debug("Controls : " + c.toString());       
+//        for (Control c : m_line.getControls())
+//            log.debug("Controls : " + c.toString());       
     }
        
     
@@ -417,14 +408,12 @@ public class JBPlayer implements Runnable {
     /** Stops the playback. */
     protected void stopPlayback() {
     	m_status = JBPlayerEvent.STOPPED;
-        log.info("stopPlayback() completed");
     }
 
     /** Pauses the playback. */
     protected void pausePlayback() {
         if (m_line != null)
             if (IsPlaying()) {
-                log.info("pausePlayback() completed");
                 notifyEvent(JBPlayerEvent.PAUSED, getStreamProgress(), -1, null);
             }
     }
@@ -434,7 +423,6 @@ public class JBPlayer implements Runnable {
         if (m_line != null)
             if (IsPaused()) {
                 m_line.start();
-                log.info("resumePlayback() completed");
                 notifyEvent(JBPlayerEvent.RESUMED, getStreamProgress(), -1, null);
             }
     }
@@ -517,7 +505,6 @@ public class JBPlayer implements Runnable {
      * Linear scale : -1.0 <--> +1.0 */
     public void setPan(double fPan) throws JBPlayerException {
         if (hasPanControl()) {
-            log.debug("Pan : " + fPan);
             m_panControl.setValue((float)fPan);
             notifyEvent(JBPlayerEvent.PAN, getStreamProgress(), fPan, null);
         }
@@ -532,7 +519,6 @@ public class JBPlayer implements Runnable {
     
     private void openObject(Object o) throws JBPlayerException {
         if (o != null) {
-        	log.info("open(" + o + ")");
             m_dataSource = o;
             initStream();
         }    	
@@ -586,7 +572,7 @@ public class JBPlayer implements Runnable {
        
     private void sleep(long millis) {
         try { Thread.sleep(millis); }
-        catch (InterruptedException e) { log.error("Thread cannot sleep(1000)", e); }     	
+        catch (InterruptedException e) {  }     	
     }    
        
     protected void reset() {
