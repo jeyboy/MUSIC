@@ -15,9 +15,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import filters.FileDialogFilter;
+
 import service.Common;
 import service.Constants; 
-import service.FileDialogFilter;
 import service.Utils;
 import service.ActionBind;
 import tabber.Tab;
