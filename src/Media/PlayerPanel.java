@@ -1,4 +1,4 @@
-package Media;
+package media;
 
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
@@ -83,7 +83,7 @@ public class PlayerPanel extends JPanel {
 			          if (data.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 			              List<File> files = (List<File>) data.getTransferData(DataFlavor.javaFileListFlavor);
 		            	  if (!evt.isLocalTransfer())
-		            		  Common._drop_initer.ProceedDrop(Common.tabber.GetCurrentTab().Files(), (File [])files.toArray());
+		            		  Common._drop_initer.ProceedDrop(Common.tabber.GetCurrentTab(), (File [])files.toArray());
 			          }
 			          evt.dropComplete(true);
 			      }

@@ -134,47 +134,17 @@ public class IOOperations {
 	    Desktop dt = Desktop.getDesktop();
 	    dt.mail(document);
 	}	
-	
-
-	public static Collection<File> ScanDirectoriesSF(String[] IOItems) {
+		
+	public static Collection<File> ScanDirectories(File[] IOItems) {
 	    final Collection<File> all = new ArrayList<File>();
-	    for(String item:IOItems) addFilesRecursivelyF(new File(item), all);
-	    return all;
-	}	
-	
-	public static Collection<String> ScanDirectoriesS(String[] IOItems) {
-	    final Collection<String> all = new ArrayList<String>();
-	    for(String item:IOItems) addFilesRecursivelyS(new File(item), all);
+	    for(File item:IOItems) addFilesRecursively(item, all);
 	    return all;
 	}
 	
-	private static void addFilesRecursivelyS(File file, Collection<String> all) {
+	private static void addFilesRecursively(File file, Collection<File> all) {
 	    final File[] children = file.listFiles();
 	    if (children != null)
-	        for (File child : children) addFilesRecursivelyS(child, all);
-	    else {
-			try { all.add(file.getCanonicalPath());	}
-			catch (IOException e) { Errorist.printLog(e); }
-	    }
-	}
-
-	
-	public static Collection<String> ScanDirectoriesFS(File[] IOItems) {
-	    final Collection<String> all = new ArrayList<String>();
-	    for(File item:IOItems) addFilesRecursivelyS(item, all);
-	    return all;
-	}	
-	
-	public static Collection<File> ScanDirectoriesF(File[] IOItems) {
-	    final Collection<File> all = new ArrayList<File>();
-	    for(File item:IOItems) addFilesRecursivelyF(item, all);
-	    return all;
-	}
-	
-	private static void addFilesRecursivelyF(File file, Collection<File> all) {
-	    final File[] children = file.listFiles();
-	    if (children != null)
-	        for (File child : children) addFilesRecursivelyF(child, all);
+	        for (File child : children) addFilesRecursively(child, all);
 	    else all.add(file);
 	}
 	

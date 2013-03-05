@@ -45,7 +45,7 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
         dropper = new Dropper(filelist, new Dropper.Listener() {
         	public void filesDropped(Dropper.Event ev) {
         		if (!(drop_in = (boolean)ev.getSource()))
-        			Common._drop_initer.ProceedDrop(filelist, ev.getFiles());
+        			Common._drop_initer.ProceedDrop(filelist.parent, ev.getFiles());
         	}
         });
         

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import filelist.ListItem;
 
 import service.Common;
-import service.Errorist;
 
 public class ItemsStateIniter extends BaseThread {
 	ArrayList<ListItem> items_collection = new ArrayList<ListItem>();
+	boolean locked = false;
 	
     public ItemsStateIniter() {
 		setDaemon(true);
@@ -25,12 +25,15 @@ public class ItemsStateIniter extends BaseThread {
     	while(!closeRequest()) {
 	        while(items_collection.size() > 0) {
 	        	if (closeRequest()) return;
-	        	Common.library.ProceedItem(items_collection.get(0));
-	        	items_collection.remove(0);
+	        	if (!locked) {
+		        	Common.library.ProceedItem(items_collection.get(0));
+		        	items_collection.remove(0);
+	        	}
 	        }
 	        
-	        try { wait(sleep_time); }
-	        catch (InterruptedException e) { Errorist.printLog(e); }
+	        sleepy();
     	}
     }
+    
+    
 }

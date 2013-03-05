@@ -6,7 +6,6 @@ import java.util.Date;
 import components.MainWnd;
 
 import service.Common;
-import service.Errorist;
 
 public class LibraryDumper extends BaseThread {
 	
@@ -25,8 +24,7 @@ public class LibraryDumper extends BaseThread {
     			MainWnd.SetTitle(new SimpleDateFormat("HH:mm").format(new Date()) + ": Saved - " + res);
     		}	            		
     		
-	        try { wait(60000); }
-	        catch (InterruptedException e) { Errorist.printLog(e); }
+    		sleepy(60000);
     	}
     }
 }

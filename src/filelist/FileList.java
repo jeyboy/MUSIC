@@ -2,16 +2,12 @@ package filelist;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.Collection;
-
 import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileSystemView;
 
 import components.MainWnd;
-
 import service.Common;
 import tabber.Tab;
 
@@ -33,10 +29,6 @@ public class FileList extends JList<ListItem> {
     	setSelectionForeground(Color.white);
 		setBackground(Color.black);
 	}
-    public FileList(Tab parent_tab, ListItem [] items) {
-    	this(parent_tab);
-    	AddElems(items);
-    }	
 	
 	public void SetPlayed(ListItem item) 
 	{	
@@ -57,26 +49,11 @@ public class FileList extends JList<ListItem> {
 		return index < 0 ? null : model.get(index); 
 	}
 
-	private void ProceedElem(File elem) { ProceedElem(new ListItem(elem)); }
     public void ProceedElem(ListItem elem) {
         AddAssocIcon(elem.ext, FileSystemView.getFileSystemView().getSystemIcon(elem.file));
         model.addElement(elem);
         Common._initer.AddItem(elem);
     }
-
-    public void AddElems(ListItem [] items) {
-    	model.ensureCapacity(model.size() + items.length + 1);
-    	for(ListItem elem:items) ProceedElem(elem);
-    }
-	public void AddElemsLI(Collection<ListItem> items) {
-    	model.ensureCapacity(model.size() + items.size() + 1);
-    	for(ListItem elem:items) ProceedElem(elem);
-    }
-	
-    public void AddElemsF(Collection<File> items) {
-    	model.ensureCapacity(model.size() + items.size() + 1);
-    	for(File elem:items) ProceedElem(elem);
-    }    
 	
     public void AddAssocIcon(String ext, Icon icon) {
     	if (listrender.icons.containsKey(ext) || icon == null) return; 

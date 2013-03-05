@@ -48,8 +48,7 @@ public class Trasher extends BaseThread {
             	}
             }
             
-	        try { wait(sleep_time); }
-	        catch (InterruptedException e) { Errorist.printLog(e); }
+            sleepy();
     	}
     }
     

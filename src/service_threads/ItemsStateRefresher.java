@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import filelist.ListItem;
 
 import service.Common;
-import service.Errorist;
 import tabber.Tab;
 
 public class ItemsStateRefresher extends BaseThread {
@@ -31,8 +30,7 @@ public class ItemsStateRefresher extends BaseThread {
             	examples_collection.remove(0);
             }
             
-	        try { wait(sleep_time); }
-	        catch (InterruptedException e) { Errorist.printLog(e); }
+            sleepy();
     	}     	
     }
     

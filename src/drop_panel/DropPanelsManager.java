@@ -8,7 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 
-import Media.PlayerPanel;
+import media.PlayerPanel;
+
 
 import controls.ArrowButton;
 

@@ -1,14 +1,14 @@
 package service_threads;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.SwingUtilities;
 
-import service.Errorist;
-import service.IOOperations;
+import folders.FolderNode;
 
-import filelist.FileList;
+import service.Errorist;
+import tabber.Tab;
 
 public class DropIniter extends BaseThread {
 	ArrayList<DropCell> drops_collection = new ArrayList<DropCell>();
@@ -19,40 +19,50 @@ public class DropIniter extends BaseThread {
 		start();
     }
 
-    public synchronized void run() { routing(); }
-    
-    public void ProceedDrop(FileList curr_list, File [] curr_elems) {
-    	drops_collection.add(new DropCell(curr_list, curr_elems));
+    public synchronized void run() {
+    	try { routing(); }
+    	catch (IOException e) { Errorist.printLog(e); }
     }
+    
+    public void ProceedDrop(Tab tab, File [] curr_elems) {
+    	drops_collection.add(new DropCell(tab, curr_elems));
+    }
+    
+	private void addFilesRecursively(FolderNode node, File [] files) throws IOException {
+		for(File file : files) {
+			if (file.isDirectory())
+				addFilesRecursively(new FolderNode(node, file.getName()), file.listFiles());
+			else node.addFiles(file);
+		}
+	}
       
-    void routing() {
+    void routing() throws IOException {
     	while(!closeRequest()) {
             while(drops_collection.size() > 0) {
             	if (closeRequest()) return;
-            	final DropCell temp = drops_collection.get(0);
+            	final DropCell temp = drops_collection.get(0);            	
             	
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run(){
-//                    	temp.list.SetStatus("Drop proceeding");
-                    	temp.list.AddElemsF(IOOperations.ScanDirectoriesF(temp.elems));
-//                    	temp.list.SetStatus("");
+                    	try { addFilesRecursively(temp.tab.getCatalog().getNode(temp.elems[0].getParentFile().getCanonicalPath()), temp.elems);	}
+                    	catch (IOException e) {	Errorist.printLog(e); }
+//                    	temp.list.AddElemsF(IOOperations.ScanDirectoriesF(temp.elems));
                     }
                 });
                 
             	drops_collection.remove(0);
             }
             
-	        try { wait(sleep_time); }
-	        catch (InterruptedException e) { Errorist.printLog(e); }
+            sleepy();
     	}    	
     }
 	
 	class DropCell {
-		public FileList list;
+		public Tab tab;
 		public File [] elems;
 		
-		public DropCell(FileList curr_list, File [] curr_elems) {
-			list = curr_list;
+		public DropCell(Tab parent_tab, File [] curr_elems) {
+			tab = parent_tab;
 			elems = curr_elems;
 		}
 	}

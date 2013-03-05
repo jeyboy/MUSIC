@@ -3,8 +3,6 @@ package service_threads;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
@@ -70,8 +68,7 @@ public class Watcher extends BaseThread {
             	}
             }
             
-	        try { wait(sleep_time); }
-	        catch (InterruptedException e) { Errorist.printLog(e); }
+            sleepy();
     	}
     }
     

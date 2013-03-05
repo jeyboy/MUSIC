@@ -10,7 +10,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import Media.MediaInfo;
+import media.MediaInfo;
+
 
 import components.MainWnd;
 
@@ -203,7 +204,7 @@ public class NamesLibrary {
 	}
 	public void ParseLibrary(File path) {
 		int proceed_count = 0;
-		Collection<File> files = IOOperations.ScanDirectoriesF(new File [] {path});
+		Collection<File> files = IOOperations.ScanDirectories(new File [] {path});
 		for(File f : files) {
 			try {
 				BufferedReader reader = IOOperations.GetReader(f.getAbsolutePath());

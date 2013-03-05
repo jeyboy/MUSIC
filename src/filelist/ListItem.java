@@ -2,16 +2,21 @@ package filelist;
 
 import java.io.File;
 
-import Media.MediaInfo;
+import folders.FolderNode;
+
+import media.MediaInfo;
+
 
 import service.Common;
 import service.Errorist;
 import service.IOOperations;
+import service.Utils;
 
 public class ListItem {
 	final static byte default_status = (byte)128;
 
 	byte status = default_status;
+	FolderNode node;
 	
 	public void SetStatusNone() 		{
 		SetStatusUnListened();
@@ -39,25 +44,26 @@ public class ListItem {
 	public void SetStatusUnPlayed() 	{	status &= ~(1 << 2); }	
 	public boolean StatusIsPlayed()		{	return (status >> 2 & 1) == 1; }	
 	
-	public static ListItem Load(String info) 	{	return new ListItem(info.substring(2), (byte)info.charAt(1));	}
-	public String SaveInfo() 					{	return "f" + ((char)status) + "" + file.getAbsolutePath();	} 
+	public static ListItem Load(FolderNode lib_node, String prefix, String info) 	{	return new ListItem(lib_node, Utils.JoinPaths(prefix, info.substring(2)), (byte)info.charAt(1));	}
+	public String SaveInfo() 					{	return "f" + ((char)status) + "" + file.getName();	} 
 	
 	public String title;
 	public String ext;
 	public File file;
 	public MediaInfo media_info = null;
 
-	public ListItem(String path) { this(new File(path)); }
-	public ListItem(String path, byte state) { this(new File(path), state); }
+	public ListItem(FolderNode lib_node, String path) { this(lib_node, new File(path)); }
+	public ListItem(FolderNode lib_node, String path, byte state) { this(lib_node, new File(path), state); }
 
-	public ListItem(File file) { this(file, default_status); }
-	public ListItem(File file, byte state) { this(file, IOOperations.extension(file.getName()), state); }
-	public ListItem(File file, String ext) { this(file, ext, default_status); }	
-	public ListItem(File file, String ext, byte state) {
+	public ListItem(FolderNode lib_node, File file) { this(lib_node, file, default_status); }
+	public ListItem(FolderNode lib_node, File file, byte state) { this(lib_node, file, IOOperations.extension(file.getName()), state); }
+	public ListItem(FolderNode lib_node, File file, String ext) { this(lib_node, file, ext, default_status); }	
+	public ListItem(FolderNode lib_node, File file, String ext, byte state) {
 		this.file = file;
 		this.ext = ext;
 		this.title = file.getName();
 		this.status = state;
+		this.node = lib_node;
 	}	
 	
 	@Override

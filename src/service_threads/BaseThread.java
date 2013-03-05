@@ -1,7 +1,6 @@
 package service_threads;
 
-//import java.util.Timer;
-//import java.util.TimerTask;
+import service.Errorist;
 
 public class BaseThread extends Thread {
 	int close_flag = 0;
@@ -11,15 +10,14 @@ public class BaseThread extends Thread {
 	
     public void close() {
     	Thread th = currentThread();
-    	if (th.isAlive()) {
+    	if (th.isAlive())
     		close_flag = 1;
-//    		new Timer(true).schedule(new TimerTask() {
-//    		      public void run() {
-//    		    	  
-////    		        stoppable.requestStop();
-//    		      }
-//    		}, 500);    		
-    	}
+    }
+    
+    void sleepy() { sleepy(sleep_time); }
+    void sleepy(int time) {
+	    try { wait(time); }
+	    catch (InterruptedException e) { Errorist.printLog(e); }
     }
 }
 

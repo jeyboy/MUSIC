@@ -3,24 +3,26 @@ package tabber;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Random;
-
 import javax.swing.JScrollPane;
 import filelist.FileList;
 import filelist.ListItem;
+import folders.Catalog;
 
 public class Tab extends JScrollPane {
 	private static final long serialVersionUID = 1L;
 	public Tabber tabber;
 	public TabHead tabhead;
-	FileList Files;
+	FileList files;
 	public TabOptions options;
+	Catalog catalog;
 	
-	void Init(Tabber parent, String title, TabOptions opts, ListItem [] items) {
+	public Tab(Tabber parent, String title, TabOptions opts) {
+		catalog = new Catalog(this);
 		tabber = parent;
 		options = opts;
 	
-		Files = items == null ? new FileList(this) : new FileList(this, items);
-		setViewportView(Files);
+		files = new FileList(this);
+		setViewportView(files);
 	    parent.addTab(null, this);
 	    tabhead = new TabHead(this, title);
 	    tabber.SetCurrentTab(this);
@@ -28,25 +30,26 @@ public class Tab extends JScrollPane {
 	    tabber.setForegroundAt(tabber.getTabCount() - 1, Color.white);
 	    UpdateCounter();
 	    getVerticalScrollBar().setPreferredSize(new Dimension(12, 0));
-	    getHorizontalScrollBar().setPreferredSize(new Dimension(0, 12));
+	    getHorizontalScrollBar().setPreferredSize(new Dimension(0, 12));		
 	}
 	
-	public Tab(Tabber parent, String title, TabOptions opts, ListItem [] items) { Init(parent, title, opts, items);	}
+	public Catalog getCatalog() { return catalog; }
 	
-	public Integer FilesCount() { return Files.model.getSize(); }
-	public ListItem File(int index)	{	return Files.model.getElementAt(index); }
+	public Integer FilesCount() { return files.model.getSize(); }
+	public ListItem File(int index)	{	return files.model.getElementAt(index); }
 	public void Shuffle() {
 //		Collections.shuffle((List<?>)Files.model);
 		Random rgen = new Random();
-		for (int i=0; i < FilesCount(); i++) {
+		for (int i = 0; i < FilesCount(); i++) {
 			int randomPosition = rgen.nextInt(FilesCount());
 			ListItem temp = File(i);
-			Files.model.set(i, File(randomPosition));
-			Files.model.set(randomPosition, temp);
+			files.model.set(i, File(randomPosition));
+			files.model.set(randomPosition, temp);
 		}
 	}
 
-	public FileList Files() 			{	return (FileList) getViewport().getView(); }
+//	public FileList Files() 			{	return (FileList) getViewport().getView(); }
+	public FileList Files() 			{	return files; }
 	
 	public String GetTitle() 			{	return tabhead.GetTitle(); }
 	public void SetTitle(String title) 	{	tabhead.SetTitle(title); }

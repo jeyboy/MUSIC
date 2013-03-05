@@ -15,9 +15,8 @@ public class Tabber extends JTabbedPane {
 	
 	public Tabber() { setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);  } //JTabbedPane.SCROLL_TAB_LAYOUT
 	
-	public Tab AddTab(String title, TabOptions opts, ListItem [] items)	{ return new Tab(this, title, opts, items); }
-	public Tab AddTab(String title, TabOptions opts)					{ return AddTab(title, opts, null); }
-	public Tab AddTab(String title)										{ return AddTab(title, new TabOptions(), null); }
+	public Tab AddTab(String title, TabOptions opts)					{ return new Tab(this, title, opts); }
+	public Tab AddTab(String title)										{ return AddTab(title, new TabOptions()); }
 	
 	public Tab GetTab(int index)			{ return (Tab) getComponentAt(index);}
 	public Tab GetCurrentTab()				{ return (Tab) getSelectedComponent();}
@@ -27,6 +26,10 @@ public class Tabber extends JTabbedPane {
 		try { return (ListItem)GetCurrentTab().Files().getSelectedValue(); }
 		catch(Exception e) { return null; }
 	}
+	
+//	public void addFolder(Tab root, String root_path, File ... files) {
+//		tabs.get(root).addFolder(root_path, files);
+//	}	
 	
 	static public void Load() {
 		Common.tabber = new Tabber();
@@ -47,13 +50,10 @@ public class Tabber extends JTabbedPane {
 	        	        
 	        for(int loop = 0; loop < getTabCount(); loop++) {
 	        	curr_tab = GetTab(loop);
-	        	curr_tab.Files.SetPlayed(null);
+	        	curr_tab.Files().SetPlayed(null);
 	        	
 	        	pw.println('*' + curr_tab.options.Serialize() + curr_tab.GetTitle());
-	        	
-	        	for(int loop1 = 0; loop1 < curr_tab.FilesCount(); loop1++) 
-	        		pw.println(curr_tab.File(loop1).SaveInfo());
-	        	
+	        	curr_tab.getCatalog().save(pw);
 	        	pw.flush();
 	        }
 	    }
@@ -68,22 +68,22 @@ public class Tabber extends JTabbedPane {
 	
 	//Delete selected elem in selected tab and init next
 	public void DeleteSelectAndInit() {
-		GetTab(getSelectedIndex()).Files.DeleteSelectAndInit();
+		GetTab(getSelectedIndex()).Files().DeleteSelectAndInit();
 	}
 	
 	//Move to the next elem from selected elem in selected tab
 	public void MoveSelectAndInit(Boolean next) {
-		GetTab(getSelectedIndex()).Files.MoveSelectAndInit(next);
+		GetTab(getSelectedIndex()).Files().MoveSelectAndInit(next);
 	}
 	
 	//Move to the next elem from selected elem in selected tab
 	public void PlaySelectedOrFirst() {
-		GetTab(getSelectedIndex()).Files.PlaySelectedOrFirst();
+		GetTab(getSelectedIndex()).Files().PlaySelectedOrFirst();
 	}	
-
-	/**
-	 * @param index
-	 * @param key =  KeyEvent.VK_C or ...
-	 */
-	public void SetHotKey(int index, int key) { super.setMnemonicAt(index, key); }
+//
+//	/**
+//	 * @param index
+//	 * @param key =  KeyEvent.VK_C or ...
+//	 */
+//	public void SetHotKey(int index, int key) { super.setMnemonicAt(index, key); }
 }
