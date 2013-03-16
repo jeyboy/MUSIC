@@ -52,5 +52,18 @@ public class Common {
 		_library_dumper.close();
 		Errorist.close();
 		player.exit();
-	} 
+	}
+	
+	static public void lockWorkThreads() {
+		_library_dumper.lock();
+		_refresher.lock();
+		_trash.lock();
+		_initer.lock();
+	}
+	static public void unlockWorkThreads() {
+		_library_dumper.unlock();
+		_refresher.unlock();
+		_trash.unlock();
+		_initer.unlock();
+	}	
 }

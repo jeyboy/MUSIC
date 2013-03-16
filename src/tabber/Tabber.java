@@ -35,7 +35,18 @@ public class Tabber extends JTabbedPane {
 		Common.tabber = new Tabber();
 		Common.tabber.setUI(new TabberUI());
 		Common.tabber.setBackground(Color.black);
-		new TabberLoader();
+		new TabberLoader().execute();
+		
+//	    // A property listener used to update the progress bar
+//	    PropertyChangeListener listener = 
+//	                               new PropertyChangeListener(){
+//	      public void propertyChange(PropertyChangeEvent event) {
+//	        if ("progress".equals(event.getPropertyName())) {
+//	          progressBar.setValue( (Integer)event.getNewValue() );
+//	        }
+//	      }
+//	    };
+//	    worker.addPropertyChangeListener(listener);		
 	}
 	
 	public void Save() {

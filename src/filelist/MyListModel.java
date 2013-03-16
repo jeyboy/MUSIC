@@ -10,7 +10,11 @@ public class MyListModel<E> extends DefaultListModel<E> {
 	
 	public MyListModel(final FileList list) { addListDataListener(new ListDataListener() {
 		public void intervalAdded(ListDataEvent e) { list.parent.UpdateCounter(); }
-		public void intervalRemoved(ListDataEvent e) { list.parent.UpdateCounter();	}
+		public void intervalRemoved(ListDataEvent ev) {
+			list.parent.UpdateCounter();
+			for(int i = ev.getIndex0(); i <= ev.getIndex1(); i++)
+				((ListItem)elementAt(i)).delete(list.parent.options.delete_files, list.parent.options.delete_empty_folders);			
+		}
 		public void contentsChanged(ListDataEvent e) {}}); 
 	}
 	

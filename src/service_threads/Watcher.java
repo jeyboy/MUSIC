@@ -47,6 +47,8 @@ public class Watcher extends BaseThread {
             while(path_collection.size() > 0) {
             	for(int loop1 = path_collection.size() - 1; loop1 >= 0 ; loop1--) {
 	            	if (closeRequest()) return;
+	            	while(locked) sleepy();
+	            	
 	            	temp = path_collection.get(loop1);
 	            	
 	    	        List<WatchEvent<?>> events = temp.watchKey.pollEvents();

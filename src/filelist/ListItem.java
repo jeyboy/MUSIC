@@ -96,4 +96,10 @@ public class ListItem {
 	
 	public void OpenFolder() { IOOperations.open(file.getParentFile());	}
 	public void InitMedia() { Common.library.ProceedItem(this); }
+	public void delete(boolean delete_file, boolean delete_folder_if_empty) {
+		if (delete_file)
+			Common._trash.AddElem(file, delete_folder_if_empty);
+		deleteFromFolder();		
+	}
+	void deleteFromFolder() { node.delete(this);}
 }

@@ -40,6 +40,9 @@ public class DropIniter extends BaseThread {
     	while(!closeRequest()) {
             while(drops_collection.size() > 0) {
             	if (closeRequest()) return;
+            	
+            	while(locked) sleepy();
+            	
             	final DropCell temp = drops_collection.get(0);            	
             	
                 SwingUtilities.invokeLater(new Runnable() {

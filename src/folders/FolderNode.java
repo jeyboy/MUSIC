@@ -43,6 +43,10 @@ public class FolderNode {
 		items.add(listItem);		
 	}
 	
+	public void delete(ListItem listItem) {
+		items.remove(listItem);
+	}
+	
 	public void addFiles(File ... files) {
 		for(File f : files)
 			addItem(new ListItem(this, f));

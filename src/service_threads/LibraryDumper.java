@@ -18,6 +18,7 @@ public class LibraryDumper extends BaseThread {
 
     void routing() {
     	while(!closeRequest()) {
+    		while(locked) sleepy();
     		synchronized(Common.library) {
     			System.out.println("Try dump library at " + new Date());
     			int res = Common.library.Save();

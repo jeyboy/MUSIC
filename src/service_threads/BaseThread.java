@@ -5,6 +5,7 @@ import service.Errorist;
 public class BaseThread extends Thread {
 	int close_flag = 0;
 	int sleep_time = 1000;
+	boolean locked = false;
 	
 	public boolean closeRequest() { return close_flag == 1; }
 	
@@ -19,6 +20,9 @@ public class BaseThread extends Thread {
 	    try { wait(time); }
 	    catch (InterruptedException e) { Errorist.printLog(e); }
     }
+    
+    public void lock() { locked = true; }
+    public void unlock() { locked = false; }
 }
 
 //Thread example

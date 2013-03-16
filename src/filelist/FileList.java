@@ -21,6 +21,7 @@ public class FileList extends JList<ListItem> {
 	
 	public FileList(Tab parent_tab) {
 		parent = parent_tab;
+		
 		setModel(model);
     	setCellRenderer(listrender);
     	setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -66,12 +67,13 @@ public class FileList extends JList<ListItem> {
    
 	// This method is called as the cursor moves within the list.
     public String getToolTipText(MouseEvent evt) {
-      int index = locationToIndex(evt.getPoint());
-      if (index > -1) {
-	      ListItem item = (ListItem)getModel().getElementAt(index);
-	      return item == null ? "" : item.media_info.toString();
-      }
-      return null;
+//      int index = locationToIndex(evt.getPoint());
+//      if (index > -1) {
+//	      ListItem item = (ListItem)getModel().getElementAt(index);
+//	      return item == null ? "" : item.media_info.toString();
+//      }
+//      return null;
+    	return "Temporary disabled";
     }	
 
 	/// Helper methods
@@ -101,9 +103,8 @@ public class FileList extends JList<ListItem> {
 			MoveSelectAndInit(true);
 			return;
 		}
-		if (parent.options.delete_files)
-			Common._trash.AddElem(played.file, parent.options.delete_empty_folders);
 		model.remove(selected);
+		
 		if ((selected = InverseCheckRange(selected)) == -1) return;
 		ensureIndexIsVisible(selected);
 		SetPlayed(model.elementAt(selected));

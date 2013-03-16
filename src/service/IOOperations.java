@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -31,6 +32,13 @@ public class IOOperations {
 		InputStreamReader in = new InputStreamReader(new FileInputStream(path), "UTF-8");
 		return new BufferedReader(in);
 	}
+	
+	public static BufferedReader GetStringReader(String path) throws IOException {
+		FileInputStream fis = new FileInputStream(path);
+		byte [] arr = new byte[fis.available()];
+		fis.read(arr);	
+		return new BufferedReader(new StringReader(new String(arr, "UTF-8")));
+	}	
 	
 	
 	public static boolean copyFile(File fromFile, File toFile) throws IOException {

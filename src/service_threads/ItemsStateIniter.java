@@ -12,7 +12,7 @@ public class ItemsStateIniter extends BaseThread {
     public ItemsStateIniter() {
 		setDaemon(true);
 //		setPriority(Thread.NORM_PRIORITY);
-		start();
+//		start();
     }
 
     public synchronized void run() { routing(); }
@@ -25,10 +25,10 @@ public class ItemsStateIniter extends BaseThread {
     	while(!closeRequest()) {
 	        while(items_collection.size() > 0) {
 	        	if (closeRequest()) return;
-	        	if (!locked) {
-		        	Common.library.ProceedItem(items_collection.get(0));
-		        	items_collection.remove(0);
-	        	}
+	        	while(locked) sleepy();
+	        	
+	        	Common.library.ProceedItem(items_collection.get(0));
+	        	items_collection.remove(0);
 	        }
 	        
 	        sleepy();
