@@ -58,8 +58,10 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
             public void mouseClicked(MouseEvent mouseEvent) {
         		if (mouseEvent.getClickCount() == 2) {
         			int index = filelist.locationToIndex(mouseEvent.getPoint());
-        			if (index >= 0)
+        			if (index >= 0) {
         				filelist.SetPlayed((ListItem) filelist.model.getElementAt(index));
+        				node.tab.catalog.activeNode = node;
+        			}
         		}
             }
     		@Override

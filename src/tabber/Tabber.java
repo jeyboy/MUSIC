@@ -8,6 +8,7 @@ import service.Constants;
 import service.Errorist;
 import service.IOOperations;
 import service_threads.TabberLoader;
+import uis.TabberUI;
 import filelist.ListItem;
 
 public class Tabber extends JTabbedPane {

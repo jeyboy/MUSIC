@@ -6,6 +6,7 @@ import tabber.Tab;
 
 public class Catalog extends Base {
 	int itemsCount = 0;
+	public FolderNode activeNode = null; 
 	
 	public Catalog(Tab container) { super(container); }
 	
@@ -38,4 +39,6 @@ public class Catalog extends Base {
     	for(FolderNode folder : folders)
     		folder.save(pw);
 	}
+	
+	
 }

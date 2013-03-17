@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 
-import components.MainWnd;
 import folders.FolderNode;
 
 public class FileList extends JList<ListItem> {
@@ -31,20 +29,16 @@ public class FileList extends JList<ListItem> {
     public void ChangeViewToHorizontalWrap() 	{ setLayoutOrientation(JList.HORIZONTAL_WRAP); }
     
 	
-	public void SetPlayed(final ListItem item) {
-		SwingUtilities.invokeLater(new Runnable() {
-			synchronized public void run(){		
-				if (played != null)
-					played.SetStatusUnPlayed();
-				
-				if ((played = item) != null) {
-					played.SetStatusPlayed();
-					played.Exec();
-					setSelectedValue(played, false);
-				}
-			}
-		});
-//		MainWnd.wnd.repaint();
+	public void SetPlayed(final ListItem item) {	
+		if (played != null)
+			played.SetStatusUnPlayed();
+		
+		if ((played = item) != null) {
+			played.SetStatusPlayed();
+			played.Exec();
+			setSelectedValue(played, false);
+		}
+//		this.repaint(this.getCellBounds(getPlayedIndex(), getPlayedIndex() + 1));
 	}
 	public ListItem getPlayed() { return played; }
 	public int getPlayedIndex() { return model.indexOf(played); }

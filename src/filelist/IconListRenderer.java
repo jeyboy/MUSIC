@@ -31,8 +31,7 @@ public class IconListRenderer extends DefaultListCellRenderer {
  
 	public IconListRenderer() {}
 
-	@Override
-	public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		curr_item = (ListItem) value;
 		selected = isSelected;
@@ -46,8 +45,7 @@ public class IconListRenderer extends DefaultListCellRenderer {
 		return label;
 	}
 	
-	protected void paintComponent( Graphics g ) 
-	{
+	protected void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g.create(label.getX(), 0, label.getWidth(), label.getHeight());
 		Rectangle r = new Rectangle(label.getX(), 0, label.getWidth(), label.getHeight());
 		GradientPaint gp = null;

@@ -47,7 +47,7 @@ public class TabHead {
 //	    	public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
 //		    public void mouseExited(MouseEvent e) 	{ tabCloseButton.setVisible(false); }
 //		    //temp fix - when add mouse listeners tab not selected at click
-//		    public void mouseClicked(MouseEvent e) 	{ parent.tabber.SetCurrentTab(parent); }
+//		    public void mouseClicked(MouseEvent e) 	{ parent.tabber.currTab(parent); }
 //		});	    
 	}
 	
