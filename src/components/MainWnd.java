@@ -84,7 +84,7 @@ public class MainWnd {
 	}
 	
 	static private void Load() {
-		Tabber.Load();
+		Tabber.load();
 		
 		try {
 	  		BufferedReader br = IOOperations.GetReader(Constants.settingspath);
@@ -114,7 +114,8 @@ public class MainWnd {
 		wnd.setLocation(new Point(dim.width - wnd.getWidth(), dim.height - wnd.getHeight() - 40));
 	}
 	static private void Save() {
-	    Common.tabber.Save();
+		Common._trash.save();
+	    Common.tabber.save();
 	    Common.library.Save();
 	    Common.drop_manager.saveDropPanels();		
 		

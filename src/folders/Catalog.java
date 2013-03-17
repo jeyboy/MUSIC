@@ -2,28 +2,16 @@ package folders;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-
 import tabber.Tab;
 
-public class Catalog {
-	Tab tab;
+public class Catalog extends Base {
+	int itemsCount = 0;
 	
-	public Catalog(Tab container) { tab = container; }
+	public Catalog(Tab container) { super(container); }
 	
-	ArrayList<FolderNode> folders = new ArrayList<FolderNode>(1) {
-		private static final long serialVersionUID = -2235109783338833765L;
-
-		public int indexOf(Object o) {
-			if (o instanceof String) {
-			    for (int i = 0; i < this.size(); i++)
-			        if (o.equals(this.get(i).path))
-			            return i;
-			} 
-			else super.indexOf(o);
-			return -1;
-		};
-	};
+	public int itemsCount() { return itemsCount; }
+	public void iterateCount() { itemsCount++;}
+	public void deiterateCount() { itemsCount--;}
 	
 	public FolderNode getNode(String root_path) {
 		FolderNode node;

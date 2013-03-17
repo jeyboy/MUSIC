@@ -53,20 +53,20 @@ public class MenuBar extends JMenuBar {
 						prepareGUI();
 					    Object complexMsg[] = { "Create tab with title", title, new JCheckBox[] {delete_with_file, delete_empty_folders, interactive, remote_source} };		
 						if( Utils.showDialog(MenuBar.this, "Creating drop elem", complexMsg) == JOptionPane.OK_OPTION )
-							Common.tabber.AddTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected()));							
+							Common.tabber.addTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected()));							
 				    }
 				}),
 				new ActionBind("settings", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Tab tab = Common.tabber.GetCurrentTab();
+						Tab tab = Common.tabber.currTab();
 						if (tab == null) return; 
-						prepareGUI(tab.GetTitle(), tab.options.delete_files, tab.options.interactive, tab.options.delete_empty_folders, tab.options.remote_source);
+						prepareGUI(tab.getTitle(), tab.options.delete_files, tab.options.interactive, tab.options.delete_empty_folders, tab.options.remote_source);
 					    Object complexMsg[] = { "Modify tab title", title, delete_with_file, delete_empty_folders, interactive, remote_source };		
 						if( Utils.showDialog(MenuBar.this, "Modify drop elem", complexMsg) == JOptionPane.OK_OPTION ) {
 							if (title.getText().trim().length() > 0)
-								tab.SetTitle(title.getText());
+								tab.setTitle(title.getText());
 							tab.options = new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected());
-							tab.UpdateCounter();
+							tab.updateCounter();
 						}						
 				    }
 				}),		

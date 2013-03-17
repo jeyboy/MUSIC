@@ -47,7 +47,7 @@ public class DropIniter extends BaseThread {
             	
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run(){
-                    	try { addFilesRecursively(temp.tab.getCatalog().getNode(temp.elems[0].getParentFile().getCanonicalPath()), temp.elems);	}
+                    	try { addFilesRecursively(temp.tab.catalog.getNode(temp.elems[0].getParentFile().getCanonicalPath()), temp.elems);	}
                     	catch (IOException e) {	Errorist.printLog(e); }
 //                    	temp.list.AddElemsF(IOOperations.ScanDirectoriesF(temp.elems));
                     }

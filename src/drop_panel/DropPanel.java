@@ -39,6 +39,7 @@ public class DropPanel extends JScrollPane {
 		
 		new DropTarget(content_pane, new DropTargetListener() {
 			public void dropActionChanged(DropTargetDragEvent dtde) {}
+			@SuppressWarnings("unchecked")
 			public void drop(DropTargetDropEvent evt) {
 			      int action = evt.getDropAction();
 			      evt.acceptDrop(action);

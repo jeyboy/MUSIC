@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import components.MainWnd;
+import folders.FolderNode;
 
 import service.Common;
 import service.Dropper;
@@ -36,16 +37,12 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
 	List<ListItem> droped_items = new Vector<ListItem>();
 	boolean drop_in = false;
 	
-	public FileListEvents(FileList flist) { 
+	public FileListEvents(FileList flist, final FolderNode node) { 
 		filelist = flist;
-		Init();
-	}
-	
-	void Init() {
         dropper = new Dropper(filelist, new Dropper.Listener() {
         	public void filesDropped(Dropper.Event ev) {
         		if (!(drop_in = (boolean)ev.getSource()))
-        			Common._drop_initer.ProceedDrop(filelist.parent, ev.getFiles());
+        			Common._drop_initer.ProceedDrop(node.tab, ev.getFiles());
         	}
         });
         
@@ -83,14 +80,14 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
     			if (e.getKeyCode() == KeyEvent.VK_DELETE) {
     				int last_pos = filelist.getSelectedIndex() - 1;
     				for(Object obj: filelist.getSelectedValuesList()) {
-	    				if (filelist.parent.options.delete_files)
-	    					Common._trash.AddElem(((ListItem)obj).file, filelist.parent.options.delete_empty_folders);
+	    				if (node.tab.options.delete_files)
+	    					Common._trash.AddElem(((ListItem)obj).file, node.tab.options.delete_empty_folders);
     					filelist.model.removeElement(obj);
     				}
     				filelist.CalcSelect(last_pos, true);
     			}
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-    				filelist.SetPlayed(filelist.model.elementAt(filelist.getSelectedIndex()));
+    				filelist.SetPlayed(filelist.model.getElementAt(filelist.getSelectedIndex()));
     			}
     		}
     		@Override

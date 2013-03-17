@@ -15,27 +15,24 @@ public class Tabber extends JTabbedPane {
 	
 	public Tabber() { setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);  } //JTabbedPane.SCROLL_TAB_LAYOUT
 	
-	public Tab AddTab(String title, TabOptions opts)					{ return new Tab(this, title, opts); }
-	public Tab AddTab(String title)										{ return AddTab(title, new TabOptions()); }
+	public Tab addTab(String title, TabOptions opts)					{ return new Tab(this, title, opts); }
+	public Tab addTab(String title)										{ return addTab(title, new TabOptions()); }
 	
-	public Tab GetTab(int index)			{ return (Tab) getComponentAt(index);}
-	public Tab GetCurrentTab()				{ return (Tab) getSelectedComponent();}
-	public void SetCurrentTab(int index)	{ setSelectedIndex(index);}
-	public void SetCurrentTab(Tab tab)		{ setSelectedComponent(tab);}
-	public ListItem GetCurrentItem()		{
-		try { return (ListItem)GetCurrentTab().Files().getSelectedValue(); }
-		catch(Exception e) { return null; }
-	}
+	public Tab getTab(int index)	{ return (Tab) getComponentAt(index);}
+	public Tab currTab()			{ return (Tab) getSelectedComponent();}
+	public void currTab(int index)	{ setSelectedIndex(index);}
+	public void currTab(Tab tab)	{ setSelectedComponent(tab);}
+	public ListItem getCurrItem()	{ return currTab().currItem(); }
 	
 //	public void addFolder(Tab root, String root_path, File ... files) {
 //		tabs.get(root).addFolder(root_path, files);
 //	}	
 	
-	static public void Load() {
+	static public void load() {
 		Common.tabber = new Tabber();
 		Common.tabber.setUI(new TabberUI());
 		Common.tabber.setBackground(Color.black);
-		new TabberLoader().execute();
+		TabberLoader loader = new TabberLoader();
 		
 //	    // A property listener used to update the progress bar
 //	    PropertyChangeListener listener = 
@@ -46,27 +43,21 @@ public class Tabber extends JTabbedPane {
 //	        }
 //	      }
 //	    };
-//	    worker.addPropertyChangeListener(listener);		
+//	    loader.addPropertyChangeListener(listener);
+		
+		loader.execute();
 	}
 	
-	public void Save() {
-		Common._trash.save();
+	public void save() {
 		if (!Common.save_flag) return;
 		
 	    PrintWriter pw = null;
-	    Tab curr_tab;
 
 	    try {
 	        pw = IOOperations.GetWriter(Constants.tabspath, false, false);
 	        	        
-	        for(int loop = 0; loop < getTabCount(); loop++) {
-	        	curr_tab = GetTab(loop);
-	        	curr_tab.Files().SetPlayed(null);
-	        	
-	        	pw.println('*' + curr_tab.options.Serialize() + curr_tab.GetTitle());
-	        	curr_tab.getCatalog().save(pw);
-	        	pw.flush();
-	        }
+	        for(int loop = 0; loop < getTabCount(); loop++)
+	        	getTab(loop).save(pw);
 	    }
 	    catch (Exception e) { Errorist.printLog(e); }
 	    finally { if (pw != null) pw.close(); }
@@ -78,19 +69,13 @@ public class Tabber extends JTabbedPane {
 	public void TabsPlacement(int style) { super.setTabPlacement(style); }
 	
 	//Delete selected elem in selected tab and init next
-	public void DeleteSelectAndInit() {
-		GetTab(getSelectedIndex()).Files().DeleteSelectAndInit();
-	}
+	public void DeleteSelectAndInit() {	currTab().delCurrAndExecNext(); }
 	
 	//Move to the next elem from selected elem in selected tab
-	public void MoveSelectAndInit(Boolean next) {
-		GetTab(getSelectedIndex()).Files().MoveSelectAndInit(next);
-	}
+	public void MoveSelectAndInit(boolean next) { currTab().execNext(next);	}
 	
 	//Move to the next elem from selected elem in selected tab
-	public void PlaySelectedOrFirst() {
-		GetTab(getSelectedIndex()).Files().PlaySelectedOrFirst();
-	}	
+	public void PlaySelectedOrFirst() {	currTab().execCurrOrFirst(); }	
 //
 //	/**
 //	 * @param index

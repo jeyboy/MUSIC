@@ -2,37 +2,34 @@ package filelist;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import javax.swing.filechooser.FileSystemView;
-
 import components.MainWnd;
-import service.Common;
-import tabber.Tab;
+import folders.FolderNode;
 
 public class FileList extends JList<ListItem> {
-	private static final long serialVersionUID = 2216859386306446869L;
-	Tab parent;
-	private ListItem played = null;
+	static final long serialVersionUID = 1L;
+	ListItem played = null;
+
+	public MyListModel model;
 	
-	public MyListModel<ListItem> model = new MyListModel<ListItem>(this);
-	private IconListRenderer listrender = new IconListRenderer();
-	
-	public FileList(Tab parent_tab) {
-		parent = parent_tab;
-		
-		setModel(model);
-    	setCellRenderer(listrender);
+	@SuppressWarnings("unchecked")
+	public FileList(FolderNode node) {
+		setModel((model = new MyListModel(node)));
+    	setCellRenderer(node.listrender);
     	setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-    	new FileListEvents(this);
+    	new FileListEvents(this, node);
     	setComponentPopupMenu(new ListPopUp(this));
     	setSelectionForeground(Color.white);
 		setBackground(Color.black);
 	}
 	
-	public void SetPlayed(ListItem item) 
-	{	
+    public void ChangeViewToVertical() 			{ setLayoutOrientation(JList.VERTICAL); }
+    public void ChangeViewToVerticalWrap() 		{ setLayoutOrientation(JList.VERTICAL_WRAP); }
+    public void ChangeViewToHorizontalWrap() 	{ setLayoutOrientation(JList.HORIZONTAL_WRAP); }
+    
+	
+	public void SetPlayed(ListItem item) {	
 		if (played != null)
 			played.SetStatusUnPlayed();
 		
@@ -43,27 +40,12 @@ public class FileList extends JList<ListItem> {
 		}
 		MainWnd.wnd.repaint();
 	}
-	public ListItem GetPlayed() { return played; }
-	public int GetPlayedIndex() { return model.indexOf(played); }
+	public ListItem getPlayed() { return played; }
+	public int getPlayedIndex() { return model.indexOf(played); }
 	public ListItem getItemFromCursor() {
 		int index = locationToIndex(getMousePosition());
-		return index < 0 ? null : model.get(index); 
+		return index < 0 ? null : model.getElementAt(index); 
 	}
-
-    public void ProceedElem(ListItem elem) {
-        AddAssocIcon(elem.ext, FileSystemView.getFileSystemView().getSystemIcon(elem.file));
-        model.addElement(elem);
-        Common._initer.AddItem(elem);
-    }
-	
-    public void AddAssocIcon(String ext, Icon icon) {
-    	if (listrender.icons.containsKey(ext) || icon == null) return; 
-    	listrender.icons.put(ext, icon); 
-    }
-    
-    public void ChangeViewToVertical() { setLayoutOrientation(JList.VERTICAL); }
-    public void ChangeViewToVerticalWrap() { setLayoutOrientation(JList.VERTICAL_WRAP); }
-    public void ChangeViewToHorizontalWrap() { setLayoutOrientation(JList.HORIZONTAL_WRAP); }
    
 	// This method is called as the cursor moves within the list.
     public String getToolTipText(MouseEvent evt) {
@@ -94,23 +76,21 @@ public class FileList extends JList<ListItem> {
 		return index;
 	}	
 	
-	public void PlaySelectedOrFirst() 				{	SetPlayed(model.elementAt(CheckRange(GetPlayedIndex())));	}	
-	public int MoveSelect(int index, boolean next) 	{ 	return CalcSelect(index, next); }
-	public void MoveSelectAndInit(boolean next) 	{	SetPlayed(model.elementAt(MoveSelect(GetPlayedIndex(), next)));	}
-	public void DeleteSelectAndInit() {
-		int selected = GetPlayedIndex();
+	public void execCurrOrFirst() 					{ SetPlayed(model.getElementAt(CheckRange(getPlayedIndex())));	}	
+	public int MoveSelect(int index, boolean next) 	{ return CalcSelect(index, next); }
+	public void execNext(boolean next) 				{ SetPlayed(model.getElementAt(MoveSelect(getPlayedIndex(), next)));	}
+	public void delCurrAndExecNext() {
+		int selected = getPlayedIndex();
 		if (selected == -1) {
-			MoveSelectAndInit(true);
+			execNext(true);
 			return;
 		}
-		model.remove(selected);
+		model.removeElement(selected);
 		
 		if ((selected = InverseCheckRange(selected)) == -1) return;
 		ensureIndexIsVisible(selected);
-		SetPlayed(model.elementAt(selected));
+		SetPlayed(model.getElementAt(selected));
 	}
-	
-	public void SetStatus(String status) {parent.SetStatus(status);}
 }
 
 

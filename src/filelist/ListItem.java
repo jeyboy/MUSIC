@@ -13,6 +13,11 @@ import service.IOOperations;
 import service.Utils;
 
 public class ListItem {
+	public String title;
+	public String ext;
+	public File file;
+	public MediaInfo media_info = null;	
+	
 	final static byte default_status = (byte)128;
 
 	byte status = default_status;
@@ -47,11 +52,6 @@ public class ListItem {
 	public static ListItem Load(FolderNode lib_node, String prefix, String info) 	{	return new ListItem(lib_node, Utils.JoinPaths(prefix, info.substring(2)), (byte)info.charAt(1));	}
 	public String SaveInfo() 					{	return "f" + ((char)status) + "" + file.getName();	} 
 	
-	public String title;
-	public String ext;
-	public File file;
-	public MediaInfo media_info = null;
-
 	public ListItem(FolderNode lib_node, String path) { this(lib_node, new File(path)); }
 	public ListItem(FolderNode lib_node, String path, byte state) { this(lib_node, new File(path), state); }
 

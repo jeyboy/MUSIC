@@ -1,50 +1,80 @@
 package folders;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.filechooser.FileSystemView;
+
+import filelist.FileList;
+import filelist.IconListRenderer;
 import filelist.ListItem;
+import service.Common;
 import tabber.Tab;
 
-public class FolderNode {
+public class FolderNode extends Base {
 	FolderNode parent = null;
-	ArrayList<FolderNode> folders = new ArrayList<FolderNode>(1) {
-		private static final long serialVersionUID = -2235109783338833765L;
-
-		public int indexOf(Object o) {
-			if (o instanceof String) {
-			    for (int i = 0; i < this.size(); i++)
-			        if (o.equals(this.get(i).path))
-			            return i;
-			} 
-			else super.indexOf(o);
-			return -1;
-		};
-	};
-	ArrayList<ListItem> items = new ArrayList<ListItem>(10);
+	FileList list;
+	JPanel pane;
+	
+	
 	public String path;
-	Tab tab;
+	public IconListRenderer listrender = new IconListRenderer();
+	
+	ArrayList<ListItem> items = new ArrayList<ListItem>(10);	
+	public ArrayList<ListItem> elems() { return items; } 
+	
+	void init(String path) {
+		this.path = path;
+		list = new FileList(this);
+		pane = new JPanel();
+		pane.setBackground(Common.color_background);
+		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		
+		JLabel label = new JLabel(path);
+		label.setForeground(Common.color_foreground);
+		label.setBackground(Common.color_background);
+		pane.add(label, Component.LEFT_ALIGNMENT);
+				
+		pane.add(list);
+//		list.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		
+		tab.addFileList(pane);
+	}
 	
 	public FolderNode(FolderNode parentNode, String path) {
+		super(parentNode.tab);
 		parent = parentNode;
 		if (parentNode != null)
 			parentNode.folders.add(this);
-		tab = parentNode.tab;
-		this.path = path;
+		init(path);
 	}
 	public FolderNode(Tab container, String path) {
-		tab = container;
-		this.path = path; 
-	}	
-
+		super(container);
+		init(path); 
+	}
+	
+    void AddAssocIcon(String ext, Icon icon) {
+    	if (listrender.icons.containsKey(ext) || icon == null) return; 
+    	listrender.icons.put(ext, icon); 
+    }	
+		
 	public void addItem(ListItem listItem) {
-		tab.Files().ProceedElem(listItem);
-		items.add(listItem);		
+        AddAssocIcon(listItem.ext, FileSystemView.getFileSystemView().getSystemIcon(listItem.file));
+        list.model.addElement(listItem);		
+		tab.catalog.iterateCount();
+		Common._initer.AddItem(listItem);
 	}
 	
 	public void delete(ListItem listItem) {
-		items.remove(listItem);
+		list.model.removeElement(listItem);
+		tab.catalog.deiterateCount();
 	}
 	
 	public void addFiles(File ... files) {

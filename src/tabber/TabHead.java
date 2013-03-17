@@ -15,7 +15,7 @@ public class TabHead {
 	JLabel title, counter;
 	Tab parent;
 	
-	JLabel GenerateCloseButton(final Tab tab) {
+	JLabel generateCloseButton(final Tab tab) {
 		final JLabel tabCloseButton = new JLabel(Utils.GetIcon("menubar/delete_tab2.png"));
 	    tabCloseButton.setPreferredSize(new Dimension(18, 18));
 //	    tabCloseButton.setVisible(false);
@@ -28,9 +28,9 @@ public class TabHead {
 	    return tabCloseButton;
 	}	
 	
-	void Init(Tab tab, String title) {
+	public TabHead(Tab tab, String title) {
 		parent = tab;
-	    final JLabel tabCloseButton = GenerateCloseButton(parent);
+	    final JLabel tabCloseButton = generateCloseButton(parent);
 	    JPanel p = new JPanel();
 	    p.setOpaque(false);
 	    p.setBackground(null);
@@ -41,7 +41,7 @@ public class TabHead {
 	    p.add(tabCloseButton);
 	    
 	    parent.tabber.setTabComponentAt(parent.tabber.getTabCount()-1, p);
-	    SetTitleForeground(Color.white);
+	    setTitleForeground(Color.white);
 	    
 //	    p.addMouseListener(new MouseAdapter() {
 //	    	public void mouseEntered(MouseEvent e) 	{ tabCloseButton.setVisible(true); }
@@ -51,18 +51,16 @@ public class TabHead {
 //		});	    
 	}
 	
-	public TabHead(Tab parent, String title) {	Init(parent, title);	}
-	
-	public String GetTitle() 			{ return title.getText(); }
-	public void SetTitle(String text) 	{ title.setText(text); }
-	String PrepareCounter(int count)	{
+	public String getTitle() 			{ return title.getText(); }
+	public void setTitle(String text) 	{ title.setText(text); }
+	String prepareCounter(int count)	{
 		return  (parent.options.remote_source ? "R" : "") +
 				(parent.options.interactive ? "I" : "") +
 				(parent.options.delete_files ? "D" : "") +
 				"(" + count + ")"; 
 	}
-	public void SetCount(int count) 	{ this.counter.setText(PrepareCounter(count));	}
-	public void SetStatus(final String status){
+	public void setCount(int count) 	{ this.counter.setText(prepareCounter(count));	}
+	public void setStatus(final String status){
 		if (SwingUtilities.isEventDispatchThread()){
 			title.setBorder(status.isEmpty() ? null : new TitledBorder(status));
 		} else {
@@ -73,7 +71,7 @@ public class TabHead {
 		    });
 		}		
 	}
-	public void SetTitleForeground(Color color) {
+	public void setTitleForeground(Color color) {
 		counter.setForeground(color);
 		title.setForeground(color);
 	}

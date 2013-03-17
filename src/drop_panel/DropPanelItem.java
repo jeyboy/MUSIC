@@ -50,6 +50,7 @@ public class DropPanelItem extends JButton implements DropTargetListener {
 	public void dragOver(DropTargetDragEvent dtde) 	{}
 	public void dropActionChanged(DropTargetDragEvent dtde) {}
 	public void dragExit(DropTargetEvent dte) {}
+	@SuppressWarnings("unchecked")
 	public void drop(DropTargetDropEvent evt) {
       int action = evt.getDropAction();
       evt.acceptDrop(action);

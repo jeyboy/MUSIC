@@ -1,33 +1,49 @@
 package filelist;
 
-import javax.swing.DefaultListModel;
+import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-public class MyListModel<E> extends DefaultListModel<E> {
+import folders.FolderNode;
+
+@SuppressWarnings("rawtypes")
+public class MyListModel extends AbstractListModel {
 	private static final long serialVersionUID = -3009647312409052639L;
-	private int updatecount = 10;
+//	private int updatecount = 10;
+	FolderNode list;
 	
-	public MyListModel(final FileList list) { addListDataListener(new ListDataListener() {
-		public void intervalAdded(ListDataEvent e) { list.parent.UpdateCounter(); }
-		public void intervalRemoved(ListDataEvent ev) {
-			list.parent.UpdateCounter();
-			for(int i = ev.getIndex0(); i <= ev.getIndex1(); i++)
-				((ListItem)elementAt(i)).delete(list.parent.options.delete_files, list.parent.options.delete_empty_folders);			
-		}
-		public void contentsChanged(ListDataEvent e) {}}); 
+	public MyListModel(FolderNode node) {
+		list = node;
+		addListDataListener(new ListDataListener() {
+			public void intervalAdded(ListDataEvent e) 		{ list.tab.updateCounter(); }
+			public void intervalRemoved(ListDataEvent ev) 	{ list.tab.updateCounter(); }
+			public void contentsChanged(ListDataEvent e) {}}
+		); 
 	}
 	
-	public void AddRangeOfElements(E [] items) {
-		int interval = 0;
-		for(int loop1 = 0, start = this.size(); loop1 < items.length; loop1++, interval++ ) {
-			addElement(items[loop1]);
-			if (interval == updatecount) {
-				fireIntervalAdded(this, start, start+=interval);
-				interval = 0;
-			}
-		}
-		fireIntervalAdded(this, size() - interval, size());
-//		fireContentsChanged(arg0, arg1, arg2)
+//	public void AddRangeOfElements(E [] items) {
+//		int interval = 0;
+//		for(int loop1 = 0, start = this.getSize(); loop1 < items.length; loop1++, interval++ ) {
+//			addElement(items[loop1]);
+//			if (interval == updatecount) {
+//				fireIntervalAdded(this, start, start+=interval);
+//				interval = 0;
+//			}
+//		}
+//		fireIntervalAdded(this, getSize() - interval, getSize());
+////		fireContentsChanged(arg0, arg1, arg2)
+//	}
+
+	public void addElement(ListItem item) {
+		list.elems().add(item);
+		fireIntervalAdded(this, list.elems().size() - 1, list.elems().size());
+	} 
+	public void removeElement(int i) {
+		list.elems().remove(i);
+		fireIntervalRemoved(this, i, i);
 	}
+	public void removeElement(Object obj) 	{ removeElement(indexOf(obj)); }
+	public ListItem getElementAt(int i) 	{ return list.elems().get(i); }
+	public int indexOf(Object o) 			{ return list.elems().indexOf(o); }
+	public int getSize() 					{ return list.elems().size(); }
 }

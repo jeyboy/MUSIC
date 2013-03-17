@@ -38,14 +38,15 @@ public class ItemsStateRefresher extends BaseThread {
         for(int loop = 0; loop < Common.tabber.getTabCount(); loop++) {
         	if (closeRequest()) return;
         	while(locked) sleepy();
-        	procTab(Common.tabber.GetTab(loop), examples);
+        	procTab(Common.tabber.getTab(loop), examples);
         }
     }
     
     void procTab(Tab tab, String [] examples) {
-    	for(int loop1 = 0; loop1 < tab.FilesCount(); loop1++) {
+    	for(int loop1 = 0; loop1 < tab.filesCount(); loop1++) {
     		if (closeRequest()) return;
-    		procItem(tab.File(loop1), examples);
+    		//TODO: release
+//    		procItem(tab.File(loop1), examples);
     	}
     }
     

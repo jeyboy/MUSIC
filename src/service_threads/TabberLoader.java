@@ -62,11 +62,11 @@ public class TabberLoader extends SwingWorker<Boolean, Cell> {
 		  			if (strLine.length() == 0) continue; 
 		  			switch(strLine.charAt(0)) {
 		  				case '*':
-		  					curr_tab = Common.tabber.AddTab(strLine.substring(2), new TabOptions(strLine.charAt(1)));
+		  					curr_tab = Common.tabber.addTab(strLine.substring(2), new TabOptions(strLine.charAt(1)));
 		  					break;
 		  				case '>': 
 		  					path = strLine.substring(1);
-		  					folder = curr_tab.getCatalog().getNode(path);
+		  					folder = curr_tab.catalog.getNode(path);
 		  					proc(bin, curr_tab, path, folder);
 		  					break;
 		  			}

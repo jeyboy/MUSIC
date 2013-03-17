@@ -39,7 +39,7 @@ public class ListPopUp extends JPopupMenu {
 	JMenuItem AddShuffle(final FileList list, String text) {
 	    JMenuItem m = new JMenuItem(text);
 	    m.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) { Common.tabber.GetCurrentTab().Shuffle(); }
+	    	public void actionPerformed(ActionEvent e) { Common.tabber.currTab().Shuffle(); }
 	    });
 	    m.setIcon(Utils.GetIcon("popup/shuffle.png"));
 	    return m;

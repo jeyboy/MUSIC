@@ -36,7 +36,7 @@ public class TabberUI extends BasicTabbedPaneUI {
 
     @Override
     protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-    	((Tab)tabPane.getComponentAt(tabIndex)).tabhead.SetTitleForeground(isSelected ? Color.black : Color.white);
+    	((Tab)tabPane.getComponentAt(tabIndex)).tabhead.setTitleForeground(isSelected ? Color.black : Color.white);
     	int xw = x + w, yh = y + h;
     	
         Graphics2D g2D = (Graphics2D) g;
