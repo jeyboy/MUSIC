@@ -83,8 +83,8 @@ public class IconListRenderer extends DefaultListCellRenderer {
 			g2d.fillRoundRect(r.x + left_padding, r.y + among_space, r.width - left_padding, r.height - among_space * 2, 10, 30);
 		}
 	 
-	    setOpaque( false );
+	    setOpaque(false);
 	    super.paintComponent(g);
-	    setOpaque( true );
+	    setOpaque(true);
 	}
 }

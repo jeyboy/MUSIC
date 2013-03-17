@@ -28,17 +28,16 @@ public class Tab extends JScrollPane {
 	
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		pane.setBackground(Common.color_background);
-		
-		
-		getVerticalScrollBar().setUnitIncrement(20);
-		
+			
 		setViewportView(pane);
 	    parent.addTab(null, this);
 	    tabhead = new TabHead(this, title);
 	    tabber.currTab(this);
 	    tabber.setBackgroundAt(tabber.getTabCount() - 1, Common.color_background);
 	    tabber.setForegroundAt(tabber.getTabCount() - 1, Common.color_foreground);
+	    
 	    getVerticalScrollBar().setPreferredSize(new Dimension(12, 0));
+		getVerticalScrollBar().setUnitIncrement(20);
 	    getHorizontalScrollBar().setPreferredSize(new Dimension(0, 12));		
 	}
 	

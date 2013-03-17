@@ -1,15 +1,18 @@
 package folders;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileSystemView;
 
 import filelist.FileList;
@@ -22,8 +25,7 @@ public class FolderNode extends Base {
 	FolderNode parent = null;
 	FileList list;
 	JPanel pane;
-	
-	
+
 	public String path;
 	public IconListRenderer listrender = new IconListRenderer();
 	
@@ -31,11 +33,19 @@ public class FolderNode extends Base {
 	public ArrayList<ListItem> elems() { return items; } 
 	
 	void init(String path) {
+		boolean add_area = parent != null;
+		
 		this.path = path;
 		list = new FileList(this);
 		pane = new JPanel();
 		pane.setBackground(Common.color_background);
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		pane.setBorder(
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createEmptyBorder(1, add_area ? 6 : 1, 1, 1),
+						BorderFactory.createLineBorder(Color.white, 2, true)
+				)
+		);
 		
 		JLabel label = new JLabel(path);
 		label.setForeground(Common.color_foreground);
@@ -43,9 +53,12 @@ public class FolderNode extends Base {
 		pane.add(label, Component.LEFT_ALIGNMENT);
 				
 		pane.add(list);
-//		list.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		list.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		tab.addFileList(pane);
+		if (!add_area)
+			tab.addFileList(pane);
+		else
+			parent.pane.add(pane);
 	}
 	
 	public FolderNode(FolderNode parentNode, String path) {
