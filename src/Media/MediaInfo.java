@@ -1,4 +1,4 @@
-package Media;
+package media;
 
 import java.io.File;
 import java.nio.charset.Charset;

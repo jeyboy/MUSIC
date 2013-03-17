@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import Media.MediaPlayer;
+import media.MediaPlayer;
 
 import jb_player.JBPlayer;
 

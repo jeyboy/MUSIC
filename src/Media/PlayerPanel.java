@@ -1,4 +1,4 @@
-package Media;
+package media;
 
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
