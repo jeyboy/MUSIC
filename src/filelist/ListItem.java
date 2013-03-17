@@ -76,8 +76,7 @@ public class ListItem {
 				SetStatusListened();
 				Common.drop_manager.player_panel.setVisible(false);
 			}
-			else
-				InnerExec(); 
+			else InnerExec(); 
 		}
 	}
 	
@@ -99,7 +98,6 @@ public class ListItem {
 	public void delete(boolean delete_file, boolean delete_folder_if_empty) {
 		if (delete_file)
 			Common._trash.AddElem(file, delete_folder_if_empty);
-		deleteFromFolder();		
+		node.delete(this);	
 	}
-	void deleteFromFolder() { node.delete(this);}
 }

@@ -8,18 +8,21 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import service.Common;
+import service.Dropper;
 
 import filelist.ListItem;
 import folders.Catalog;
 
 public class Tab extends JScrollPane {
 	static final long serialVersionUID = 1L;
-	JPanel pane = new JPanel();
 	
 	public Tabber tabber;
 	public TabHead tabhead;
 	public TabOptions options;
 	public Catalog catalog;
+	
+	JPanel pane = new JPanel();
+	Dropper dropper;
 	
 	public Tab(Tabber parent, String title, TabOptions opts) {
 		catalog = new Catalog(this);
@@ -28,6 +31,13 @@ public class Tab extends JScrollPane {
 	
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		pane.setBackground(Common.color_background);
+		
+        dropper = new Dropper(pane, new Dropper.Listener() {
+        	public void filesDropped(Dropper.Event ev) {
+        		if (!((boolean)ev.getSource()))
+        			Common._drop_initer.ProceedDrop(Tab.this, ev.getFiles());
+        	}
+        });
 			
 		setViewportView(pane);
 	    parent.addTab(null, this);
@@ -40,8 +50,6 @@ public class Tab extends JScrollPane {
 		getVerticalScrollBar().setUnitIncrement(20);
 	    getHorizontalScrollBar().setPreferredSize(new Dimension(0, 12));		
 	}
-	
-	public Component dropZone() { return pane; }
 	
 	public void addFileList(JPanel list) 		{
 		pane.add(list);
