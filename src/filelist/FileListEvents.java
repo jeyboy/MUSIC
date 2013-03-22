@@ -59,8 +59,7 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
         		if (mouseEvent.getClickCount() == 2) {
         			int index = filelist.locationToIndex(mouseEvent.getPoint());
         			if (index >= 0) {
-        				filelist.SetPlayed((ListItem) filelist.model.getElementAt(index));
-        				node.tab.catalog.activeNode = node;
+        				node.tab.catalog.setPlayed((ListItem) filelist.model.getElementAt(index));
         			}
         		}
             }
@@ -86,10 +85,10 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
 	    					Common._trash.AddElem(((ListItem)obj).file, node.tab.options.delete_empty_folders);
     					filelist.model.removeElement(obj);
     				}
-    				filelist.CalcSelect(last_pos, true);
+    				node.tab.catalog.calcSelect(last_pos, true);
     			}
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-    				filelist.SetPlayed(filelist.model.getElementAt(filelist.getSelectedIndex()));
+    				node.tab.catalog.setPlayed(filelist.model.getElementAt(filelist.getSelectedIndex()));
     			}
     		}
     		@Override

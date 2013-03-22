@@ -16,12 +16,12 @@ public class ListItem {
 	public String title;
 	public String ext;
 	public File file;
-	public MediaInfo media_info = null;	
+	public MediaInfo media_info = null;
+	public FolderNode node;
 	
 	final static byte default_status = (byte)128;
 
 	byte status = default_status;
-	FolderNode node;
 	
 	public void SetStatusNone() 		{
 		SetStatusUnListened();

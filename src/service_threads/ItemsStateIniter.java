@@ -12,7 +12,7 @@ public class ItemsStateIniter extends BaseThread {
     public ItemsStateIniter() {
 		setDaemon(true);
 //		setPriority(Thread.NORM_PRIORITY);
-//		start();
+		start();
     }
 
     public synchronized void run() { routing(); }

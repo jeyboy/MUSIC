@@ -9,7 +9,6 @@ import folders.FolderNode;
 
 public class FileList extends JList<ListItem> {
 	static final long serialVersionUID = 1L;
-	ListItem played = null;
 
 	public MyListModel model;
 	
@@ -22,26 +21,12 @@ public class FileList extends JList<ListItem> {
     	setComponentPopupMenu(new ListPopUp(this));
     	setSelectionForeground(Color.white);
 		setBackground(Color.black);
-	}
+}
 	
     public void ChangeViewToVertical() 			{ setLayoutOrientation(JList.VERTICAL); }
     public void ChangeViewToVerticalWrap() 		{ setLayoutOrientation(JList.VERTICAL_WRAP); }
     public void ChangeViewToHorizontalWrap() 	{ setLayoutOrientation(JList.HORIZONTAL_WRAP); }
     
-	
-	public void SetPlayed(final ListItem item) {	
-		if (played != null)
-			played.SetStatusUnPlayed();
-		
-		if ((played = item) != null) {
-			played.SetStatusPlayed();
-			played.Exec();
-			setSelectedValue(played, false);
-		}
-//		this.repaint(this.getCellBounds(getPlayedIndex(), getPlayedIndex() + 1));
-	}
-	public ListItem getPlayed() { return played; }
-	public int getPlayedIndex() { return model.indexOf(played); }
 	public ListItem getItemFromCursor() {
 		int index = locationToIndex(getMousePosition());
 		return index < 0 ? null : model.getElementAt(index); 
@@ -57,42 +42,7 @@ public class FileList extends JList<ListItem> {
 //      return null;
     	return "Temporary disabled";
     }	
-
-	/// Helper methods
-
-	private int CheckRange(int index) {
-		if (index >= model.getSize()) index = (model.getSize() - 1);
-		return (index < 0) ? 0 : index;
-	}    
-    
-	private int InverseCheckRange(int index) {
-		if (index >= model.getSize()) index = 0;
-		return (index < 0) ? (model.getSize() - 1) : index;
-	}
-
-	public int CalcSelect(int curr, boolean next) {
-		int index = InverseCheckRange(curr + (next ? 1 : -1));
-		setSelectedIndex(index);
-		return index;
-	}	
-	
-	public void execCurrOrFirst() 					{ SetPlayed(model.getElementAt(CheckRange(getPlayedIndex())));	}	
-	public int MoveSelect(int index, boolean next) 	{ return CalcSelect(index, next); }
-	public void execNext(boolean next) 				{ SetPlayed(model.getElementAt(MoveSelect(getPlayedIndex(), next)));	}
-	public void delCurrAndExecNext() {
-		int selected = getPlayedIndex();
-		if (selected == -1) {
-			execNext(true);
-			return;
-		}
-		model.removeElement(selected);
-		
-		if ((selected = InverseCheckRange(selected)) == -1) return;
-		ensureIndexIsVisible(selected);
-		SetPlayed(model.getElementAt(selected));
-	}
 }
-
 
 //interactive search
 //import javax.swing.DefaultListModel;
@@ -163,5 +113,4 @@ public class FileList extends JList<ListItem> {
 //      //if (m_listModel.getSize() > 0)
 //      //  setSelectedIndex(0);
 //  }
-//
 //}

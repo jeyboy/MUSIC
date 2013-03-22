@@ -55,16 +55,14 @@ public class Tab extends JScrollPane {
 		pane.add(list);
 		list.setAlignmentX(Component.LEFT_ALIGNMENT);
 	}
-	//TODO: release	
-	public void removeFileList(JPanel list) 	{ }
+	public void removeFileList(JPanel list) 	{ pane.remove(list); }
 	
-	//TODO: release
-	public ListItem currItem() { return null; }
+	public ListItem currItem() { return catalog.activeItem; }
 	
-	public void setPlayed(ListItem item) {}
-	public void delCurrAndExecNext() {}
-	public void execNext(boolean next) {}
-	public void execCurrOrFirst() {}	
+	public void setPlayed(ListItem item) { catalog.setPlayed(item); }
+	public void delCurrAndExecNext() { catalog.delCurrAndExecNext(); }
+	public void execNext(boolean next) { catalog.execNext(next); }
+	public void execCurrOrFirst() { catalog.execCurrOrFirst(); }	
 	
 //	public Catalog getCatalog() { return catalog; }
 	
