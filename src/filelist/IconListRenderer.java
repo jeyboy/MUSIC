@@ -32,7 +32,7 @@ public class IconListRenderer extends DefaultListCellRenderer {
 	public IconListRenderer() {}
 
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, false);
 		curr_item = (ListItem) value;
 		selected = isSelected;
 		focused = cellHasFocus;

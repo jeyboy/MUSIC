@@ -9,7 +9,6 @@ import folders.FolderNode;
 @SuppressWarnings("rawtypes")
 public class MyListModel extends AbstractListModel {
 	private static final long serialVersionUID = -3009647312409052639L;
-//	private int updatecount = 10;
 	FolderNode list;
 	
 	public MyListModel(FolderNode node) {
@@ -21,19 +20,10 @@ public class MyListModel extends AbstractListModel {
 		); 
 	}
 	
-//	public void AddRangeOfElements(E [] items) {
-//		int interval = 0;
-//		for(int loop1 = 0, start = this.getSize(); loop1 < items.length; loop1++, interval++ ) {
-//			addElement(items[loop1]);
-//			if (interval == updatecount) {
-//				fireIntervalAdded(this, start, start+=interval);
-//				interval = 0;
-//			}
-//		}
-//		fireIntervalAdded(this, getSize() - interval, getSize());
-////		fireContentsChanged(arg0, arg1, arg2)
-//	}
-
+	public void repaint(int index) {
+		fireContentsChanged(this, index - 1, index + 1);
+	}
+	
 	public void addElement(ListItem item) {
 		list.elems().add(item);
 		fireIntervalAdded(this, list.elems().size() - 1, list.elems().size());
@@ -43,7 +33,10 @@ public class MyListModel extends AbstractListModel {
 		fireIntervalRemoved(this, i, i);
 	}
 	public void removeElement(Object obj) 	{ removeElement(indexOf(obj)); }
-	public ListItem getElementAt(int i) 	{ return list.elems().get(i); }
+	public ListItem getElementAt(int i) 	{
+		list.getNextFolder().activate();
+		return list.elems().get(i); 
+	}
 	public int indexOf(Object o) 			{ return list.elems().indexOf(o); }
 	public int getSize() 					{ return list.elems().size(); }
 }

@@ -39,7 +39,7 @@ public class MediaPlayer implements JBPlayerListener {
         }
         catch (Exception ex) {
         	Errorist.printLog(ex);
-        	Common.tabber.MoveSelectAndInit(true);
+        	Common.tabber.moveSelectAndInit(true);
         }
     }
     
@@ -50,7 +50,7 @@ public class MediaPlayer implements JBPlayerListener {
         }
         catch (Exception ex) {
         	Errorist.printLog(ex);
-        	Common.tabber.MoveSelectAndInit(true);
+        	Common.tabber.moveSelectAndInit(true);
         }
     }    
     public void resume() { 
@@ -110,7 +110,7 @@ public class MediaPlayer implements JBPlayerListener {
 			case JBPlayerEvent.EOM :
 		        panel.reset();
 		        if (Common.raw_flag())
-		        	Common.tabber.MoveSelectAndInit(true);				
+		        	Common.tabber.moveSelectAndInit(true);				
 				break;
 			case JBPlayerEvent.GAIN :
 				System.out.println("gain - value : " + event.getValue() + " - position : " + event.getPosition());

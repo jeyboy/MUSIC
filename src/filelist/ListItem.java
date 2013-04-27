@@ -89,7 +89,7 @@ public class ListItem {
 		
 		catch (Exception e2) { 
 			Errorist.printLog(e2);
-			Common.tabber.MoveSelectAndInit(true);
+			Common.tabber.moveSelectAndInit(true);
 		}
 	}
 	
@@ -100,4 +100,5 @@ public class ListItem {
 			Common._trash.AddElem(file, delete_folder_if_empty);
 		node.delete(this);	
 	}
+	public FileList getList() { return node.list;}
 }

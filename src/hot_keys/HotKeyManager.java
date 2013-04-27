@@ -18,21 +18,21 @@ public class HotKeyManager {
 		hotkey.AddKey("control DOWN", new HotKeyListener() {
 			@Override
 			public void onHotKey(HotKey hotKey) {
-				Common.tabber.MoveSelectAndInit(true);
+				Common.tabber.moveSelectAndInit(true);
 			}
 		});
 		
 		hotkey.AddKey("control UP", new HotKeyListener() {
 			@Override
 			public void onHotKey(HotKey hotKey) {
-				Common.tabber.MoveSelectAndInit(false);
+				Common.tabber.moveSelectAndInit(false);
 			}
 		});
 		
 		hotkey.AddKey("control DELETE", new HotKeyListener() {
 			@Override
 			public void onHotKey(HotKey hotKey) {
-				Common.tabber.DeleteSelectAndInit();
+				Common.tabber.deleteSelectAndInit();
 			}
 		});
 		

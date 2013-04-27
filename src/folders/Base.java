@@ -7,6 +7,7 @@ import tabber.Tab;
 
 public abstract class Base {
 	public Tab tab;
+	FolderNode last = null;
 	
 	ArrayList<FolderNode> folders = new ArrayList<FolderNode>(1) {
 		private static final long serialVersionUID = -2235109783338833765L;

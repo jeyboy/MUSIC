@@ -147,7 +147,7 @@ public class PlayerPanel extends JPanel {
 		if (Common.player.isPaused()) 
 			Common.player.resume();
 		else
-			Common.tabber.PlaySelectedOrFirst();    	
+			Common.tabber.playSelectedOrFirst();    	
     }
     
     public void Pause() { Common.player.pause();  }

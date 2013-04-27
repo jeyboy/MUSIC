@@ -11,6 +11,10 @@ import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.HierarchyBoundsListener;
+import java.awt.event.HierarchyEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -23,6 +27,8 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import components.MainWnd;
 import folders.FolderNode;
@@ -58,9 +64,8 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
             public void mouseClicked(MouseEvent mouseEvent) {
         		if (mouseEvent.getClickCount() == 2) {
         			int index = filelist.locationToIndex(mouseEvent.getPoint());
-        			if (index >= 0) {
+        			if (index >= 0)
         				node.tab.catalog.setPlayed((ListItem) filelist.model.getElementAt(index));
-        			}
         		}
             }
     		@Override
@@ -77,7 +82,9 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
     		@Override
     		public void keyTyped(KeyEvent e) {}
     		@Override
-    		public void keyPressed(KeyEvent e) {
+    		public void keyPressed(KeyEvent e) {   			
+    			node.tab.catalog.selection.setMaskState((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0 || (e.getModifiers() & KeyEvent.CTRL_MASK) != 0); 
+    			
     			if (e.getKeyCode() == KeyEvent.VK_DELETE) {
     				int last_pos = filelist.getSelectedIndex() - 1;
     				for(Object obj: filelist.getSelectedValuesList()) {
@@ -85,15 +92,30 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
 	    					Common._trash.AddElem(((ListItem)obj).file, node.tab.options.delete_empty_folders);
     					filelist.model.removeElement(obj);
     				}
-    				node.tab.catalog.calcSelect(last_pos, true);
+    				node.calcSelect(last_pos, true);
     			}
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
     				node.tab.catalog.setPlayed(filelist.model.getElementAt(filelist.getSelectedIndex()));
     			}
     		}
     		@Override
-    		public void keyReleased(KeyEvent e) {}
+    		public void keyReleased(KeyEvent e) {
+    			node.tab.catalog.selection.setMaskState((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0 || (e.getModifiers() & KeyEvent.CTRL_MASK) != 0);
+    		}
         });
+        
+        filelist.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent arg0) {
+				node.tab.catalog.selection.setFocus(node);
+			}
+			
+			public void focusLost(FocusEvent arg0) {}});
+        
+        filelist.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent lse) {
+				System.out.println("value changed");
+				node.tab.catalog.selection.setInterval(node, filelist.getSelectedIndices());
+			}});
 	}
 	
     private class FileTransferHandler extends TransferHandler {

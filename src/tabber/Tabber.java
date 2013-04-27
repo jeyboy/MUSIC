@@ -67,16 +67,16 @@ public class Tabber extends JTabbedPane {
 	/**
 	 * @param style = JTabbedPane.BOTTOM or JTabbedPane.TOP or ...
 	 */
-	public void TabsPlacement(int style) { super.setTabPlacement(style); }
+	public void tabsPlacement(int style) { super.setTabPlacement(style); }
 	
 	//Delete selected elem in selected tab and init next
-	public void DeleteSelectAndInit() {	currTab().delCurrAndExecNext(); }
+	public void deleteSelectAndInit() {	currTab().delCurrAndExecNext(); }
 	
 	//Move to the next elem from selected elem in selected tab
-	public void MoveSelectAndInit(boolean next) { currTab().execNext(next);	}
+	public void moveSelectAndInit(boolean next) { currTab().execNext(next);	}
 	
 	//Move to the next elem from selected elem in selected tab
-	public void PlaySelectedOrFirst() {	currTab().execCurrOrFirst(); }	
+	public void playSelectedOrFirst() {	currTab().execCurrOrFirst(); }	
 //
 //	/**
 //	 * @param index
