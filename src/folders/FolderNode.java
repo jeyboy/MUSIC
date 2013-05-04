@@ -149,41 +149,27 @@ public class FolderNode extends Base {
 //		if ((selected = inverseCheckRange(selected)) == -1) return;
 //	}
 	
-	private int CheckRange(int index) {
-		if (index >= list.model.getSize()) index = (list.model.getSize() - 1);
-		return (index < 0) ? 0 : index;
-	}    
-    
-	private int InverseCheckRange(int index) {
-		if (index >= list.model.getSize()) index = 0;
-		return (index < 0) ? (list.model.getSize() - 1) : index;
-	}
-
-	public int calcSelect(int curr, boolean next) {
-		int index = InverseCheckRange(curr + (next ? 1 : -1));
+	ListItem checkRange(int index) {
+		if (index >= list.model.getSize() || index < 0) return null;
 		list.setSelectedIndex(index);
-		return index;
-	}
-	public int moveSelect(int index, boolean next) 	{ return calcSelect(index, next); }
+		list.ensureIndexIsVisible(index);	
+		return list.model.getElementAt(index);
+	}    
+
+	public ListItem calcSelect(int curr, boolean next) { return checkRange(curr + (next ? 1 : -1)); }
+	ListItem nextItem(boolean next) { return moveSelect(getPlayedIndex(), next); }	
 	
-	public void currOrFirst() {
-		list.model.getElementAt(CheckRange(getPlayedIndex()));	
-	}	
-	public void next(boolean next) {
-		list.model.getElementAt(moveSelect(getPlayedIndex(), next));	
-	}
-	public void delCurrAndNext() {
+	public ListItem moveSelect(int index, boolean next) { return calcSelect(index, next); }
+	
+	public ListItem currOrFirst() {	return checkRange(getPlayedIndex()); }
+	
+	public ListItem delCurrAndNext() {
 		int selected = getPlayedIndex();
-		if (selected == -1) {
-			next(true);
-			return;
-		}
+		if (selected == -1)
+			return nextItem(true);
 		
 		list.model.removeElement(selected);
-		
-		if ((selected = InverseCheckRange(selected)) == -1) return;
-//		ensureIndexIsVisible(selected);
-//		SetPlayed(model.elementAt(selected));
+		return checkRange(selected);
 	}	
 	
 /////////////////////////////////////////////////////////////////////////////////////	

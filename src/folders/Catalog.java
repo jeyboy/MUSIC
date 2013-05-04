@@ -17,6 +17,10 @@ public class Catalog extends Base {
 	public int itemsCount() { return itemsCount; }
 	public void iterateCount() { itemsCount++;}
 	public void deiterateCount() { itemsCount--;}
+
+//	FolderNode buildPath(String ... levels) {
+//		
+//	} 
 	
 	public FolderNode getNode(String root_path) {
 		FolderNode node;
@@ -24,7 +28,7 @@ public class Catalog extends Base {
 //TODO:	use list of full pathes for search
 		int pos = folders.indexOf(root_path);
 		if (pos == -1) {
-//			sincronizeTail();
+			sincronizeTail();
 			node = new FolderNode(tab, root_path);
 			folders.add(node);
 			if (root == null) 
@@ -63,55 +67,55 @@ public class Catalog extends Base {
 		if (root == null) return;
 		
 		FolderNode iter = activeItem != null ? activeItem.node : root;
+		FolderNode start_node = iter;
+		ListItem item = null;
 		
-		while(iter != last) {
-			if (iter.list.getSelectedIndex() == -1)
-				if (iter.list.model.getSize() > 0) {
-					setPlayed(iter.list.model.getElementAt(0));
-					return;
-				}
-			else {
-				setPlayed(iter.list.model.getElementAt(iter.list.getSelectedIndex()));
-				return;
-			}
+		do {
+			if ((item = iter.currOrFirst()) == null)
+				iter = iter.next == null ? root : iter.next;
+			else break;
 		}
+		while(iter != start_node);
+		
+		setPlayed(item);		
 	}
 	
-//	TODO: add realization	
 	public void execNext(boolean next) {
 		if (root == null) return;
 		
 		FolderNode iter = activeItem != null ? activeItem.node : root;
-//		iter.next.activate();
-//		setPlayed(iter.next.list.model.getElementAt(0));
+		FolderNode start_node = iter;
+		ListItem item = null;
 		
-//		while(iter != last) {
-//			if (iter.list.getSelectedIndex() == -1)
-//				if (iter.list.model.getSize() > 0) {
-//					setPlayed(iter.list.model.getElementAt(0));
-//					return;
-//				}
-//			else {
-//				setPlayed(iter.list.model.getElementAt(iter.list.getSelectedIndex()));
-//				return;
-//			}
-//		}		
+		do {
+			if ((item = iter.nextItem(next)) == null)
+				if (next)
+					iter = iter.next == null ? root : iter.next;
+				else
+					iter = iter.prev == null ? last : iter.prev;
+			else break;
+		}
+		while(iter != start_node);
 		
-		
-//		setPlayed(activeItem.node.list.model.getElementAt(MoveSelect(getPlayedIndex(), next)));	
+		setPlayed(item);
 	}
-//	TODO: add realization	
+	
+
 	public void delCurrAndExecNext() {
-//		int selected = getPlayedIndex();
-//		if (selected == -1) {
-//			execNext(true);
-//			return;
-//		}
-//		activeItem.node.list.model.removeElement(selected);
-//		
-//		if ((selected = inverseCheckRange(selected)) == -1) return;
-//		activeItem.node.list.ensureIndexIsVisible(selected);
-//		setPlayed(activeItem.node.list.model.getElementAt(selected));
+		if (root == null) return;
+		
+		FolderNode iter = activeItem != null ? activeItem.node : root;
+		FolderNode start_node = iter;
+		ListItem item = null;
+		
+		do {
+			if ((item = iter.delCurrAndNext()) == null)
+				iter = iter.next == null ? root : iter.next;
+			else break;
+		}
+		while(iter != start_node);
+		
+		setPlayed(item);		
 	}
 	
 	public void save(PrintWriter pw) {
