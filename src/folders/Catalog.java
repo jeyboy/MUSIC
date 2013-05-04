@@ -20,6 +20,8 @@ public class Catalog extends Base {
 	
 	public FolderNode getNode(String root_path) {
 		FolderNode node;
+		
+//TODO:	use list of full pathes for search
 		int pos = folders.indexOf(root_path);
 		if (pos == -1) {
 //			sincronizeTail();

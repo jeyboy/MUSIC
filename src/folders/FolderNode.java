@@ -42,8 +42,8 @@ public class FolderNode extends Base {
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		pane.setBorder(
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createEmptyBorder(1, add_area ? 4 : 1, 1, 1),
-						BorderFactory.createLineBorder(Color.white, 1, true)
+						BorderFactory.createEmptyBorder(0, add_area ? 4 : 1, 0, 0),
+						BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true)
 				)
 		);
 		
@@ -82,6 +82,8 @@ public class FolderNode extends Base {
 		last = this;
 		init(path); 
 	}
+	
+//	public String fullPath() { return parent != null ? Utils.joinPaths(parent.fullPath(), path) : path;} 
 	
 	void syncTree() {
 		FolderNode iter = parent;

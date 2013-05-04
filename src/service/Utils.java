@@ -69,7 +69,7 @@ public class Utils {
     
     //////////////////////////////////////////////////    
     
-    public static String JoinPaths(String ... parts) {
+    public static String joinPaths(String ... parts) {
     	if (parts.length == 0) return "";
     	String res = parts[0];
     	for(int loop1 = 1 ; loop1 < parts.length; loop1++)

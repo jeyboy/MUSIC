@@ -49,7 +49,7 @@ public class ListItem {
 	public void SetStatusUnPlayed() 	{	status &= ~(1 << 2); }	
 	public boolean StatusIsPlayed()		{	return (status >> 2 & 1) == 1; }	
 	
-	public static ListItem Load(FolderNode lib_node, String prefix, String info) 	{	return new ListItem(lib_node, Utils.JoinPaths(prefix, info.substring(2)), (byte)info.charAt(1));	}
+	public static ListItem Load(FolderNode lib_node, String prefix, String info) 	{	return new ListItem(lib_node, Utils.joinPaths(prefix, info.substring(2)), (byte)info.charAt(1));	}
 	public String SaveInfo() 					{	return "f" + ((char)status) + "" + file.getName();	} 
 	
 	public ListItem(FolderNode lib_node, String path) { this(lib_node, new File(path)); }

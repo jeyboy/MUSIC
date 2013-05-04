@@ -32,7 +32,7 @@ public class TabberLoader extends SwingWorker<Boolean, Cell> {
   				case '$': return;
   				case '<':
   					String name = strLine.substring(1);
-  					proc(bin, curr_tab, Utils.JoinPaths(path, name), new FolderNode(folder, name));
+  					proc(bin, curr_tab, Utils.joinPaths(path, name), new FolderNode(folder, name));
   					break;				  				
   				case 'f': 
   					ListItem t_item = ListItem.Load(folder, path, strLine);
