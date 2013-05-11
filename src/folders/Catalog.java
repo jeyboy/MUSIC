@@ -58,8 +58,8 @@ public class Catalog extends Base {
 			activeItem.Exec();
 			activeItem.getList().setSelectedValue(activeItem, false);
 		}
-//		this.repaint(this.getCellBounds(getPlayedIndex(), getPlayedIndex() + 1));
 		
+		root.tab.pane.repaint();		
 //		activeItem.node.list.ensureIndexIsVisible(selected);
 	}
 

@@ -111,7 +111,6 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
         
         filelist.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent lse) {
-				System.out.println("value changed");
 				node.tab.catalog.selection.setInterval(node, filelist.getSelectedIndices());
 			}});
 	}

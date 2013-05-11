@@ -21,7 +21,7 @@ public class Tab extends JScrollPane {
 	public TabOptions options;
 	public Catalog catalog;
 	
-	JPanel pane = new JPanel();
+	public JPanel pane = new JPanel();
 	Dropper dropper;
 	
 	public Tab(Tabber parent, String title, TabOptions opts) {

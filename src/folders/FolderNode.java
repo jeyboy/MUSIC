@@ -29,7 +29,7 @@ public class FolderNode extends Base {
 	public String path;
 	public IconListRenderer listrender = new IconListRenderer();
 	
-	ArrayList<ListItem> items = new ArrayList<ListItem>(10);	
+	ArrayList<ListItem> items = new ArrayList<ListItem>(10000);	
 	public ArrayList<ListItem> elems() { return items; } 
 	
 	void init(String path) {
@@ -119,36 +119,6 @@ public class FolderNode extends Base {
 /////////////////////////////////////////////////////////////////////////////////////	
 	public int getPlayedIndex() { return list.model.indexOf(tab.catalog.activeItem); }
 
-//	private int checkRange(int index) {
-//		if (index >= list.model.getSize()) index = (list.model.getSize() - 1);
-//		return (index < 0) ? 0 : index;
-//	}    
-//    
-//	private int inverseCheckRange(int index) {
-//		if (index >= list.model.getSize()) index = 0;
-//		return (index < 0) ? (list.model.getSize() - 1) : index;
-//	}
-//
-//	public int calcSelect(int curr, boolean next) {
-//		return inverseCheckRange(curr + (next ? 1 : -1));
-//	}	
-//	
-//	public ListItem currOrFirst() {
-//		return list.model.getElementAt(checkRange(getPlayedIndex()));	
-//	}	
-//	public int MoveSelect(int index, boolean next) 	{ return calcSelect(index, next); }
-//	public ListItem next(boolean next) {
-//		return list.model.getElementAt(MoveSelect(getPlayedIndex(), next));	
-//	}
-//	public ListItem delCurrAndNext() {
-//		int selected = getPlayedIndex();
-//		if (selected == -1)
-//			return next(true);
-//		list.model.removeElement(selected);
-//		
-//		if ((selected = inverseCheckRange(selected)) == -1) return;
-//	}
-	
 	ListItem checkRange(int index) {
 		if (index >= list.model.getSize() || index < 0) return null;
 		list.setSelectedIndex(index);
@@ -156,7 +126,7 @@ public class FolderNode extends Base {
 		return list.model.getElementAt(index);
 	}    
 
-	public ListItem calcSelect(int curr, boolean next) { return checkRange(curr + (next ? 1 : -1)); }
+	public ListItem calcSelect(int curr, boolean next) { return checkRange(curr == -1 ? next ? 0 : list.model.getSize() - 1 : curr + (next ? 1 : -1)); }
 	ListItem nextItem(boolean next) { return moveSelect(getPlayedIndex(), next); }	
 	
 	public ListItem moveSelect(int index, boolean next) { return calcSelect(index, next); }

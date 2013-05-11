@@ -10,21 +10,19 @@ public class CatalogSelection {
 	FolderNode focus_node = null;
 	boolean select_add = false, routine = false;
 	
-	public void setInterval(FolderNode node, int [] indexes) {
-		System.out.println(select_add);
-		
-		if (!select_add) clearAll();		
+	public void setInterval(FolderNode node, int [] indexes) {		
+		if (!select_add) clearAll(node);		
 		ArrayList<int []> new_item = new ArrayList<int []>();
 		new_item.add(indexes);		
 		folders.put(node, new_item);
 	}
 	
-	public void clearAll() {
+	public void clearAll(FolderNode except_node) {
 		if (!routine) {
 			routine = true;
-			System.out.println("Clear");
 			for(Entry<FolderNode, ArrayList<int []>> node : folders.entrySet())
-				node.getKey().list.clearSelection();
+				if (node.getKey() != except_node)
+					node.getKey().list.clearSelection();
 			
 			folders.clear();
 			routine = false;
