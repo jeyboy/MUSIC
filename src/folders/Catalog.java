@@ -1,6 +1,5 @@
 package folders;
 
-import java.io.File;
 import java.io.PrintWriter;
 
 import filelist.ListItem;
@@ -43,24 +42,23 @@ public class Catalog extends Base {
 		return node;
 	}	
 	
-	public FolderNode addItem(String root_path, File ... files) {
+	public FolderNode addItem(String root_path, String ... pathes) {
 		FolderNode node = getNode(root_path);		
-		node.addFiles(files);
+		node.addFiles(pathes);
 		return node;
 	}
 	
 	public void setPlayed(ListItem item) {	
 		if (activeItem != null)
-			activeItem.SetStatusUnPlayed();
+			activeItem.setStatusUnPlayed();
 		
 		if ((activeItem = item) != null) {
-			activeItem.SetStatusPlayed();
-			activeItem.Exec();
+			activeItem.setStatusPlayed();
+			activeItem.exec();
 			activeItem.getList().setSelectedValue(activeItem, false);
 		}
 		
 		root.tab.pane.repaint();		
-//		activeItem.node.list.ensureIndexIsVisible(selected);
 	}
 
 	public void execCurrOrFirst() {

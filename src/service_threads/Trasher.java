@@ -58,7 +58,7 @@ public class Trasher extends BaseThread {
     	BufferedReader reader = null;
     	
     	try {
-    		reader = IOOperations.GetReader(Constants.trashpath);
+    		reader = IOOperations.getReader(Constants.trashpath);
     		String temp;
     		
     		while((temp = reader.readLine()) != null)
@@ -75,7 +75,7 @@ public class Trasher extends BaseThread {
     public void save() {
     	PrintWriter wri = null;
 		try {
-			wri = IOOperations.GetWriter(Constants.trashpath, true, false);
+			wri = IOOperations.getWriter(Constants.trashpath, true, false);
 			for(TrashCell f : path_collection)
 				wri.println(f.ToString());
 		} 

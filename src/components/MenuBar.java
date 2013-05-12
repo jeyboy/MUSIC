@@ -71,7 +71,6 @@ public class MenuBar extends JMenuBar {
 				    }
 				}),		
 				new ActionBind("include_base", new ActionListener() {
-					@Override
 					public void actionPerformed(ActionEvent e) {
 					    fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 					    if (fileChooser.showDialog(MenuBar.this, "Choose") == JFileChooser.APPROVE_OPTION) {
@@ -82,7 +81,6 @@ public class MenuBar extends JMenuBar {
 					}
 				}),
 				new ActionBind("player", new ActionListener() {
-					@Override
 					public void actionPerformed(ActionEvent e) {
 						Common.drop_manager.player_panel.setVisible(!Common.drop_manager.player_panel.isVisible());
 					}
@@ -93,7 +91,6 @@ public class MenuBar extends JMenuBar {
 						
 						JButton torrentDialogButton = new JButton("Choose torrent file");
 						torrentDialogButton.addActionListener(new ActionListener() {
-							@Override
 							public void actionPerformed(ActionEvent e) {
 								fileChooser.setFileFilter(dialog_filter);
 							    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -106,7 +103,6 @@ public class MenuBar extends JMenuBar {
 						
 						JButton savePathDialogButton = new JButton("Choose save path");
 						savePathDialogButton.addActionListener(new ActionListener() {
-							@Override
 							public void actionPerformed(ActionEvent e) {
 								fileChooser.removeChoosableFileFilter(dialog_filter); 
 							    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

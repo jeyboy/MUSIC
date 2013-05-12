@@ -11,7 +11,6 @@ import service.Common;
 import service.Constants;
 import service.Errorist;
 import service.IOOperations;
-import service.Timer;
 import service.Utils;
 import tabber.Tab;
 import tabber.TabOptions;
@@ -19,8 +18,7 @@ import filelist.ListItem;
 import folders.FolderNode;
 
 public class TabberLoader extends SwingWorker<Boolean, Cell> {
-	
-	public TabberLoader() { Common.lockWorkThreads(); }
+	public TabberLoader() { }
 	
     public void proc(BufferedReader bin, Tab curr_tab, String path, FolderNode folder) throws IOException {
   		String strLine;   	
@@ -35,8 +33,8 @@ public class TabberLoader extends SwingWorker<Boolean, Cell> {
   					proc(bin, curr_tab, Utils.joinPaths(path, name), new FolderNode(folder, name));
   					break;				  				
   				case 'f': 
-  					ListItem t_item = ListItem.Load(folder, path, strLine);
-  					if (!curr_tab.options.interactive || (curr_tab.options.interactive && t_item.file.exists()))
+  					ListItem t_item = ListItem.load(folder, path, strLine);
+  					if (!curr_tab.options.interactive || (curr_tab.options.interactive && t_item.file().exists()))
   						publish(new Cell(folder, t_item));
   					
 //  					setProgress( (i+1) * 100 / size);
@@ -46,13 +44,10 @@ public class TabberLoader extends SwingWorker<Boolean, Cell> {
   		}
     }
 
-
 	protected Boolean doInBackground() throws Exception {
-		try {
-			Timer.start();
+		try {			
 			try {
-				BufferedReader bin = IOOperations.GetReader(Constants.tabspath);
-//				BufferedReader bin = IOOperations.GetStringReader(Constants.tabspath);
+				BufferedReader bin = IOOperations.getReader(Constants.tabspath);
 		  		String strLine;
 		  		Tab curr_tab = null;
 		  		String path = null;
@@ -77,10 +72,8 @@ public class TabberLoader extends SwingWorker<Boolean, Cell> {
 			catch (FileNotFoundException e) { Common.save_flag = true; }
 			catch (Exception e) { Errorist.printLog(e); }
 			System.out.println("===========" + Common.save_flag);
-			System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------- " + Timer.stop() + " --------");
 		} 
 		catch( Exception e) { Errorist.printLog(e); }
-		Common.unlockWorkThreads();
 		return Common.save_flag;
 	}
 	

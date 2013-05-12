@@ -61,7 +61,7 @@ public class DropPanelItem extends JButton implements DropTargetListener {
               for(File file:files) {
             	  if (!IOOperations.copyFile(file, folder)) break;
             	  if (!evt.isLocalTransfer())
-            		  Common.library.ProceedFile(file);
+            		  Common.library.proceedFile(file);
               }
           }
           evt.dropComplete(true);

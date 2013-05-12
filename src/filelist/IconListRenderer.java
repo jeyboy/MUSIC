@@ -33,6 +33,7 @@ public class IconListRenderer extends DefaultListCellRenderer {
 
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, false);
+		label.setIconTextGap(10);
 		curr_item = (ListItem) value;
 		selected = isSelected;
 		focused = cellHasFocus;
@@ -51,26 +52,26 @@ public class IconListRenderer extends DefaultListCellRenderer {
 		GradientPaint gp = null;
 		Color [] color_set;
 
-		if (left_padding > 0) {
+//		if (left_padding > 0) {
 			if (selected || focused) {
-				if (curr_item.StatusIsPlayed())
+				if (curr_item.statusIsPlayed())
 					color_set = FileListConst.played_grad_select;
-				else if (curr_item.StatusIsLiked())
+				else if (curr_item.statusIsLiked())
 					color_set = FileListConst.droped_grad_select;
-				else if (curr_item.StatusIsListened())
+				else if (curr_item.statusIsListened())
 					color_set = FileListConst.listened_grad_select;			
 				else color_set = FileListConst.usual_grad_select;
 			}
 			else {
-				if (curr_item.StatusIsPlayed())
+				if (curr_item.statusIsPlayed())
 					color_set = FileListConst.played_grad;
-				else if (curr_item.StatusIsLiked())
+				else if (curr_item.statusIsLiked())
 					color_set = FileListConst.droped_grad;
-				else if (curr_item.StatusIsListened())
+				else if (curr_item.statusIsListened())
 					color_set = FileListConst.listened_grad;
 				else color_set = FileListConst.usual_grad;
 			}
-		} else color_set = FileListConst.disabled; 
+//		} else color_set = FileListConst.disabled; 
 	
 		gp = new GradientPaint(
 			    0, 0, color_set[1],

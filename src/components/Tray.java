@@ -34,7 +34,7 @@ public class Tray {
 		trayIcon.setImageAutoSize(true);
 		trayIcon.addMouseMotionListener(new MouseMotionListener() {
 	        public void mouseDragged(MouseEvent e) 	{}
-	        public void mouseMoved(MouseEvent e) 	{
+	        public void mouseMoved(MouseEvent e) {
 	        	MainWnd.Show();	        	
 	        	
 //	        	ListItem temp_li = Common.tabber.GetCurrentItem();

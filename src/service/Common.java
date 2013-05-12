@@ -44,7 +44,7 @@ public class Common {
 	static public NumberFormat formatter = new DecimalFormat("#0.00");
 	static public JBPlayer bplayer;
 	
-	static public void Shutdown() {
+	static public void shutdown() {
 		_trash.close();
 		hotkey_manager.Shutdown();
 		_initer.close();

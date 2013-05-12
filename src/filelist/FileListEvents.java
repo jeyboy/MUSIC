@@ -58,7 +58,6 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
         filelist.setTransferHandler(new FileTransferHandler());
         
         filelist.addMouseListener(new MouseListener() {
-        	@Override
             public void mouseClicked(MouseEvent mouseEvent) {
         		if (mouseEvent.getClickCount() == 2) {
         			int index = filelist.locationToIndex(mouseEvent.getPoint());
@@ -66,20 +65,14 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
         				node.tab.catalog.setPlayed((ListItem) filelist.model.getElementAt(index));
         		}
             }
-    		@Override
     		public void mouseEntered(MouseEvent arg0) {}
-    		@Override
     		public void mouseExited(MouseEvent arg0) {}
-    		@Override
     		public void mousePressed(MouseEvent arg0) {}
-    		@Override
     		public void mouseReleased(MouseEvent arg0) {}
         });
         
         filelist.addKeyListener(new KeyListener() {
-    		@Override
     		public void keyTyped(KeyEvent e) {}
-    		@Override
     		public void keyPressed(KeyEvent e) {   			
     			node.tab.catalog.selection.setMaskState((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0 || (e.getModifiers() & KeyEvent.CTRL_MASK) != 0); 
     			
@@ -87,7 +80,7 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
     				int last_pos = filelist.getSelectedIndex() - 1;
     				for(Object obj: filelist.getSelectedValuesList()) {
 	    				if (node.tab.options.delete_files)
-	    					Common._trash.AddElem(((ListItem)obj).file, node.tab.options.delete_empty_folders);
+	    					Common._trash.AddElem(((ListItem)obj).file(), node.tab.options.delete_empty_folders);
     					filelist.model.removeElement(obj);
     				}
     				node.calcSelect(last_pos, true);
@@ -96,7 +89,6 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
     				node.tab.catalog.setPlayed(filelist.model.getElementAt(filelist.getSelectedIndex()));
     			}
     		}
-    		@Override
     		public void keyReleased(KeyEvent e) {
     			node.tab.catalog.selection.setMaskState((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0 || (e.getModifiers() & KeyEvent.CTRL_MASK) != 0);
     		}
@@ -117,9 +109,7 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
 	
     private class FileTransferHandler extends TransferHandler {
 		private static final long serialVersionUID = 1873106934925755472L;
-		@Override
     	protected Transferable createTransferable(JComponent c) { return null; 	}
-    	@Override
     	public int getSourceActions(JComponent c) {
     		return COPY; //MOVE
     	}
@@ -129,15 +119,12 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
     	private List<File> files;
 
     	public FileTransferable(List<File> files) { this.files = files;	}
-    	@Override
     	public DataFlavor[] getTransferDataFlavors() {
     		return new DataFlavor[]{DataFlavor.javaFileListFlavor};
     	}
-		@Override
 		public boolean isDataFlavorSupported(DataFlavor flavor) {
 			return flavor.equals(DataFlavor.javaFileListFlavor);
 		}
-		@Override
 		public Object getTransferData(DataFlavor flavor)
 				throws UnsupportedFlavorException, IOException {
 			if (!isDataFlavorSupported(flavor)) {
@@ -147,30 +134,25 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
 		}
     }
 
-	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
 		List<File> files = new ArrayList<File>();
 		ListItem temp;
 		for (Object obj: filelist.getSelectedValuesList()) {
 			temp = (ListItem)obj;
 			droped_items.add(temp);
-			files.add(temp.file);
+			files.add(temp.file());
 		}
 
 		ds.startDrag(dge, DragSource.DefaultCopyDrop, new FileTransferable(files), this);
 	}
-	@Override
 	public void dragEnter(DragSourceDragEvent dsde) {}
-	@Override
 	public void dragOver(DragSourceDragEvent dsde) {}
-	@Override
 	public void dropActionChanged(DragSourceDragEvent dsde) {}
 	public void dragExit(DragSourceEvent dse) {}
-	@Override
 	public void dragDropEnd(DragSourceDropEvent dsde) {
 	    if (dsde.getDropSuccess() && !drop_in) {
 	        for(ListItem li : droped_items)
-	        	li.SetStatusLiked();
+	        	li.setStatusLiked();
 	        MainWnd.wnd.repaint();
 	    }
 	    droped_items.clear();

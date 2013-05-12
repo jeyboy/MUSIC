@@ -2,7 +2,6 @@ package folders;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -12,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileSystemView;
+//import javax.swing.filechooser.FileSystemView;
 
 import filelist.FileList;
 import filelist.IconListRenderer;
@@ -23,6 +23,7 @@ public class FolderNode extends Base {
 	FolderNode parent = null;
 	FolderNode next = null;
 	FolderNode prev = null;
+	
 	public FileList list;
 	JPanel pane;
 
@@ -94,16 +95,17 @@ public class FolderNode extends Base {
 		}
 	}
 	
-    void addAssocIcon(String ext, Icon icon) {
-    	if (listrender.icons.containsKey(ext) || icon == null) return; 
-    	listrender.icons.put(ext, icon); 
+    void addAssocIcon(String ext, ListItem listItem) {
+    	if (listrender.icons.containsKey(ext)) return;
+    	Icon icon = FileSystemView.getFileSystemView().getSystemIcon(listItem.file());
+    	if (icon != null)
+    		listrender.icons.put(ext, icon); 
     }	
 		
 	public void addItem(ListItem listItem) {
-        addAssocIcon(listItem.ext, FileSystemView.getFileSystemView().getSystemIcon(listItem.file));
+        addAssocIcon(listItem.ext, listItem);
         list.model.addElement(listItem);		
 		tab.catalog.iterateCount();
-		Common._initer.AddItem(listItem);
 	}
 	
 	public void delete(ListItem listItem) {
@@ -111,8 +113,8 @@ public class FolderNode extends Base {
 		tab.catalog.deiterateCount();
 	}
 	
-	public void addFiles(File ... files) {
-		for(File f : files)
+	public void addFiles(String ... pathes) {
+		for(String f : pathes)
 			addItem(new ListItem(this, f));
 	}
 	
@@ -155,7 +157,7 @@ public class FolderNode extends Base {
 			pw.println((parent == null ? '>' : '<') + path);
 			
 			for(ListItem item : items)
-				pw.println(item.SaveInfo());
+				pw.println(item.saveInfo());
 			
 	    	for(FolderNode folder : folders) 
 	    		folder.save(pw);

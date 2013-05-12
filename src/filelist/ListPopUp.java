@@ -27,9 +27,9 @@ public class ListPopUp extends JPopupMenu {
 	    		if (i == null) {
 	    			Object o = list.getSelectedValue();
 	    			if (o != null)
-	    				((ListItem)list.getSelectedValue()).OpenFolder();
+	    				((ListItem)list.getSelectedValue()).openFolder();
 	    		}
-	    		else i.OpenFolder();
+	    		else i.openFolder();
 	        }
 	    });
 	    m.setIcon(Utils.GetIcon("popup/open.png"));

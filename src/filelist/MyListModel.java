@@ -4,6 +4,8 @@ import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import service.Common;
+
 import folders.FolderNode;
 
 @SuppressWarnings("rawtypes")
@@ -34,8 +36,9 @@ public class MyListModel extends AbstractListModel {
 	}
 	public void removeElement(Object obj) 	{ removeElement(indexOf(obj)); }
 	public ListItem getElementAt(int i) 	{
-		list.getNextFolder().activate();
-		return list.elems().get(i); 
+		ListItem ret = list.elems().get(i);
+		Common._initer.AddItem(ret);
+		return ret; 
 	}
 	public int indexOf(Object o) 			{ return list.elems().indexOf(o); }
 	public int getSize() 					{ return list.elems().size(); }

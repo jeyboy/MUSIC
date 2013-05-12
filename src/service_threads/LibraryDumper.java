@@ -21,8 +21,8 @@ public class LibraryDumper extends BaseThread {
     		while(locked) sleepy();
     		synchronized(Common.library) {
     			System.out.println("Try dump library at " + new Date());
-    			int res = Common.library.Save();
-    			MainWnd.SetTitle(new SimpleDateFormat("HH:mm").format(new Date()) + ": Saved - " + res);
+    			int res = Common.library.save();
+    			MainWnd.setTitle(new SimpleDateFormat("HH:mm").format(new Date()) + ": Saved - " + res);
     		}	            		
     		
     		sleepy(60000);

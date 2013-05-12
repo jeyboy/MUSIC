@@ -34,6 +34,4 @@ public class ItemsStateIniter extends BaseThread {
 	        sleepy();
     	}
     }
-    
-    
 }

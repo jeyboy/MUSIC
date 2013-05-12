@@ -1,6 +1,7 @@
 package components;
 
 import java.applet.Applet;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -38,6 +39,11 @@ public class MainWnd {
 	static public void Show() 					{ SetState(true); }
 	static public void Toggle() 				{ SetState(!wnd.isVisible()); }
 	
+	
+	static private void procElem(GridBagConstraints c, int x, int y, int w, int h, Component elem) {
+		c.gridheight = h; c.gridwidth = w; c.gridx = x; c.gridy = y;
+		gridbag.setConstraints(elem, c);		
+	}
 	static private void initLayout() {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -45,51 +51,37 @@ public class MainWnd {
         c.weightx = c.weighty = 0;
         c.ipadx = 15;
         
-		c.gridheight = 7; c.gridwidth = 1; c.gridx = 0; c.gridy = 0;
-		gridbag.setConstraints(wnd.add(Common.drop_manager.drop_left), c);
-        
-		c.gridheight = 7; c.gridwidth = 1; c.gridy = 0; c.gridx = 4;
-        gridbag.setConstraints(wnd.add(Common.drop_manager.drop_right), c);
+        procElem(c, 0, 0, 1, 7, wnd.add(Common.drop_manager.drop_left));       
+        procElem(c, 4, 0, 1, 7, wnd.add(Common.drop_manager.drop_right));
         
         c.ipady = 15;
-               
-		c.gridheight = 1; c.gridwidth = 3; c.gridy = 0; c.gridx = 1;
-        gridbag.setConstraints(wnd.add(Common.drop_manager.player_panel), c);
         
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 1; c.gridx = 2;
-        gridbag.setConstraints(wnd.add(Common.drop_manager.drop_top), c);        
+        procElem(c, 1, 0, 3, 1, wnd.add(Common.drop_manager.player_panel));       
+        procElem(c, 2, 1, 1, 1, wnd.add(Common.drop_manager.drop_top));       
         
         c.ipady = 35;
         
-		c.gridheight = 1; c.gridwidth = 3; c.gridy = 5; c.gridx = 1;
-        gridbag.setConstraints(wnd.add(Common.drop_manager.drop_bottom), c);
+        procElem(c, 1, 5, 3, 1, wnd.add(Common.drop_manager.drop_bottom));
         
         c.ipady = c.ipadx = 0;
-      
-		c.gridheight = 5; c.gridwidth = 1; c.gridy = 1; c.gridx = 1; 
-		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_left), c);		
-		
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 2; c.gridx = 2;
-		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_top), c);                
         
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 4; c.gridx = 2;
-		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_bottom), c);
+        procElem(c, 1, 1, 1, 5, wnd.add(Common.drop_manager.arrow_left));
+        procElem(c, 2, 2, 1, 1, wnd.add(Common.drop_manager.arrow_top));
+        procElem(c, 2, 4, 1, 5, wnd.add(Common.drop_manager.arrow_bottom));                
+        procElem(c, 3, 1, 1, 5, wnd.add(Common.drop_manager.arrow_right));
         
-		c.gridheight = 5; c.gridwidth = 1; c.gridy = 1; c.gridx = 3;
-		gridbag.setConstraints(wnd.add(Common.drop_manager.arrow_right), c); 
+        c.weightx = c.weighty = 1;
         
-        
-		c.gridheight = 1; c.gridwidth = 1; c.gridy = 3; c.gridx = 2; c.weightx = c.weighty = 1;
-        gridbag.setConstraints(wnd.add(Common.tabber), c);
+        procElem(c, 2, 3, 1, 1, wnd.add(Common.tabber));
 	}
 	
-	static private void Load() {
+	static private void load() {
 		Tabber.load();
+		int wi = 200, he = 400;
 		
 		try {
-	  		BufferedReader br = IOOperations.GetReader(Constants.settingspath);
+	  		BufferedReader br = IOOperations.getReader(Constants.settingspath);
 	  		String strLine;
-	  		int wi = 200, he = 400;
 	  		
 	  		while ((strLine = br.readLine()) != null) {
 	  			if (strLine.length() == 0) continue;
@@ -103,20 +95,20 @@ public class MainWnd {
 	  			}
 	  		}
 	  		br.close();
-	  		wnd.setSize(wi, he);
 		} 
 		catch (Exception e) {
 			Common.drop_manager.CloseAll();
 			Errorist.printLog(e);
 		}
 
+		wnd.setSize(wi, he);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		wnd.setLocation(new Point(dim.width - wnd.getWidth(), dim.height - wnd.getHeight() - 40));
 	}
-	static private void Save() {
+	static private void save() {
 		Common._trash.save();
 	    Common.tabber.save();
-	    Common.library.Save();
+	    Common.library.save();
 	    Common.drop_manager.saveDropPanels();		
 		
 	    PrintWriter pw = null;
@@ -154,7 +146,7 @@ public class MainWnd {
 		wnd.setMinimumSize(new Dimension(240, 200));
 		
 		Common.drop_manager = new DropPanelsManager(wnd);
-		Load();
+		load();
         initLayout();
         
 		if (wnd instanceof JFrame)
@@ -165,9 +157,9 @@ public class MainWnd {
 	}
 	
 	static public void destroy() {
-		Common.Shutdown();
-		Save();
+		Common.shutdown();
+		save();
 	}
 	
-	static public void SetTitle(String title) { ((JFrame)wnd).setTitle(title);	}
+	static public void setTitle(String title) { ((JFrame)wnd).setTitle(title);	}
 }

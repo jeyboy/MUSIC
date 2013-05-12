@@ -55,7 +55,7 @@ public class Tabber extends JTabbedPane {
 	    PrintWriter pw = null;
 
 	    try {
-	        pw = IOOperations.GetWriter(Constants.tabspath, false, false);
+	        pw = IOOperations.getWriter(Constants.tabspath, false, false);
 	        	        
 	        for(int loop = 0; loop < getTabCount(); loop++)
 	        	getTab(loop).save(pw);

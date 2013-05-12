@@ -105,7 +105,7 @@ public class DropPanel extends JScrollPane {
 	public void Load(String path) {
 		BufferedReader reader = null;
 		try {
-			reader = IOOperations.GetReader(path);
+			reader = IOOperations.getReader(path);
 	  		String strLine;
 	  			  		
 	  		while ((strLine = reader.readLine()) != null) {
@@ -122,7 +122,7 @@ public class DropPanel extends JScrollPane {
 		PrintWriter pw;
 		try {
 			DropPanelItem item;
-			pw = IOOperations.GetWriter(path, true, false);
+			pw = IOOperations.getWriter(path, true, false);
 			for(int loop1 = 0; loop1 < content_pane.getComponentCount(); loop1++)
 			{
 				item = (DropPanelItem)content_pane.getComponent(loop1);

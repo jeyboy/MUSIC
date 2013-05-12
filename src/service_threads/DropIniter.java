@@ -32,7 +32,7 @@ public class DropIniter extends BaseThread {
 		for(File file : files) {
 			if (file.isDirectory())
 				addFilesRecursively(new FolderNode(node, file.getName()), file.listFiles());
-			else node.addFiles(file);
+			else node.addFiles(file.getCanonicalPath());
 		}
 	}
       

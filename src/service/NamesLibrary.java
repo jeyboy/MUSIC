@@ -22,7 +22,7 @@ public class NamesLibrary {
 	
 	public NamesLibrary() {}
 	
-	char ProceedLetter(char l) {
+	char proceedLetter(char l) {
         if (l >= (int)'a' && l <= (int)'z') return l;
         if (l == (int)'ú' || l == (int)'¸' || l == (int)'ü' || l == (int)'û') return '_';
         if (l >= (int)'à' && l <= (int)'ÿ') return l;
@@ -30,19 +30,19 @@ public class NamesLibrary {
 	}
 	
 	LibraryCatalog GetCatalog(char letter) {
-		String name = "" + ProceedLetter(letter);
+		String name = "" + proceedLetter(letter);
 		LibraryCatalog res = (LibraryCatalog)library.get(name);
 		if (res == null)
-			res = Load(name);
+			res = load(name);
 		return res;
 	}
 	
-	public LibraryCatalog Load(String letter) {
+	public LibraryCatalog load(String letter) {
 		LibraryCatalog res = null;
 		try {
 			res = new LibraryCatalog(new HashMap<String, Integer>());
 			String strLine;
-			BufferedReader reader = IOOperations.GetReader(Constants.librarypath + letter);
+			BufferedReader reader = IOOperations.getReader(Constants.librarypath + letter);
 	  		while ((strLine = reader.readLine()) != null) {
 	  			if (strLine.length() == 0) continue;
 	  			res.catalog.put(strLine.substring(1), Integer.parseInt(strLine.charAt(0) + ""));
@@ -63,7 +63,7 @@ public class NamesLibrary {
 		return res;
 	}
 	
-	public int Save() {
+	public int save() {
 		Errorist.printMessage("Library::Save", "Start");
 	    PrintWriter pw = null;
 	    int counter, total = 0;
@@ -76,7 +76,7 @@ public class NamesLibrary {
 	    	if (catalog.getValue().updated) {
 			    try {
 			    	counter = 0;
-			        pw = IOOperations.GetWriter(Constants.librarypath + catalog.getKey(), false, false);
+			        pw = IOOperations.getWriter(Constants.librarypath + catalog.getKey(), false, false);
 			        	        
 					for (Map.Entry<String, Integer> entry : catalog.getValue().catalog.entrySet()) {
 						pw.println(("" + entry.getValue()) + entry.getKey());
@@ -95,7 +95,7 @@ public class NamesLibrary {
 	    	} else {
 		    	if (!catalog.getValue().added.isEmpty()) {
 				    try {
-				        pw = IOOperations.GetWriter(Constants.librarypath + catalog.getKey(), false, true);
+				        pw = IOOperations.getWriter(Constants.librarypath + catalog.getKey(), false, true);
 				        	        
 						for (Map.Entry<String, Integer> entry : catalog.getValue().added.entrySet()) {
 							pw.println(("" + entry.getValue()) + entry.getKey());
@@ -113,54 +113,54 @@ public class NamesLibrary {
 	    return total;
 	}
 	
-	void Put(String title, Integer down) {
+	void put(String title, Integer down) {
 		GetCatalog(title.charAt(0)).put(title, down);
 	}
 	
-	public void Set(String title, Boolean down) {
+	public void set(String title, Boolean down) {
 		Errorist.printMessage("Library::Set", title);
 		if (title.length() == 0) return;
-		Put(title, down ? 1 : 0);
+		put(title, down ? 1 : 0);
 	}
 	
-	public Boolean Contains(String title) {
+	public Boolean contains(String title) {
 		if (title.length() == 0) return false;
 		return GetCatalog(title.charAt(0)).containsKey(title);
 	}	
 	
-	public Boolean Get(String title) {
+	public Boolean get(String title) {
 		return GetCatalog(title.charAt(0)).get(title);
 	}
 	
 //	public int Count () { return library.size();}
 	
-	public boolean ProceedFile(File file) {
+	public boolean proceedFile(File file) {
 		MediaInfo info = new MediaInfo(file);
 		
 		for(String title : info.Titles)
-			if (Contains(title)) {
+			if (contains(title)) {
 				Errorist.printMessage("Library::ProceedFile", file.getAbsolutePath() + " - Find");
 				return true;
 			}
 			else {
-				Set(title, false);
+				set(title, false);
 				Errorist.printMessage("Library::ProceedFile", file.getAbsolutePath() + " - Not find");
 			}
 		return false;
 	}
 	
 	public void ProceedItem(ListItem item) {
-		item.media_info = new MediaInfo(item.file);
+		item.media_info = new MediaInfo(item.file());
 		
 //		if (item.state == STATUS.NONE)
 			for(String title : item.media_info.Titles)
-				if (Contains(title)) {
-					if (Get(title)) {
-						item.SetStatusLiked();
+				if (contains(title)) {
+					if (get(title)) {
+						item.setStatusLiked();
 						Errorist.printMessage("Library::ProceedItem", item.title + " - Liked");
 					}
 					else {
-						item.SetStatusListened();
+						item.setStatusListened();
 						Errorist.printMessage("Library::ProceedItem", item.title + " - Listened");
 					}
 					MainWnd.wnd.repaint();
@@ -176,7 +176,7 @@ public class NamesLibrary {
 	
 	public void ParseBase(String path) {
 		try {
-			BufferedReader reader = IOOperations.GetReader(path);
+			BufferedReader reader = IOOperations.getReader(path);
 	  		String strLine, ext;
 	  		
 	  		try {
@@ -192,9 +192,9 @@ public class NamesLibrary {
 					
 					String temp = MediaInfo.SitesFilter(strLine);  
 					temp = MediaInfo.SpacesFilter(MediaInfo.ForwardNumberPreFilter(temp));
-					Set(temp, flag);
+					set(temp, flag);
 					temp = MediaInfo.ForwardNumberFilter(temp);
-					Set(temp, flag);					
+					set(temp, flag);					
 				}
 				reader.close();
 			}
@@ -204,17 +204,17 @@ public class NamesLibrary {
 	}
 	public void ParseLibrary(File path) {
 		int proceed_count = 0;
-		Collection<File> files = IOOperations.ScanDirectories(new File [] {path});
+		Collection<File> files = IOOperations.scanDirectories(new File [] {path});
 		for(File f : files) {
 			try {
-				BufferedReader reader = IOOperations.GetReader(f.getAbsolutePath());
+				BufferedReader reader = IOOperations.getReader(f.getAbsolutePath());
 		  		String strLine;
 		  		
 		  		try {
 					while ((strLine = reader.readLine()) != null) {
 						if (strLine.length() == 0) continue;
 						
-						Set(strLine.substring(1), strLine.charAt(0) == '1');
+						set(strLine.substring(1), strLine.charAt(0) == '1');
 						proceed_count++;
 					}
 					reader.close();
@@ -225,7 +225,7 @@ public class NamesLibrary {
 		}
 		
 		Errorist.printMessage("Library Parse", "Proceed " + proceed_count + " items");
-		MainWnd.SetTitle("Proceed " + proceed_count + " items");
+		MainWnd.setTitle("Proceed " + proceed_count + " items");
 	}	
 	
 	class LibraryCatalog {

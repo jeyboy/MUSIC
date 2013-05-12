@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -21,25 +20,17 @@ import java.util.Collection;
 import javax.swing.JOptionPane;
 
 public class IOOperations {
-	public static PrintWriter GetWriter(String path, boolean autoflush, boolean append) throws FileNotFoundException, UnsupportedEncodingException {
+	public static PrintWriter getWriter(String path, boolean autoflush, boolean append) throws FileNotFoundException, UnsupportedEncodingException {
     	File f = new File(path);
 		FileOutputStream fis = new FileOutputStream(f, append);
 		OutputStreamWriter in = new OutputStreamWriter(fis, "UTF-8");
 		return new PrintWriter(in, autoflush);
 	}
 	
-	public static BufferedReader GetReader(String path) throws UnsupportedEncodingException, FileNotFoundException {
+	public static BufferedReader getReader(String path) throws UnsupportedEncodingException, FileNotFoundException {
 		InputStreamReader in = new InputStreamReader(new FileInputStream(path), "UTF-8");
 		return new BufferedReader(in);
 	}
-	
-	public static BufferedReader GetStringReader(String path) throws IOException {
-		FileInputStream fis = new FileInputStream(path);
-		byte [] arr = new byte[fis.available()];
-		fis.read(arr);	
-		return new BufferedReader(new StringReader(new String(arr, "UTF-8")));
-	}	
-	
 	
 	public static boolean copyFile(File fromFile, File toFile) throws IOException {
 	    if (!fromFile.exists()) return true;
@@ -143,7 +134,7 @@ public class IOOperations {
 	    dt.mail(document);
 	}	
 		
-	public static Collection<File> ScanDirectories(File[] IOItems) {
+	public static Collection<File> scanDirectories(File[] IOItems) {
 	    final Collection<File> all = new ArrayList<File>();
 	    for(File item:IOItems) addFilesRecursively(item, all);
 	    return all;
@@ -169,10 +160,9 @@ public class IOOperations {
 		return title.substring(0, title.length() - (extension(title).length() + 1));
 	}	
 	
-
 	public static String filename(String fullPath) { // gets filename without extension
-		int dot = fullPath.lastIndexOf(extensionSeparator);
 		int sep = fullPath.lastIndexOf(File.separatorChar);
+		int dot = fullPath.lastIndexOf(extensionSeparator);
 		return fullPath.substring(sep + 1, dot);
 	}
 

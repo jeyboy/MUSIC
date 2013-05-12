@@ -15,75 +15,69 @@ import service.Utils;
 public class ListItem {
 	public String title;
 	public String ext;
-	public File file;
+	public String path;
+	public File media_file = null;
 	public MediaInfo media_info = null;
 	public FolderNode node;
 	
 	final static byte default_status = (byte)128;
-
 	byte status = default_status;
 	
-	public void SetStatusNone() 		{
-		SetStatusUnListened();
-		SetStatusUnLiked();
+	public void setStatusNone() 		{
+		setStatusUnListened();
+		setStatusUnLiked();
 	}
-	public boolean StatusIsNone()		{	return (status & 1) == 0; }
+	public boolean statusIsNone()		{	return (status & 1) == 0; }
 	
-	public void SetStatusListened() 	{
+	public void setStatusListened() 	{
 		status |= 1 << 0;
 		for(String name : media_info.Titles)
-			Common.library.Set(name, false);
+			Common.library.set(name, false);
 	}
-	public void SetStatusUnListened() 	{	status &= ~(1 << 0); }
-	public boolean StatusIsListened()	{	return (status & 1) == 1; }
+	public void setStatusUnListened() 	{	status &= ~(1 << 0); }
+	public boolean statusIsListened()	{	return (status & 1) == 1; }
 	
-	public void SetStatusLiked() 		{	
+	public void setStatusLiked() 		{	
 		status |= 1 << 1;
 		for(String name : media_info.Titles)
-			Common.library.Set(name, true);		
+			Common.library.set(name, true);		
 	}
-	public void SetStatusUnLiked() 		{	status &= ~(1 << 1); }
-	public boolean StatusIsLiked()		{	return (status >> 1 & 1) == 1; }
+	public void setStatusUnLiked() 		{	status &= ~(1 << 1); }
+	public boolean statusIsLiked()		{	return (status >> 1 & 1) == 1; }
 	
-	public void SetStatusPlayed() 		{	status |= 1 << 2; }
-	public void SetStatusUnPlayed() 	{	status &= ~(1 << 2); }	
-	public boolean StatusIsPlayed()		{	return (status >> 2 & 1) == 1; }	
+	public void setStatusPlayed() 		{	status |= 1 << 2; }
+	public void setStatusUnPlayed() 	{	status &= ~(1 << 2); }	
+	public boolean statusIsPlayed()		{	return (status >> 2 & 1) == 1; }	
 	
-	public static ListItem Load(FolderNode lib_node, String prefix, String info) 	{	return new ListItem(lib_node, Utils.joinPaths(prefix, info.substring(2)), (byte)info.charAt(1));	}
-	public String SaveInfo() 					{	return "f" + ((char)status) + "" + file.getName();	} 
+	public static ListItem load(FolderNode lib_node, String prefix, String info) { return new ListItem(lib_node, Utils.joinPaths(prefix, info.substring(2)), (byte)info.charAt(1)); }
+	public String saveInfo() { return "f" + ((char)status) + "" + title + "." + ext; } 
 	
-	public ListItem(FolderNode lib_node, String path) { this(lib_node, new File(path)); }
-	public ListItem(FolderNode lib_node, String path, byte state) { this(lib_node, new File(path), state); }
-
-	public ListItem(FolderNode lib_node, File file) { this(lib_node, file, default_status); }
-	public ListItem(FolderNode lib_node, File file, byte state) { this(lib_node, file, IOOperations.extension(file.getName()), state); }
-	public ListItem(FolderNode lib_node, File file, String ext) { this(lib_node, file, ext, default_status); }	
-	public ListItem(FolderNode lib_node, File file, String ext, byte state) {
-		this.file = file;
-		this.ext = ext;
-		this.title = file.getName();
+	public ListItem(FolderNode lib_node, String path) { this(lib_node, path, default_status); }
+	public ListItem(FolderNode lib_node, String path, byte state) {
+		this.path = path;
+		this.title = IOOperations.filename(path);
+		this.ext = IOOperations.extension(path);
 		this.status = state;
 		this.node = lib_node;
-	}	
+	}		
 	
-	@Override
 	public String toString() { return title; }
 	
-	public void Exec() {
-		if (Common.raw_flag()) InnerExec();
+	public void exec() {
+		if (Common.raw_flag()) innerExec();
 		else {
-			if (IOOperations.open(file)) {
-				SetStatusListened();
+			if (IOOperations.open(file())) {
+				setStatusListened();
 				Common.drop_manager.player_panel.setVisible(false);
 			}
-			else InnerExec(); 
+			else innerExec(); 
 		}
 	}
 	
-	void InnerExec() {
+	void innerExec() {
 		try {
-			Common.player.play(file);
-			SetStatusListened();
+			Common.player.play(file());
+			setStatusListened();
 			Common.drop_manager.player_panel.setVisible(true);
 		}
 		
@@ -93,12 +87,18 @@ public class ListItem {
 		}
 	}
 	
-	public void OpenFolder() { IOOperations.open(file.getParentFile());	}
-	public void InitMedia() { Common.library.ProceedItem(this); }
+	public void openFolder() { IOOperations.open(file().getParentFile());	}
+	public void initMedia() { Common.library.ProceedItem(this); }
 	public void delete(boolean delete_file, boolean delete_folder_if_empty) {
 		if (delete_file)
-			Common._trash.AddElem(file, delete_folder_if_empty);
+			Common._trash.AddElem(file(), delete_folder_if_empty);
 		node.delete(this);	
 	}
 	public FileList getList() { return node.list;}
+	
+	public File file() {
+		if (media_file == null)
+			media_file = new File(path);
+		return media_file;
+	}
 }

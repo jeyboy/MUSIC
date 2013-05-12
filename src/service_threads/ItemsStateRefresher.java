@@ -55,7 +55,7 @@ public class ItemsStateRefresher extends BaseThread {
 			if (closeRequest()) return;
 			for(String coll_item : examples)
 				if (title == coll_item) {
-					item.SetStatusLiked();
+					item.setStatusLiked();
 					return;
 				}
 		}
