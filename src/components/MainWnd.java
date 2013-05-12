@@ -54,21 +54,21 @@ public class MainWnd {
         procElem(c, 0, 0, 1, 7, wnd.add(Common.drop_manager.drop_left));       
         procElem(c, 4, 0, 1, 7, wnd.add(Common.drop_manager.drop_right));
         
-        c.ipady = 15;
+        c.ipady = 20;
         
         procElem(c, 1, 0, 3, 1, wnd.add(Common.drop_manager.player_panel));       
-        procElem(c, 2, 1, 1, 1, wnd.add(Common.drop_manager.drop_top));       
+        procElem(c, 1, 1, 3, 1, wnd.add(Common.drop_manager.drop_top));       
         
-        c.ipady = 35;
+        c.ipady = 20;
         
-        procElem(c, 1, 5, 3, 1, wnd.add(Common.drop_manager.drop_bottom));
+        procElem(c, 1, 5, 5, 1, wnd.add(Common.drop_manager.drop_bottom));
         
         c.ipady = c.ipadx = 0;
         
-        procElem(c, 1, 1, 1, 5, wnd.add(Common.drop_manager.arrow_left));
+        procElem(c, 1, 2, 1, 3, wnd.add(Common.drop_manager.arrow_left));
         procElem(c, 2, 2, 1, 1, wnd.add(Common.drop_manager.arrow_top));
         procElem(c, 2, 4, 5, 1, wnd.add(Common.drop_manager.arrow_bottom));                
-        procElem(c, 3, 1, 1, 5, wnd.add(Common.drop_manager.arrow_right));
+        procElem(c, 3, 2, 1, 3, wnd.add(Common.drop_manager.arrow_right));
         
         c.weightx = c.weighty = 1;
         
