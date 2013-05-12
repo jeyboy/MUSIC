@@ -30,10 +30,11 @@ public class FolderNode extends Base {
 	public String path;
 	public IconListRenderer listrender = new IconListRenderer();
 	
-	ArrayList<ListItem> items = new ArrayList<ListItem>(10000);	
+	ArrayList<ListItem> items;	
 	public ArrayList<ListItem> elems() { return items; } 
 	
 	void init(String path) {
+		items = new ArrayList<ListItem>(100);
 		boolean add_area = parent != null;
 		
 		this.path = path;

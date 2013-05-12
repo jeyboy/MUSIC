@@ -17,7 +17,7 @@ public class ListItem {
 	public String ext;
 	public String path;
 	public File media_file = null;
-	public MediaInfo media_info = null;
+	public MediaInfo _media_info = null;
 	public FolderNode node;
 	
 	final static byte default_status = (byte)128;
@@ -31,7 +31,7 @@ public class ListItem {
 	
 	public void setStatusListened() 	{
 		status |= 1 << 0;
-		for(String name : media_info.Titles)
+		for(String name : mediaInfo().Titles)
 			Common.library.set(name, false);
 	}
 	public void setStatusUnListened() 	{	status &= ~(1 << 0); }
@@ -39,7 +39,7 @@ public class ListItem {
 	
 	public void setStatusLiked() 		{	
 		status |= 1 << 1;
-		for(String name : media_info.Titles)
+		for(String name : mediaInfo().Titles)
 			Common.library.set(name, true);		
 	}
 	public void setStatusUnLiked() 		{	status &= ~(1 << 1); }
@@ -100,5 +100,11 @@ public class ListItem {
 		if (media_file == null)
 			media_file = new File(path);
 		return media_file;
+	}
+	
+	public MediaInfo mediaInfo() {
+		if (_media_info == null)
+			_media_info = new MediaInfo(file());
+		return _media_info;
 	}
 }

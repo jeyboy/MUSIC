@@ -67,7 +67,7 @@ public class MainWnd {
         
         procElem(c, 1, 1, 1, 5, wnd.add(Common.drop_manager.arrow_left));
         procElem(c, 2, 2, 1, 1, wnd.add(Common.drop_manager.arrow_top));
-        procElem(c, 2, 4, 1, 5, wnd.add(Common.drop_manager.arrow_bottom));                
+        procElem(c, 2, 4, 5, 1, wnd.add(Common.drop_manager.arrow_bottom));                
         procElem(c, 3, 1, 1, 5, wnd.add(Common.drop_manager.arrow_right));
         
         c.weightx = c.weighty = 1;

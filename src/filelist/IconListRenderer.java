@@ -14,6 +14,8 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
+import service.Common;
+
 public class IconListRenderer extends DefaultListCellRenderer {
 	private static final long serialVersionUID = -1227188542632542649L;
 	
@@ -33,11 +35,11 @@ public class IconListRenderer extends DefaultListCellRenderer {
 
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, false);
-		label.setIconTextGap(10);
-		curr_item = (ListItem) value;
+		curr_item = (ListItem) value;	
 		selected = isSelected;
 		focused = cellHasFocus;
 		
+		Common._initer.prependItem(curr_item);		
 		setForeground(selected || focused ? Color.white : Color.black);
 
 		Icon icon = icons.get(curr_item.ext);

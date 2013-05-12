@@ -149,11 +149,9 @@ public class NamesLibrary {
 		return false;
 	}
 	
-	public void ProceedItem(ListItem item) {
-		item.media_info = new MediaInfo(item.file());
-		
+	public void ProceedItem(ListItem item) {	
 //		if (item.state == STATUS.NONE)
-			for(String title : item.media_info.Titles)
+			for(String title : item.mediaInfo().Titles)
 				if (contains(title)) {
 					if (get(title)) {
 						item.setStatusLiked();

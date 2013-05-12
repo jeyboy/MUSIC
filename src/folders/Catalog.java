@@ -80,6 +80,7 @@ public class Catalog extends Base {
 	
 	public void execNext(boolean next) {
 		if (root == null) return;
+		sincronizeTail();
 		
 		FolderNode iter = activeItem != null ? activeItem.node : root;
 		FolderNode start_node = iter;

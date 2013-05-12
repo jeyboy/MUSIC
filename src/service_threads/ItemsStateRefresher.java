@@ -51,7 +51,7 @@ public class ItemsStateRefresher extends BaseThread {
     }
     
     void procItem(ListItem item, String [] examples) {
-		for(String title : item.media_info.Titles) {
+		for(String title : item.mediaInfo().Titles) {
 			if (closeRequest()) return;
 			for(String coll_item : examples)
 				if (title == coll_item) {
