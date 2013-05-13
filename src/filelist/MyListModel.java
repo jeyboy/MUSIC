@@ -27,10 +27,12 @@ public class MyListModel extends AbstractListModel {
 	public void addElement(ListItem item) {
 		list.elems().add(item);
 		fireIntervalAdded(this, list.elems().size() - 1, list.elems().size());
+		list.tab.catalog.iterateCount();
 	} 
 	public void removeElement(int i) {
 		list.elems().remove(i);
 		fireIntervalRemoved(this, i, i);
+		list.tab.catalog.deiterateCount();
 	}
 	public void removeElement(Object obj) 	{ removeElement(indexOf(obj)); }
 	public ListItem getElementAt(int i) 	{ return list.elems().get(i); }

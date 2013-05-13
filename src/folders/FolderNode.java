@@ -106,12 +106,10 @@ public class FolderNode extends Base {
 	public void addItem(ListItem listItem) {
         addAssocIcon(listItem.ext, listItem);
         list.model.addElement(listItem);		
-		tab.catalog.iterateCount();
 	}
 	
 	public void delete(ListItem listItem) {
 		list.model.removeElement(listItem);
-		tab.catalog.deiterateCount();
 	}
 	
 	public void addFiles(String ... pathes) {

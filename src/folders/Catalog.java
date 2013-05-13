@@ -14,17 +14,24 @@ public class Catalog extends Base {
 	public Catalog(Tab container) { super(container); }
 	
 	public int itemsCount() { return itemsCount; }
-	public void iterateCount() { itemsCount++;}
-	public void deiterateCount() { itemsCount--;}
+	public void iterateCount() { ++itemsCount; tab.updateCounter(); }
+	public void deiterateCount() { --itemsCount; tab.updateCounter(); }
 
 //	FolderNode buildPath(String ... levels) {
+//		FolderNode node = null;
 //		
+//		for(String level : levels) {
+//			if (node == null)
+//				node = getNode(level);
+//		}
+//		
+//		return root;
 //	} 
 	
 	public FolderNode getNode(String root_path) {
 		FolderNode node;
 		
-//TODO:	use list of full pathes for search
+//TODO:	use list of full paths for search
 		int pos = folders.indexOf(root_path);
 		if (pos == -1) {
 			sincronizeTail();
