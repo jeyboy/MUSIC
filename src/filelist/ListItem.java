@@ -89,10 +89,10 @@ public class ListItem {
 	
 	public void openFolder() { IOOperations.open(file().getParentFile());	}
 	public void initMedia() { Common.library.ProceedItem(this); }
-	public void delete(boolean delete_file, boolean delete_folder_if_empty) {
-		if (delete_file)
-			Common._trash.AddElem(file(), delete_folder_if_empty);
-		node.delete(this);	
+	public void delete() {
+		if (node.tab.options.delete_files)
+			Common._trash.AddElem(path, node.tab.options.delete_empty_folders);
+		node.list.model.removeElement(this);	
 	}
 	public FileList getList() { return node.list;}
 	

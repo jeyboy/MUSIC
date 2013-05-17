@@ -138,8 +138,8 @@ public class FolderNode extends Base {
 		int selected = getPlayedIndex();
 		if (selected == -1)
 			return nextItem(true);
-		
-		list.model.removeElement(selected);
+
+		tab.catalog.activeItem.delete();
 		return checkRange(selected);
 	}	
 	

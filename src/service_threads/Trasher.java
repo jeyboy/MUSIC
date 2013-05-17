@@ -1,11 +1,8 @@
 package service_threads;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import service.Errorist;
@@ -23,9 +20,8 @@ public class Trasher extends BaseThread {
 
     synchronized public void run() { routing(); }
     
-    public void AddElem(File f, boolean delete_folder) {
-    	if (f.exists())
-    		path_collection.add(new TrashCell(f, delete_folder));
+    public void AddElem(String f, boolean delete_folder) {
+  		path_collection.add(new TrashCell(f, delete_folder));
     }
 
     void routing() {
@@ -39,11 +35,9 @@ public class Trasher extends BaseThread {
 	            	
 	            	temp = path_collection.get(loop1);
 	            	try {
-	            		File parent = temp.file.getParentFile();
 	            		if (IOOperations.deleteFile(temp.file)) {
-	            			if (temp.delete_folder && parent.list().length == 0)
-	            				IOOperations.deleteFile(parent);
 	            			path_collection.remove(loop1);
+	            			System.out.println(temp.file);
 	            		}
 	            	}
 	                catch(Exception e) {}
@@ -62,7 +56,7 @@ public class Trasher extends BaseThread {
     		String temp;
     		
     		while((temp = reader.readLine()) != null)
-    			AddElem(new File(temp.substring(1)), temp.charAt(0) == '1');
+    			AddElem(temp.substring(1), temp.charAt(0) == '1');
 		}
     	
     	catch (IOException e) { Errorist.printLog(e); }
@@ -79,20 +73,20 @@ public class Trasher extends BaseThread {
 			for(TrashCell f : path_collection)
 				wri.println(f.ToString());
 		} 
-		catch (FileNotFoundException | UnsupportedEncodingException e) { Errorist.printLog(e); }
+		catch (Exception e) { Errorist.printLog(e); }
 		
 		if (wri != null) wri.close();
     }
     
     class TrashCell {
-    	File file;
+    	String file;
     	boolean delete_folder;
     	
-    	public TrashCell(File del_file, boolean check_folder) {
+    	public TrashCell(String del_file, boolean check_folder) {
     		file = del_file;
     		delete_folder = check_folder;
     	}
     	
-    	public String ToString() { return (delete_folder ? "1" : "0") + file.getAbsolutePath();	}
+    	public String ToString() { return (delete_folder ? "1" : "0") + file;	}
     }
 }

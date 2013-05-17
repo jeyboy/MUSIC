@@ -78,11 +78,8 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
     			
     			if (e.getKeyCode() == KeyEvent.VK_DELETE) {
     				int last_pos = filelist.getSelectedIndex() - 1;
-    				for(Object obj: filelist.getSelectedValuesList()) {
-	    				if (node.tab.options.delete_files)
-	    					Common._trash.AddElem(((ListItem)obj).file(), node.tab.options.delete_empty_folders);
-    					filelist.model.removeElement(obj);
-    				}
+    				for(Object obj: filelist.getSelectedValuesList())
+    					((ListItem)obj).delete();
     				node.calcSelect(last_pos, true);
     			}
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {

@@ -149,7 +149,7 @@ public class NamesLibrary {
 		return false;
 	}
 	
-	public void ProceedItem(ListItem item) {	
+	public void ProceedItem(ListItem item) {
 //		if (item.state == STATUS.NONE)
 			for(String title : item.mediaInfo().Titles)
 				if (contains(title)) {
