@@ -12,7 +12,6 @@ import drop_panel.DropPanelsManager;
 import hot_keys.HotKeyManager;
 import service_threads.DropIniter;
 import service_threads.ItemsStateIniter;
-import service_threads.ItemsStateRefresher;
 import service_threads.LibraryDumper;
 import service_threads.Trasher;
 import tabber.Tabber;
@@ -23,6 +22,7 @@ public class Common {
 	static public Color color_foreground = Color.white;
 	
 	static public boolean save_flag = false;
+	static public boolean is_loading = false;
 	static public boolean raw_flag() {
 		try { return drop_manager.player_panel.isVisible(); }
 		catch(Exception e) { return false;}
@@ -34,7 +34,6 @@ public class Common {
 	static public DropPanelsManager drop_manager;
 	
 	static public ItemsStateIniter _initer = new ItemsStateIniter();
-	static public ItemsStateRefresher _refresher = new ItemsStateRefresher();
 	static public DropIniter _drop_initer = new DropIniter();
 	static public Trasher _trash = new Trasher();
 	static public LibraryDumper _library_dumper = new LibraryDumper();
@@ -48,7 +47,6 @@ public class Common {
 		_trash.close();
 		hotkey_manager.Shutdown();
 		_initer.close();
-		_refresher.close();
 		_library_dumper.close();
 		Errorist.close();
 		player.exit();
@@ -56,14 +54,12 @@ public class Common {
 	
 	static public void lockWorkThreads() {
 		_library_dumper.lock();
-		_refresher.lock();
 		_trash.lock();
 		_initer.lock();
 	}
 	static public void unlockWorkThreads() {
 		_library_dumper.unlock();
-		_refresher.unlock();
 		_trash.unlock();
 		_initer.unlock();
-	}	
+	}
 }

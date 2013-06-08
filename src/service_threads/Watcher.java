@@ -54,7 +54,7 @@ public class Watcher extends BaseThread {
 	    	        List<WatchEvent<?>> events = temp.watchKey.pollEvents();
 	    	        for (WatchEvent<?> event : events) {
 	    	             if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
-//	    	                 System.out.println("Created: " + event.context().toString());
+	    	                 System.out.println("Created: " + event.context().toString());
 //	    	            	 temp.tab.
 	    	             }
 	    	             if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE) {
@@ -69,7 +69,7 @@ public class Watcher extends BaseThread {
 	    	         }	            	
             	}
             }
-            
+
             sleepy();
     	}
     }

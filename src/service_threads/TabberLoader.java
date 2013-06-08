@@ -18,7 +18,7 @@ import filelist.ListItem;
 import folders.FolderNode;
 
 public class TabberLoader extends SwingWorker<Boolean, Cell> {
-	public TabberLoader() { }
+	public TabberLoader() { Common.is_loading = true; }
 	
     public void proc(BufferedReader bin, Tab curr_tab, String path, FolderNode folder) throws IOException {
   		String strLine;   	
@@ -80,6 +80,10 @@ public class TabberLoader extends SwingWorker<Boolean, Cell> {
 	protected void process(List<Cell> cells) {
 		for(Cell item : cells)
 			item.folder.addItem(item.item);
+	}
+	
+	protected void done() {
+		Common.is_loading = false;
 	}
 }
 

@@ -1,6 +1,7 @@
 package filelist;
 
 import java.io.File;
+import java.util.Date;
 
 import folders.FolderNode;
 
@@ -22,6 +23,15 @@ public class ListItem {
 	
 	final static byte default_status = (byte)128;
 	byte status = default_status;
+	long last_update = new Date().getTime();
+	
+	public boolean updateNedded() {
+		long curr_time = new Date().getTime();
+		boolean res = (curr_time - last_update) > 30000; // half of minute 
+		if (res == true)
+			last_update = curr_time;
+		return res;
+	}
 	
 	public void setStatusNone() 		{
 		setStatusUnListened();
@@ -92,7 +102,8 @@ public class ListItem {
 	public void delete() {
 		if (node.tab.options.delete_files)
 			Common._trash.AddElem(path, node.tab.options.delete_empty_folders);
-		node.list.model.removeElement(this);	
+		node.list.model.removeElement(this);
+		node.freeMemory();
 	}
 	public FileList getList() { return node.list;}
 	

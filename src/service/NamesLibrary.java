@@ -63,8 +63,8 @@ public class NamesLibrary {
 		return res;
 	}
 	
+//	TODO - add catalog free on 5+ saves without update
 	public int save() {
-		Errorist.printMessage("Library::Save", "Start");
 	    PrintWriter pw = null;
 	    int counter, total = 0;
 	    
@@ -176,11 +176,12 @@ public class NamesLibrary {
 		try {
 			BufferedReader reader = IOOperations.getReader(path);
 	  		String strLine, ext;
+	  		boolean flag;
 	  		
 	  		try {
 				while ((strLine = reader.readLine()) != null) {
 					if (strLine.length() == 0) continue;
-					boolean flag = reader.readLine().charAt(0) == '1';
+					flag = reader.readLine().charAt(0) == '1';
 					
 					strLine = strLine.toLowerCase();
 					ext = IOOperations.extension(strLine);
@@ -203,11 +204,13 @@ public class NamesLibrary {
 	public void ParseLibrary(File path) {
 		int proceed_count = 0;
 		Collection<File> files = IOOperations.scanDirectories(new File [] {path});
+		BufferedReader reader;
+  		String strLine;		
+		
 		for(File f : files) {
 			try {
-				BufferedReader reader = IOOperations.getReader(f.getAbsolutePath());
-		  		String strLine;
-		  		
+				reader = IOOperations.getReader(f.getAbsolutePath());
+	  		
 		  		try {
 					while ((strLine = reader.readLine()) != null) {
 						if (strLine.length() == 0) continue;

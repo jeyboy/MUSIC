@@ -33,6 +33,8 @@ public class FolderNode extends Base {
 	ArrayList<ListItem> items;	
 	public ArrayList<ListItem> elems() { return items; } 
 	
+	public void freeMemory() { items.trimToSize(); }
+	
 	void init(String path) {
 		items = new ArrayList<ListItem>(100);
 		boolean add_area = parent != null;

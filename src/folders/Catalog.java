@@ -26,7 +26,6 @@ public class Catalog extends Base {
 //		}
 //		
 //		return root;
-//	} 
 	
 	public FolderNode getNode(String root_path) {
 		FolderNode node;
@@ -63,9 +62,9 @@ public class Catalog extends Base {
 			activeItem.setStatusPlayed();
 			activeItem.exec();
 			activeItem.getList().setSelectedValue(activeItem, false);
+			activeItem.getList().model.repaint(activeItem.getList().model.indexOf(activeItem));
 		}
-		
-		root.tab.pane.repaint();		
+		else root.tab.pane.repaint();		
 	}
 
 	public void execCurrOrFirst() {
@@ -105,7 +104,6 @@ public class Catalog extends Base {
 		
 		setPlayed(item);
 	}
-	
 
 	public void delCurrAndExecNext() {
 		if (root == null) return;
@@ -123,6 +121,30 @@ public class Catalog extends Base {
 		
 		setPlayed(item);		
 	}
+	
+//	TODO : write correct selection movement
+	public void moveSelect(boolean next) {
+		
+		
+//		if (root == null) return;
+//		sincronizeTail();
+//		
+//		FolderNode iter = activeItem != null ? activeItem.node : root;
+//		FolderNode start_node = iter;
+//		ListItem item = null;
+//		
+//		do {
+//			if ((item = iter.nextItem(next)) == null)
+//				if (next)
+//					iter = iter.next == null ? root : iter.next;
+//				else
+//					iter = iter.prev == null ? last : iter.prev;
+//			else break;
+//		}
+//		while(iter != start_node);
+//		
+//		setPlayed(item);
+	}	
 	
 	public void save(PrintWriter pw) {
     	for(FolderNode folder : folders)

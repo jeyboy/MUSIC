@@ -1,19 +1,17 @@
 package media;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Vector;
-import org.jaudiotagger.audio.AudioHeader;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
 
 import service.Errorist;
 import service.IOOperations;
 import service.Utils;
 
-import outag.audioformats.AudioFileIO;
-import outag.audioformats.exceptions.CannotReadException;
+import outag.formats.AudioFile;
+import outag.formats.AudioFileIO;
+import outag.formats.Tag;
+import outag.formats.exceptions.CannotReadException;
 
 public class MediaInfo {
 	static public String SitesFilter(String title)				{ return title.replaceAll("([\\(\\[](http:\\/\\/)*(www\\.)*([a-z0-9р-џ])+\\.[a-z]+[\\]\\)])", ""); }
@@ -21,20 +19,6 @@ public class MediaInfo {
 	static public String SpacesFilter(String title) 			{ return title.replaceAll("[^0-9A-Za-zР-пр-џР-пр-џ]", ""); }
 	static public String ForwardNumberFilter(String title)		{ return title.replaceAll("\\A\\d{1,}", ""); }
 	
-	static Vector<String> InitExtsList() {
-		Vector<String> ret = new Vector<String>();
-		
-		// entagged // 		"flac", "ape", "mp3", "ogg", "wma", "wav", "mpc", "mp+"
-		// jaudiotagger //	
-//		"wsz,snd,aifc,aif,wav,au,mp1,mp2,mp3,ogg,spx,flac,ape,mac"
-		for(String ext : new String [] {"flac", "ape", "mp3", "mp4", "m4a", "m4p", "ogg", "wma", "wav", "asf", "mpc", "mp+", "rmf"}) //ape
-			ret.add(ext);
-	
-		return ret;
-	}
-	
-	public Vector<String> exts = InitExtsList();
-
 	List<String> Artists = new Vector<String>();
 	public List<String> Titles = new Vector<String>();
 	public List<String> Genres = new Vector<String>();
@@ -46,8 +30,6 @@ public class MediaInfo {
 	public Integer TimeLength = -1;
 	public boolean VariableBitrate = false;
 	
-	public boolean CheckFormat(String title, String ext) { return exts.contains(ext); }
-	
 	void AddTitleHelper(String gipoTitle) {
 		String temp = SitesFilter(gipoTitle);  
 		temp = SpacesFilter(ForwardNumberPreFilter(temp));
@@ -57,17 +39,13 @@ public class MediaInfo {
 	}
 	
 	public MediaInfo(File f) {
+		InitInfo(f);
 		Genres.add("default");
 		String title = f.getName().toLowerCase();
 		String ext = IOOperations.extension(title);
 		
 		if (ext.length() == 0) AddTitleHelper(title);
 		else AddTitleHelper(IOOperations.name_without_extension(title, ext));
-		
-		if (CheckFormat(f.getName(), ext))
-			if (ext.equals("m4a"))
-				TryGetInfo(f);	
-			else InitInfo(f);
 	}
 	
 	public MediaInfo(	String bitrate, String channels, String type, String samplerate,
@@ -88,8 +66,8 @@ public class MediaInfo {
 	@SuppressWarnings("unchecked")
 	void InitInfo(File file) {
 		try {
-			outag.audioformats.AudioFile f = AudioFileIO.read(file);
-			outag.audioformats.Tag tag = f.getTag();
+			AudioFile f = AudioFileIO.read(file);
+			Tag tag = f.getTag();
 			
 			String t1;
 			Artists = tag.getArtist();
@@ -111,57 +89,6 @@ public class MediaInfo {
 			Type = f.getEncodingType();
 			VariableBitrate = f.isVbr();
 		} 
-		catch (CannotReadException e) {
-			TryGetInfo(file);
-			Errorist.printLog(e); 
-		}
-	}
-	
-	void TryGetInfo(File file) {
-		org.jaudiotagger.audio.AudioFile f;
-		try {
-			f = org.jaudiotagger.audio.AudioFileIO.read(file);
-			Tag tag = f.getTag();
-
-			String temp;
-			for(int n = 0;; n++) {
-				temp = tag.getValue(FieldKey.ARTIST, n);
-				temp = new String(temp.getBytes(),Charset.forName("windows-1251")).toLowerCase();
-				if (temp.isEmpty()) break;
-				if (Artists.contains(temp)) break;
-				Artists.add(temp);
-			}
-			
-			for(int n = 0;; n++) {
-				temp = tag.getValue(FieldKey.GENRE, n).toLowerCase();
-				if (temp.isEmpty()) break;
-				if (Genres.contains(temp)) break;
-				Genres.add(temp);
-			}
-
-			for(int n = 0;; n++) {
-				temp = tag.getValue(FieldKey.TITLE, n).toLowerCase();
-				if (temp.isEmpty()) break;
-				
-				if (Artists.size() == 0)
-					AddTitleHelper(temp);
-				else
-					for(String s: Artists)
-						AddTitleHelper(s + temp);
-			}
-			
-			AudioHeader head = f.getAudioHeader();
-			
-			Bitrate = head.getBitRate();
-			Channels = head.getChannels();
-			Type = head.getEncodingType();
-			SampleRate = head.getSampleRate();
-			TimeLength = head.getTrackLength();
-			VariableBitrate = head.isVariableBitRate();			
-		}
-		catch (org.jaudiotagger.audio.exceptions.CannotReadException e) {
-			Errorist.printLog(e);
-		}		
-		catch (Exception e) { Errorist.printLog(e); }
+		catch (CannotReadException e) { Errorist.printLog(e); }
 	}
 }

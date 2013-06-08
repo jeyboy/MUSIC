@@ -21,14 +21,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import components.MainWnd;
 import folders.FolderNode;
 
 import service.Common;
@@ -38,7 +35,7 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
 	FileList filelist;
 	Dropper dropper;
 	DragSource ds;
-	List<ListItem> droped_items = new Vector<ListItem>();
+	ArrayList<ListItem> droped_items = new ArrayList<ListItem>();
 	boolean drop_in = false;
 	
 	public FileListEvents(FileList flist, final FolderNode node) { 
@@ -85,6 +82,16 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
     				node.tab.catalog.setPlayed(filelist.model.getElementAt(filelist.getSelectedIndex()));
     			}
+    			
+    			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+    				if (filelist.getSelectedIndex() == filelist.getModel().getSize() - 1)
+    					node.tab.catalog.moveSelect(true);
+    			}
+    			
+    			if (e.getKeyCode() == KeyEvent.VK_UP) {
+    				if (filelist.getSelectedIndex() == 0)
+    					node.tab.catalog.moveSelect(false);
+    			}     			
     		}
     		public void keyReleased(KeyEvent e) {
     			node.tab.catalog.selection.setMaskState((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0 || (e.getModifiers() & KeyEvent.CTRL_MASK) != 0);
@@ -122,11 +129,10 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
 		public boolean isDataFlavorSupported(DataFlavor flavor) {
 			return flavor.equals(DataFlavor.javaFileListFlavor);
 		}
-		public Object getTransferData(DataFlavor flavor)
-				throws UnsupportedFlavorException, IOException {
-			if (!isDataFlavorSupported(flavor)) {
+		public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+			if (!isDataFlavorSupported(flavor))
     			throw new UnsupportedFlavorException(flavor);
-    		}
+			
     		return files;
 		}
     }
@@ -150,9 +156,10 @@ public class FileListEvents implements DragSourceListener, DragGestureListener {
 	    if (dsde.getDropSuccess() && !drop_in) {
 	        for(ListItem li : droped_items)
 	        	li.setStatusLiked();
-	        MainWnd.wnd.repaint();
+//	        MainWnd.wnd.repaint();
 	    }
 	    droped_items.clear();
+	    droped_items.trimToSize();
 	    drop_in = false;
 	} 	
 }

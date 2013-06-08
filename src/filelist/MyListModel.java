@@ -21,12 +21,12 @@ public class MyListModel extends AbstractListModel {
 	}
 	
 	public void repaint(int index) {
-		fireContentsChanged(this, index - 1, index + 1);
+		fireContentsChanged(this, index - 1, index - 1);
 	}
 	
 	public void addElement(ListItem item) {
 		list.elems().add(item);
-		fireIntervalAdded(this, list.elems().size() - 1, list.elems().size());
+		fireIntervalAdded(this, getSize() - 1, getSize() - 1);
 		list.tab.catalog.iterateCount();
 	} 
 	public void removeElement(int i) {

@@ -1,6 +1,5 @@
 package tabber;
 
-import java.awt.Color;
 import java.io.PrintWriter;
 import javax.swing.JTabbedPane;
 import service.Common;
@@ -32,7 +31,6 @@ public class Tabber extends JTabbedPane {
 	static public void load() {
 		Common.tabber = new Tabber();
 		Common.tabber.setUI(new TabberUI());
-		Common.tabber.setBackground(Color.black);
 		TabberLoader loader = new TabberLoader();
 		
 //	    // A property listener used to update the progress bar

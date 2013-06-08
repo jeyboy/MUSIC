@@ -24,8 +24,8 @@ public class IconListRenderer extends DefaultListCellRenderer {
 	
 	//////temp
 	ListItem curr_item;
-	boolean selected;
 	JLabel label;
+	boolean selected;
 	boolean focused;
 	//////
 	
@@ -39,12 +39,15 @@ public class IconListRenderer extends DefaultListCellRenderer {
 		selected = isSelected;
 		focused = cellHasFocus;
 		
-		Common._initer.prependItem(curr_item);		
+		if (Common.is_loading == false)
+			Common._initer.addItem(curr_item);
+
 		setForeground(selected || focused ? Color.white : Color.black);
 
 		Icon icon = icons.get(curr_item.ext);
 		left_padding = icon == null ? 0 : 16;		
 		label.setIcon(icon);
+		icon = null;
 		return label;
 	}
 	
@@ -87,5 +90,12 @@ public class IconListRenderer extends DefaultListCellRenderer {
 	    setOpaque(false);
 	    super.paintComponent(g);
 	    setOpaque(true);
+	    
+	    curr_item = null;
+	    label = null;
+	    gp = null;
+	    r = null;
+	    color_set = null;
+	    g2d.dispose();
 	}
 }
