@@ -26,7 +26,8 @@ public class Watcher extends BaseThread {
     synchronized public void run() { routing(); }
        
     public void addElem(FolderNode folder) {
-    	File f = new File(folder.path);
+    	System.out.println(folder.fullPath());
+    	File f = new File(folder.fullPath());
     	if (f.exists()) {
     		try { path_collection.add(new WatchCell(folder)); }
     		catch (JNotifyException e) { Errorist.printLog(e); }
@@ -54,8 +55,8 @@ public class Watcher extends BaseThread {
     	               JNotify.FILE_RENAMED;
 
     	    // watch subtree?
-    	    boolean watchSubtree = true;
-    	    watchID = JNotify.addWatch(t.path, mask, watchSubtree, new Listener(t));
+    	    boolean watchSubtree = false;
+    	    watchID = JNotify.addWatch(t.fullPath(), mask, watchSubtree, new Listener(t));
     	}
     	
     	public boolean stopWatching() throws JNotifyException {
@@ -69,6 +70,7 @@ public class Watcher extends BaseThread {
     	public Listener(FolderNode folder) { node = folder;	} 
     	
         public void fileRenamed(int wd, String rootPath, String oldName, String newName) {
+        	System.out.println("rename");
         	ListItem item = findItem(oldName);
         	if (item != null) {
         		item.title = IOOperations.filename(newName);
@@ -77,12 +79,14 @@ public class Watcher extends BaseThread {
         }
         
         public void fileDeleted(int wd, String rootPath, String name) {
+        	System.out.println("delete");
         	ListItem item = findItem(name);
         	if (item != null)
         		item.delete();
         }
         
         public void fileCreated(int wd, String rootPath, String name) {
+        	System.out.println("create");
         	node.addFiles(Utils.joinPaths(rootPath, name));
         }
         

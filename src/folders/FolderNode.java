@@ -16,6 +16,8 @@ import filelist.FileList;
 import filelist.IconListRenderer;
 import filelist.ListItem;
 import service.Common;
+import service.Utils;
+
 import java.util.Random;
 import tabber.Tab;
 
@@ -63,6 +65,9 @@ public class FolderNode extends Base {
 			tab.addFileList(pane);
 		else
 			parent.pane.add(pane);
+				
+		if (tab.options.interactive && Common._watcher != null)
+			Common._watcher.addElem(this);
 	}
 	
 	public FolderNode(FolderNode parentNode, String path) {
@@ -87,7 +92,7 @@ public class FolderNode extends Base {
 		init(path); 
 	}
 	
-//	public String fullPath() { return parent != null ? Utils.joinPaths(parent.fullPath(), path) : path;} 
+	public String fullPath() { return parent != null ? Utils.joinPaths(parent.fullPath(), path) : path;} 
 	
 	void syncTree() {
 		FolderNode iter = parent;
@@ -97,7 +102,7 @@ public class FolderNode extends Base {
 			iter = iter.parent;
 		}
 	}
-	
+		
     void addAssocIcon(String ext, ListItem listItem) {
     	if (listrender.icons.containsKey(ext)) return;
     	Icon icon = FileSystemView.getFileSystemView().getSystemIcon(listItem.file());

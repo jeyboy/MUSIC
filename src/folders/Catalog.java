@@ -36,10 +36,7 @@ public class Catalog extends Base {
 		if (pos == -1) {
 			sincronizeTail();
 			node = new FolderNode(tab, root_path);
-			
-			if (tab.options.interactive && Common._watcher != null)
-				Common._watcher.addElem(node);
-				
+
 			folders.add(node);
 			if (root == null) 
 				last = root = node;
