@@ -3,6 +3,7 @@ package folders;
 import java.io.PrintWriter;
 
 import filelist.ListItem;
+import service.Common;
 import tabber.Tab;
 
 public class Catalog extends Base {
@@ -35,6 +36,10 @@ public class Catalog extends Base {
 		if (pos == -1) {
 			sincronizeTail();
 			node = new FolderNode(tab, root_path);
+			
+			if (tab.options.interactive && Common._watcher != null)
+				Common._watcher.addElem(node);
+				
 			folders.add(node);
 			if (root == null) 
 				last = root = node;
@@ -57,6 +62,8 @@ public class Catalog extends Base {
 	public void setPlayed(ListItem item) {	
 		if (activeItem != null)
 			activeItem.setStatusUnPlayed();
+		
+		Common.player.stop();
 		
 		if ((activeItem = item) != null) {
 			activeItem.setStatusPlayed();

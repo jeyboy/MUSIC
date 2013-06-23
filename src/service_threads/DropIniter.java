@@ -50,7 +50,6 @@ public class DropIniter extends BaseThread {
                     public void run(){
                     	try { addFilesRecursively(temp.tab.catalog.getNode(temp.elems[0].getParentFile().getCanonicalPath()), temp.elems);	}
                     	catch (IOException e) {	Errorist.printLog(e); }
-//                    	temp.list.AddElemsF(IOOperations.ScanDirectoriesF(temp.elems));
                     }
                 });
                 

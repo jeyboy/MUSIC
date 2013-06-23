@@ -38,4 +38,12 @@ public class MyListModel extends AbstractListModel {
 	public ListItem getElementAt(int i) 	{ return list.elems().get(i); }
 	public int indexOf(Object o) 			{ return list.elems().indexOf(o); }
 	public int getSize() 					{ return list.elems().size(); }
+	public ListItem findByTitle(String title) {
+		for(ListItem item : list.elems()) {
+			if (item.title.equals(title))
+				return item;
+		}
+		
+		return null;
+	}
 }

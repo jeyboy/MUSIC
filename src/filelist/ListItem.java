@@ -41,7 +41,7 @@ public class ListItem {
 	
 	public void setStatusListened() 	{
 		status |= 1 << 0;
-		for(String name : mediaInfo().Titles)
+		for(String name : mediaInfo().titles)
 			Common.library.set(name, false);
 	}
 	public void setStatusUnListened() 	{	status &= ~(1 << 0); }
@@ -49,7 +49,7 @@ public class ListItem {
 	
 	public void setStatusLiked() 		{	
 		status |= 1 << 1;
-		for(String name : mediaInfo().Titles)
+		for(String name : mediaInfo().titles)
 			Common.library.set(name, true);		
 	}
 	public void setStatusUnLiked() 		{	status &= ~(1 << 1); }
@@ -69,21 +69,22 @@ public class ListItem {
 		this.ext = IOOperations.extension(path);
 		this.status = state;
 		this.node = lib_node;
-	}		
+	}
 	
 	public String toString() { return title; }
 	
 	public void exec() {
 		if (Common.raw_flag()) innerExec();
-		else {
+		else {		
 			if (IOOperations.open(file())) {
 				setStatusListened();
 				Common.drop_manager.player_panel.setVisible(false);
+				Common._play_initer.addElem(node.tab, mediaInfo().timeLength);
 			}
 			else innerExec(); 
 		}
 	}
-	
+
 	void innerExec() {
 		try {
 			Common.player.play(file());
@@ -101,7 +102,7 @@ public class ListItem {
 	public void initMedia() { Common.library.ProceedItem(this); }
 	public void delete() {
 		if (node.tab.options.delete_files)
-			Common._trash.AddElem(path, node.tab.options.delete_empty_folders);
+			Common._trash.AddElem(path);
 		node.list.model.removeElement(this);
 		node.freeMemory();
 	}

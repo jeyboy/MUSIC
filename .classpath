@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="lib/outag"/>
 	<classpathentry kind="src" path="lib/jkeymaster"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="audiotagger/|jna/|jkeymaster/|entagged/|jkeymaster/|jkeymaster/|jna/|jna/|audiotagger/|entagged/|javazoom/|javazoom/|basic_player/|jb_player/|audiotagger/|net/|jaad/|outag/|audiotagger/|jaad/|javazoom/" kind="src" path="lib"/>
+	<classpathentry excluding="audiotagger/|jna/|jkeymaster/|entagged/|jkeymaster/|jkeymaster/|jna/|jna/|audiotagger/|entagged/|javazoom/|javazoom/|basic_player/|jb_player/|audiotagger/|net/|jaad/|outag/|audiotagger/|jaad/|javazoom/|jnotify-0.94-src/|jnotify_libs/" kind="src" path="lib"/>
 	<classpathentry kind="lib" path="lib/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jmactritonusspi1.74.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex0.9.7.jar"/>
@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="lib/vorbisspi1.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/jflac-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/jnotify-0.94.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

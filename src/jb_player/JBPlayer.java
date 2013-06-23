@@ -167,25 +167,25 @@ public class JBPlayer implements Runnable {
     //////////////////////////////////////////////////////////    
     
     
-    /** Inits Audio ressources from file. */
+    /** Init Audio resources from file. */
     protected AudioFileFormat initAudioInputStream(File file) throws UnsupportedAudioFileException, IOException {
         m_audioInputStream = AudioSystem.getAudioInputStream(file);
         return AudioSystem.getAudioFileFormat(file);
     }
 
-    /** Inits Audio ressources from URL. */
+    /** Init Audio resources from URL. */
     protected AudioFileFormat initAudioInputStream(URL url) throws UnsupportedAudioFileException, IOException {
         m_audioInputStream = AudioSystem.getAudioInputStream(url);
         return AudioSystem.getAudioFileFormat(url);
     }
 
-    /** Inits Audio ressources from InputStream. */
+    /** Init Audio resources from InputStream. */
     protected AudioFileFormat initAudioInputStream(InputStream inputStream) throws UnsupportedAudioFileException, IOException {
         m_audioInputStream = AudioSystem.getAudioInputStream(inputStream);
         return AudioSystem.getAudioFileFormat(inputStream);
     }    
     
-    /** Inits AudioInputStream and AudioFileFormat from the data source.
+    /** Init AudioInputStream and AudioFileFormat from the data source.
      * @throws JBPlayerException */
     protected void initStream() throws JBPlayerException {
         try {

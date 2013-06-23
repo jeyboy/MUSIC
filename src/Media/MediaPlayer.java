@@ -109,9 +109,9 @@ public class MediaPlayer implements JBPlayerListener {
 				break;				
 			case JBPlayerEvent.EOM :
 		        panel.reset();
-// Play next track
-//		        if (Common.raw_flag())
-//		        	Common.tabber.moveSelectAndInit(true);				
+		        // Play next track
+		        if (Common.tabber.currTab().options.play_next)
+		        	Common.tabber.moveSelectAndInit(true);				
 				break;
 			case JBPlayerEvent.GAIN :
 				System.out.println("gain - value : " + event.getValue() + " - position : " + event.getPosition());

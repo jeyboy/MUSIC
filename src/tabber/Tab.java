@@ -66,18 +66,6 @@ public class Tab extends JScrollPane {
 	
 //	public Catalog getCatalog() { return catalog; }
 	
-	public void Shuffle() {
-//		Collections.shuffle((List<?>)Files.model);
-		
-//		Random rgen = new Random();
-//		for (int i = 0; i < FilesCount(); i++) {
-//			int randomPosition = rgen.nextInt(FilesCount());
-//			ListItem temp = File(i);
-//			files.model.set(i, File(randomPosition));
-//			files.model.set(randomPosition, temp);
-//		}
-	}
-
 	public int filesCount() 			{ return catalog.itemsCount(); }
 	
 	public String getTitle() 			{ return tabhead.getTitle(); }
@@ -88,7 +76,7 @@ public class Tab extends JScrollPane {
 	public void save(PrintWriter pw) {
     	setPlayed(null);
     	
-    	pw.println('*' + options.Serialize() + getTitle());
+    	pw.println('*' + options.serialize() + getTitle());
     	catalog.save(pw);
     	pw.flush();
 	}

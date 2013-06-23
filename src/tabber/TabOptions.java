@@ -3,33 +3,40 @@ package tabber;
 public class TabOptions {
 	public boolean delete_files = false;
 	public boolean interactive = false;
-	public boolean delete_empty_folders = false;
+	public boolean play_next = false;
 	public boolean remote_source = false;
 	
-	public TabOptions(boolean _delete_files, boolean _interactive, boolean _delete_empty_folders, boolean _remote_source) {
+	public TabOptions(boolean _delete_files, boolean _interactive, boolean _play_next, boolean _remote_source) {
 		delete_files = _delete_files;
 		interactive = _interactive;
-		delete_empty_folders = _delete_empty_folders;
+		play_next = _play_next;
 		remote_source = _remote_source;
 	}
-	public TabOptions(char params) { Deserialize(params); }
+	public TabOptions(char params) { deserialize(params); }
 	public TabOptions() {}
 	
-	public String Serialize() {
+	public String toString() {
+		return (remote_source ? "R" : "") +
+			(interactive ? "I" : "") +
+			(delete_files ? "D" : "") +
+			(play_next ? "P" : "");		
+	} 
+	
+	public String serialize() {
 		byte ret = (byte)128;
 		ret |= bc(delete_files) << 0;
 		ret |= bc(interactive) << 1;
-		ret |= bc(delete_empty_folders) << 2;
+		ret |= bc(play_next) << 2;
 		ret |= bc(remote_source) << 3;
 
 		return ((char)ret) + "";
 	}
 	
-	void Deserialize(char params) {
+	void deserialize(char params) {
 		byte temp = (byte)params;
 		delete_files = cb(temp & 1);
 		interactive = cb(temp >> 1 & 1);
-		delete_empty_folders = cb(temp >> 2 & 1);
+		play_next = cb(temp >> 2 & 1);
 		remote_source = cb(temp >> 3 & 1);		
 	}
 	

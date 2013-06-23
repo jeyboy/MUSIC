@@ -54,10 +54,7 @@ public class TabHead {
 	public String getTitle() 			{ return title.getText(); }
 	public void setTitle(String text) 	{ title.setText(text); }
 	String prepareCounter(int count)	{
-		return  (parent.options.remote_source ? "R" : "") +
-				(parent.options.interactive ? "I" : "") +
-				(parent.options.delete_files ? "D" : "") +
-				"(" + count + ")"; 
+		return parent.options + "(" + count + ")"; 
 	}
 	public void setCount(int count) 	{ this.counter.setText(prepareCounter(count));	}
 	public void setStatus(final String status){

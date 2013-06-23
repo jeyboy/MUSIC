@@ -6,17 +6,16 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import service.Common;
+import folders.FolderNode;
+
 import service.Utils;
 
 public class ListPopUp extends JPopupMenu {
 	private static final long serialVersionUID = -8544109534020676273L;
 
-	public ListPopUp(FileList list) { Initialize(list); }
-	
-	public void Initialize(FileList list) {
+	public ListPopUp(FileList list, FolderNode node) {
 		add(AddMenuItem(list, "Show current folder"));
-		add(AddShuffle(list, "Shuffle"));
+		add(AddShuffle(list, node, "Shuffle")); 
 	}
 	
 	JMenuItem AddMenuItem(final FileList list, String text) {
@@ -36,10 +35,10 @@ public class ListPopUp extends JPopupMenu {
 	    return m;
 	}
 	
-	JMenuItem AddShuffle(final FileList list, String text) {
+	JMenuItem AddShuffle(final FileList list, final FolderNode node, String text) {
 	    JMenuItem m = new JMenuItem(text);
 	    m.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) { Common.tabber.currTab().Shuffle(); }
+	    	public void actionPerformed(ActionEvent e) { node.shuffle(); }
 	    });
 	    m.setIcon(Utils.GetIcon("popup/shuffle.png"));
 	    return m;

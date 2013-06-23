@@ -11,12 +11,12 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileSystemView;
-//import javax.swing.filechooser.FileSystemView;
 
 import filelist.FileList;
 import filelist.IconListRenderer;
 import filelist.ListItem;
 import service.Common;
+import java.util.Random;
 import tabber.Tab;
 
 public class FolderNode extends Base {
@@ -118,6 +118,17 @@ public class FolderNode extends Base {
 		for(String f : pathes)
 			addItem(new ListItem(this, f));
 	}
+	
+	public void shuffle() {		
+		Random rgen = new Random();
+		for (int i = 0; i < items.size(); i++) {
+			int randomPosition = rgen.nextInt(items.size());
+			ListItem temp = items.get(i);
+			items.set(i, items.get(randomPosition));
+			items.set(randomPosition, temp);
+		}
+		list.model.repaint(0);
+	}	
 	
 /////////////////////////////////////////////////////////////////////////////////////	
 	public int getPlayedIndex() { return list.model.indexOf(tab.catalog.activeItem); }

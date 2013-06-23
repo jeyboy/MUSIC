@@ -118,7 +118,7 @@ public class NamesLibrary {
 	}
 	
 	public void set(String title, Boolean down) {
-		Errorist.printMessage("Library::Set", title);
+//		Errorist.printMessage("Library::Set", title);
 		if (title.length() == 0) return;
 		put(title, down ? 1 : 0);
 	}
@@ -137,36 +137,36 @@ public class NamesLibrary {
 	public boolean proceedFile(File file) {
 		MediaInfo info = new MediaInfo(file);
 		
-		for(String title : info.Titles)
+		for(String title : info.titles)
 			if (contains(title)) {
-				Errorist.printMessage("Library::ProceedFile", file.getAbsolutePath() + " - Find");
+//				Errorist.printMessage("Library::ProceedFile", file.getAbsolutePath() + " - Find");
 				return true;
 			}
 			else {
 				set(title, false);
-				Errorist.printMessage("Library::ProceedFile", file.getAbsolutePath() + " - Not find");
+//				Errorist.printMessage("Library::ProceedFile", file.getAbsolutePath() + " - Not find");
 			}
 		return false;
 	}
 	
 	public void ProceedItem(ListItem item) {
 //		if (item.state == STATUS.NONE)
-			for(String title : item.mediaInfo().Titles)
+			for(String title : item.mediaInfo().titles)
 				if (contains(title)) {
 					if (get(title)) {
 						item.setStatusLiked();
-						Errorist.printMessage("Library::ProceedItem", item.title + " - Liked");
+//						Errorist.printMessage("Library::ProceedItem", item.title + " - Liked");
 					}
 					else {
 						item.setStatusListened();
-						Errorist.printMessage("Library::ProceedItem", item.title + " - Listened");
+//						Errorist.printMessage("Library::ProceedItem", item.title + " - Listened");
 					}
 					MainWnd.wnd.repaint();
 					break;
 				} 
 	//			else Set(title, false);
 				else {
-					Errorist.printMessage("Library::ProceedItem", item.title + " - Not Find");
+//					Errorist.printMessage("Library::ProceedItem", item.title + " - Not Find");
 				}
 	}
 	
@@ -189,10 +189,10 @@ public class NamesLibrary {
 					if (ext.length() != 0)
 						strLine = strLine.substring(0, strLine.length() - (ext.length() + 1));				
 					
-					String temp = MediaInfo.SitesFilter(strLine);  
-					temp = MediaInfo.SpacesFilter(MediaInfo.ForwardNumberPreFilter(temp));
+					String temp = MediaInfo.sitesFilter(strLine);  
+					temp = MediaInfo.spacesFilter(MediaInfo.forwardNumberPreFilter(temp));
 					set(temp, flag);
-					temp = MediaInfo.ForwardNumberFilter(temp);
+					temp = MediaInfo.forwardNumberFilter(temp);
 					set(temp, flag);					
 				}
 				reader.close();

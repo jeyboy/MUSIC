@@ -30,7 +30,7 @@ public class MenuBar extends JMenuBar {
 	private JTextField title;
 	private JCheckBox delete_with_file;
 	private JCheckBox interactive;
-	private JCheckBox delete_empty_folders;
+	private JCheckBox play_next;
 	private JCheckBox remote_source;
 	JFileChooser fileChooser = new JFileChooser(".");
 	FileDialogFilter dialog_filter = new FileDialogFilter("torrent", "torrent file");
@@ -40,7 +40,7 @@ public class MenuBar extends JMenuBar {
 		title = new JTextField(tit);
 		delete_with_file = new JCheckBox("Delete file with item", del);
 		interactive = new JCheckBox("Interactive tab", inter);
-		delete_empty_folders = new JCheckBox("Delete empty folders", del_ef);
+		play_next = new JCheckBox("Playlist plaing", del_ef);
 		remote_source = new JCheckBox("Source of data is remote", remote);		
 	}
 	void prepareGUI() { prepareGUI("", false, false, false, false); }
@@ -51,21 +51,21 @@ public class MenuBar extends JMenuBar {
 				new ActionBind("add_tab", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						prepareGUI();
-					    Object complexMsg[] = { "Create tab with title", title, new JCheckBox[] {delete_with_file, delete_empty_folders, interactive, remote_source} };		
+					    Object complexMsg[] = { "Create tab with title", title, new JCheckBox[] {delete_with_file, play_next, interactive, remote_source} };		
 						if( Utils.showDialog(MenuBar.this, "Creating drop elem", complexMsg) == JOptionPane.OK_OPTION )
-							Common.tabber.addTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected()));							
+							Common.tabber.addTab(title.getText(), new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), play_next.isSelected(), remote_source.isSelected()));							
 				    }
 				}),
 				new ActionBind("settings", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						Tab tab = Common.tabber.currTab();
 						if (tab == null) return; 
-						prepareGUI(tab.getTitle(), tab.options.delete_files, tab.options.interactive, tab.options.delete_empty_folders, tab.options.remote_source);
-					    Object complexMsg[] = { "Modify tab title", title, delete_with_file, delete_empty_folders, interactive, remote_source };		
+						prepareGUI(tab.getTitle(), tab.options.delete_files, tab.options.interactive, tab.options.play_next, tab.options.remote_source);
+					    Object complexMsg[] = { "Modify tab title", title, delete_with_file, play_next, interactive, remote_source };		
 						if( Utils.showDialog(MenuBar.this, "Modify drop elem", complexMsg) == JOptionPane.OK_OPTION ) {
 							if (title.getText().trim().length() > 0)
 								tab.setTitle(title.getText());
-							tab.options = new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), delete_empty_folders.isSelected(), remote_source.isSelected());
+							tab.options = new TabOptions(delete_with_file.isSelected(), interactive.isSelected(), play_next.isSelected(), remote_source.isSelected());
 							tab.updateCounter();
 						}						
 				    }

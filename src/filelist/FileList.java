@@ -18,7 +18,7 @@ public class FileList extends JList<ListItem> {
     	setCellRenderer(node.listrender);
     	setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     	new FileListEvents(this, node);
-    	setComponentPopupMenu(new ListPopUp(this));
+    	setComponentPopupMenu(new ListPopUp(this, node));
     	setSelectionForeground(Color.white);
 		setBackground(Color.black);
 }
@@ -29,7 +29,7 @@ public class FileList extends JList<ListItem> {
     
 	public ListItem getItemFromCursor() {
 		int index = locationToIndex(getMousePosition());
-		return index < 0 ? null : model.getElementAt(index); 
+		return index < 0 ? null : model.getElementAt(index);
 	}
    
 	// This method is called as the cursor moves within the list.

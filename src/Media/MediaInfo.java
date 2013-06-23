@@ -14,33 +14,33 @@ import outag.formats.Tag;
 import outag.formats.exceptions.CannotReadException;
 
 public class MediaInfo {
-	static public String SitesFilter(String title)				{ return title.replaceAll("([\\(\\[](http:\\/\\/)*(www\\.)*([a-z0-9р-џ])+\\.[a-z]+[\\]\\)])", ""); }
-	static public String ForwardNumberPreFilter(String title)	{ return title.replaceAll("\\A\\d{1,}.|\\(\\w*\\d{1,}\\w*\\)", ""); }
-	static public String SpacesFilter(String title) 			{ return title.replaceAll("[^0-9A-Za-zР-пр-џР-пр-џ]", ""); }
-	static public String ForwardNumberFilter(String title)		{ return title.replaceAll("\\A\\d{1,}", ""); }
+	static public String sitesFilter(String title)				{ return title.replaceAll("([\\(\\[](http:\\/\\/)*(www\\.)*([a-z0-9р-џ])+\\.[a-z]+[\\]\\)])", ""); }
+	static public String forwardNumberPreFilter(String title)	{ return title.replaceAll("\\A\\d{1,}.|\\(\\w*\\d{1,}\\w*\\)", ""); }
+	static public String spacesFilter(String title) 			{ return title.replaceAll("[^0-9A-Za-zР-пр-џР-пр-џ]", ""); }
+	static public String forwardNumberFilter(String title)		{ return title.replaceAll("\\A\\d{1,}", ""); }
 	
 	List<String> Artists = new Vector<String>();
-	public List<String> Titles = new Vector<String>();
-	public List<String> Genres = new Vector<String>();
+	public List<String> titles = new Vector<String>();
+	public List<String> genres = new Vector<String>();
 	
-	public String Bitrate = "Unknow";
-	public String Channels = "Unknow";
-	public String Type = "Unknow";
-	public String SampleRate = "Unknow";
-	public Integer TimeLength = -1;
-	public boolean VariableBitrate = false;
+	public String bitrate = "Unknow";
+	public String channels = "Unknow";
+	public String type = "Unknow";
+	public String sampleRate = "Unknow";
+	public Integer timeLength = 0;
+	public boolean variableBitrate = false;
 	
 	void AddTitleHelper(String gipoTitle) {
-		String temp = SitesFilter(gipoTitle);  
-		temp = SpacesFilter(ForwardNumberPreFilter(temp));
-		if (!Titles.contains(temp)) Titles.add(temp);
-		temp = ForwardNumberFilter(temp);
-		if (!Titles.contains(temp)) Titles.add(temp);
+		String temp = sitesFilter(gipoTitle);  
+		temp = spacesFilter(forwardNumberPreFilter(temp));
+		if (!titles.contains(temp)) titles.add(temp);
+		temp = forwardNumberFilter(temp);
+		if (!titles.contains(temp)) titles.add(temp);
 	}
 	
 	public MediaInfo(File f) {
 		InitInfo(f);
-		Genres.add("default");
+		genres.add("default");
 		String title = f.getName().toLowerCase();
 		String ext = IOOperations.extension(title);
 		
@@ -48,19 +48,19 @@ public class MediaInfo {
 		else AddTitleHelper(IOOperations.name_without_extension(title, ext));
 	}
 	
-	public MediaInfo(	String bitrate, String channels, String type, String samplerate,
-						String length, Boolean variable_bitrate, List<String> genres	) {
-		Bitrate = bitrate;	Channels = channels;	Type = type;	SampleRate = samplerate;
-		TimeLength = Integer.parseInt(length);	VariableBitrate = variable_bitrate;	Genres = genres;
+	public MediaInfo(	String mBitrate, String mChannels, String mType, String samplerate,
+						String length, Boolean variable_bitrate, List<String> mGenres	) {
+		bitrate = mBitrate;	channels = mChannels;	type = mType;	sampleRate = samplerate;
+		timeLength = Integer.parseInt(length);	variableBitrate = variable_bitrate;	genres = mGenres;
 	}
 	
 	@Override
 	public String toString() {
-		return 	"Type \t\t: " + Type + "\n" +
-				"Bitrate \t: " + (VariableBitrate ? "~" : "") + Bitrate + "\n" +
-				"Channels \t: " + Channels + "\n" +
-				"SampleRate \t: " + SampleRate + "\n" +
-				"Time \t\t: " + Utils.TimeFormatter(TimeLength) + "\n";
+		return 	"Type \t\t: " + type + "\n" +
+				"Bitrate \t: " + (variableBitrate ? "~" : "") + bitrate + "\n" +
+				"Channels \t: " + channels + "\n" +
+				"SampleRate \t: " + sampleRate + "\n" +
+				"Time \t\t: " + Utils.TimeFormatter(timeLength) + "\n";
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -78,16 +78,16 @@ public class MediaInfo {
 					AddTitleHelper(t_art.toString().toLowerCase() + "" + t1);
 			}
 				
-			Genres = tag.getGenre();
+			genres = tag.getGenre();
 			
-			Bitrate = "" + f.getBitrate();
-			Channels = "" + f.getChannelNumber();
+			bitrate = "" + f.getBitrate();
+			channels = "" + f.getChannelNumber();
 			
-			SampleRate = "" + f.getSamplingRate();
-			TimeLength = f.getLength();
+			sampleRate = "" + f.getSamplingRate();
+			timeLength = f.getLength();
 			
-			Type = f.getEncodingType();
-			VariableBitrate = f.isVbr();
+			type = f.getEncodingType();
+			variableBitrate = f.isVbr();
 		} 
 		catch (CannotReadException e) { Errorist.printLog(e); }
 	}

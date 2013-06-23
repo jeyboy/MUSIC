@@ -107,7 +107,6 @@ public class PlayerPanel extends JPanel {
 		});		
 	}
 	
-	
     public PlayerPanel() {
 		this.add((play = new RoundButton(Utils.GetIcon("player/play.png"))));
 		this.add((pause = new RoundButton(Utils.GetIcon("player/pause.png"))));

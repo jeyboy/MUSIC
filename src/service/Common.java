@@ -1,7 +1,10 @@
 package service;
 import java.awt.Color;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+
+import components.MainWnd;
 
 import media.MediaPlayer;
 
@@ -13,7 +16,9 @@ import hot_keys.HotKeyManager;
 import service_threads.DropIniter;
 import service_threads.ItemsStateIniter;
 import service_threads.LibraryDumper;
+import service_threads.PlayIniter;
 import service_threads.Trasher;
+import service_threads.Watcher;
 import tabber.Tabber;
 import torrent_window.TorrentWindow;
 
@@ -37,11 +42,21 @@ public class Common {
 	static public DropIniter _drop_initer = new DropIniter();
 	static public Trasher _trash = new Trasher();
 	static public LibraryDumper _library_dumper = new LibraryDumper();
+	static public PlayIniter _play_initer = new PlayIniter();
+	static public Watcher _watcher = null;
 	
 	static public MediaPlayer player = new MediaPlayer();
 	static public TorrentWindow torrent_window = new TorrentWindow();
 	static public NumberFormat formatter = new DecimalFormat("#0.00");
 	static public JBPlayer bplayer;
+	
+	static {
+		try { _watcher = new Watcher();	}
+		catch (IOException e) {
+			MainWnd.setTitle("File system watch are disabled");
+			Errorist.printLog(e);
+		}
+	}
 	
 	static public void shutdown() {
 		_trash.close();
