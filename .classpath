@@ -16,7 +16,11 @@
 	<classpathentry kind="lib" path="lib/vorbisspi1.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/jflac-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
-	<classpathentry kind="lib" path="lib/jnotify-0.94.jar"/>
+	<classpathentry kind="lib" path="lib/jnotify-0.94.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="MUSIC/lib/jnotify_libs"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

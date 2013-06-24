@@ -57,10 +57,10 @@ public class Catalog extends Base {
 	}
 	
 	public void setPlayed(ListItem item) {	
-		if (activeItem != null)
+		if (activeItem != null) {
 			activeItem.setStatusUnPlayed();
-		
-		Common.player.stop();
+			Common.player.stop();
+		}
 		
 		if ((activeItem = item) != null) {
 			activeItem.setStatusPlayed();

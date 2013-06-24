@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
 import components.MainWnd;
 
 import media.MediaPlayer;
@@ -50,7 +49,7 @@ public class Common {
 	static public NumberFormat formatter = new DecimalFormat("#0.00");
 	static public JBPlayer bplayer;
 	
-	static {
+	static {	
 		try { _watcher = new Watcher();	}
 		catch (IOException e) {
 			MainWnd.setTitle("File system watch are disabled");
