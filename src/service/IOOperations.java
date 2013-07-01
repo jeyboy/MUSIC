@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 public class IOOperations {
 	public static PrintWriter getWriter(String path, boolean autoflush, boolean append) throws FileNotFoundException, UnsupportedEncodingException {
     	File f = new File(path);
+    	f.setWritable(true);
 		FileOutputStream fis = new FileOutputStream(f, append);
 		OutputStreamWriter in = new OutputStreamWriter(fis, "UTF-8");
 		return new PrintWriter(in, autoflush);

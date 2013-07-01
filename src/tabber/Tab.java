@@ -64,8 +64,6 @@ public class Tab extends JScrollPane {
 	public void execNext(boolean next) { catalog.execNext(next); }
 	public void execCurrOrFirst() { catalog.execCurrOrFirst(); }	
 	
-//	public Catalog getCatalog() { return catalog; }
-	
 	public int filesCount() 			{ return catalog.itemsCount(); }
 	
 	public String getTitle() 			{ return tabhead.getTitle(); }

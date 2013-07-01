@@ -68,7 +68,10 @@ public class Catalog extends Base {
 			activeItem.getList().setSelectedValue(activeItem, false);
 			activeItem.getList().model.repaint(activeItem.getList().model.indexOf(activeItem));
 		}
-		else root.tab.pane.repaint();		
+		else {
+			try { root.tab.pane.repaint(); }
+			catch(Exception e) {}
+		}
 	}
 
 	public void execCurrOrFirst() {

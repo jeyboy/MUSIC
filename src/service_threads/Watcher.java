@@ -2,10 +2,13 @@ package service_threads;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
-import net.contentobjects.jnotify.JNotify;
-import net.contentobjects.jnotify.JNotifyException;
-import net.contentobjects.jnotify.JNotifyListener;
+import java.util.List;
 
 import filelist.ListItem;
 import folders.FolderNode;
@@ -16,84 +19,83 @@ import service.Utils;
 
 public class Watcher extends BaseThread {
 	ArrayList<WatchCell> path_collection = new ArrayList<WatchCell>();
+	WatchService watcher;
 	
-    public Watcher() throws IOException {   	
+    public Watcher() throws IOException {
+    	watcher = FileSystems.getDefault().newWatchService();
+    	
 //		this.setDaemon(true);
 		setPriority(Thread.MIN_PRIORITY);
     	start();
     }
 
     synchronized public void run() { routing(); }
-       
+    
+    WatchKey registerWatcher(File f) throws IOException, InterruptedException {
+        return f.toPath().register(watcher, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE,
+        		StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.OVERFLOW);   	
+    }
+    
     public void addElem(FolderNode folder) {
-    	System.out.println(folder.fullPath());
     	File f = new File(folder.fullPath());
     	if (f.exists()) {
-    		try { path_collection.add(new WatchCell(folder)); }
-    		catch (JNotifyException e) { Errorist.printLog(e); }
+    		try { path_collection.add(new WatchCell(folder, registerWatcher(f))); }
+    		catch (IOException | InterruptedException e) { Errorist.printLog(e); }
     	}
     }
 
     void routing() {
-    	while(!closeRequest()) { sleepy(); }
-    	
-    	for(int loop1 = path_collection.size() - 1; loop1 >= 0 ; loop1--) {
-			try { path_collection.get(loop1).stopWatching(); }
-			catch (JNotifyException e) { Errorist.printLog(e); }	
+    	WatchCell temp;
+    	while(!closeRequest()) {
+            while(path_collection.size() > 0) {
+            	for(int loop1 = path_collection.size() - 1; loop1 >= 0 ; loop1--) {
+	            	if (closeRequest()) return;
+	            	while(locked) sleepy();
+	            	
+	            	temp = path_collection.get(loop1);
+	            	
+	    	        List<WatchEvent<?>> events = temp.watchKey.pollEvents();
+	    	        for (WatchEvent<?> event : events) {
+	    	             if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
+	    	                 System.out.println("Created: " + event.context().toString());	    	                 
+	    	                 temp.folder.addFiles(Utils.joinPaths(temp.watchKey.watchable().toString(), event.context().toString()));
+	    	             }
+	    	             
+	    	             if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE) {
+	    	                 System.out.println("Delete: " + event.context().toString());
+	    	                 
+	    	                 System.out.println("delete");
+	    	                 ListItem item = temp.findItem(event.context().toString());
+	    	                 if (item != null)
+	    	                	 item.delete();	    	                 
+	    	             }
+	    	             
+	    	             if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY) {
+//	    	                 System.out.println("Modify: " + event.context().toString());
+	    	             }
+	    	             
+	    	             if (event.kind() == StandardWatchEventKinds.OVERFLOW) {
+	    	                 System.out.println("Overflow: " + event.context().toString());
+	    	             }	             
+	    	         }	            	
+            	}
+            }
+
+            sleepy();
     	}
-    }
+    }  
     
     class WatchCell {
-    	int watchID;
+    	WatchKey watchKey;
+    	FolderNode folder;
     	
-    	public WatchCell(FolderNode t) throws JNotifyException {
-    	    // watch mask, specify events you care about,
-    	    // or JNotify.FILE_ANY for all events.
-    	    int mask = JNotify.FILE_CREATED  | 
-    	               JNotify.FILE_DELETED  | 
-//    	               JNotify.FILE_MODIFIED | 
-    	               JNotify.FILE_RENAMED;
-
-    	    // watch subtree?
-    	    boolean watchSubtree = false;
-    	    watchID = JNotify.addWatch(t.fullPath(), mask, watchSubtree, new Listener(t));
+    	public WatchCell(FolderNode t, WatchKey key) {
+    		folder = t;
+    		watchKey = key;
     	}
     	
-    	public boolean stopWatching() throws JNotifyException {
-    		return JNotify.removeWatch(watchID);
-    	}
-    }
-    
-    class Listener implements JNotifyListener {
-    	FolderNode node;
-    	
-    	public Listener(FolderNode folder) { node = folder;	} 
-    	
-        public void fileRenamed(int wd, String rootPath, String oldName, String newName) {
-        	System.out.println("rename");
-        	ListItem item = findItem(oldName);
-        	if (item != null) {
-        		item.title = IOOperations.filename(newName);
-        		item.ext = IOOperations.extension(newName);
-        	}
-        }
-        
-        public void fileDeleted(int wd, String rootPath, String name) {
-        	System.out.println("delete");
-        	ListItem item = findItem(name);
-        	if (item != null)
-        		item.delete();
-        }
-        
-        public void fileCreated(int wd, String rootPath, String name) {
-        	System.out.println("create");
-        	node.addFiles(Utils.joinPaths(rootPath, name));
-        }
-        
-        public void fileModified(int wd, String rootPath, String name) {}
-        
         ListItem findItem(String name) {
-        	return node.list.model.findByTitle(IOOperations.filename(name));
-        }
-    }    
+        	return folder.list.model.findByTitle(IOOperations.filename(name));
+        }    	
+    }
 }

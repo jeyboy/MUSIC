@@ -34,13 +34,12 @@ public class FileList extends JList<ListItem> {
    
 	// This method is called as the cursor moves within the list.
     public String getToolTipText(MouseEvent evt) {
-//      int index = locationToIndex(evt.getPoint());
-//      if (index > -1) {
-//	      ListItem item = (ListItem)getModel().getElementAt(index);
-//	      return item == null ? "" : item.media_info.toString();
-//      }
-//      return null;
-    	return "Temporary disabled";
+      int index = locationToIndex(evt.getPoint());
+      if (index > -1) {
+	      ListItem item = (ListItem)getModel().getElementAt(index);
+	      return item == null ? "" : item.mediaInfo().toString();
+      }
+      return null;
     }	
 }
 

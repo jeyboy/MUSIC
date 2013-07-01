@@ -56,11 +56,11 @@ public class MediaInfo {
 	
 	@Override
 	public String toString() {
-		return 	"Type \t\t: " + type + "\n" +
-				"Bitrate \t: " + (variableBitrate ? "~" : "") + bitrate + "\n" +
-				"Channels \t: " + channels + "\n" +
-				"SampleRate \t: " + sampleRate + "\n" +
-				"Time \t\t: " + Utils.TimeFormatter(timeLength) + "\n";
+		return 	"<html>Type : " + type + "<br>" +
+				"Bitrate : " + (variableBitrate ? "~" : "") + bitrate + "<br>" +
+				"Channels : " + channels + "<br>" +
+				"SampleRate : " + sampleRate + "<br>" +
+				"Time : " + Utils.TimeFormatter(timeLength) + "</html>";
 	}
 	
 	@SuppressWarnings("unchecked")

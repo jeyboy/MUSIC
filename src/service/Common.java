@@ -3,6 +3,9 @@ import java.awt.Color;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+
+import javax.swing.UIManager;
+
 import components.MainWnd;
 
 import media.MediaPlayer;
@@ -55,6 +58,9 @@ public class Common {
 			MainWnd.setTitle("File system watch are disabled");
 			Errorist.printLog(e);
 		}
+		
+		UIManager.put("ToolTip.background", Color.darkGray);
+		UIManager.put("ToolTip.foreground", Color.white);
 	}
 	
 	static public void shutdown() {
