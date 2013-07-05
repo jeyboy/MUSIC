@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +41,14 @@ public class Utils {
 		return IOOperations.path(path, '/');
 	}
 	static String WindowsProgramPath() { return System.getProperty("user.dir"); }
-	static public String ProgramPath() { return isWindows() ? WindowsProgramPath() : UnuxProgramPath(); }
+	static public String ProgramPath() {
+		if (isWindows())
+			return WindowsProgramPath();
+		else {
+			try { return URLDecoder.decode(ClassLoader.getSystemClassLoader().getResource(".").getPath(), "UTF-8"); }
+			catch (UnsupportedEncodingException e) { return UnuxProgramPath(); }			
+		}			
+	}
     
     //////////////////////////////////////////////////
     
