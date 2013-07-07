@@ -48,7 +48,7 @@ public class FolderNode extends Base {
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		pane.setBorder(
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createEmptyBorder(0, add_area ? 4 : 1, 0, 0),
+						BorderFactory.createEmptyBorder(0, add_area ? 5 : 1, 0, 0),
 						BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true)
 				)
 		);

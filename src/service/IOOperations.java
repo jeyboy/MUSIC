@@ -15,7 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -135,13 +135,13 @@ public class IOOperations {
 	    dt.mail(document);
 	}	
 		
-	public static Collection<File> scanDirectories(File[] IOItems) {
-	    final Collection<File> all = new ArrayList<File>();
+	public static ArrayList<File> scanDirectories(File[] IOItems) {
+	    final ArrayList<File> all = new ArrayList<File>();
 	    for(File item:IOItems) addFilesRecursively(item, all);
 	    return all;
 	}
 	
-	private static void addFilesRecursively(File file, Collection<File> all) {
+	private static void addFilesRecursively(File file, ArrayList<File> all) {
 	    final File[] children = file.listFiles();
 	    if (children != null)
 	        for (File child : children) addFilesRecursively(child, all);
@@ -169,14 +169,13 @@ public class IOOperations {
 
 	public static String path(String fullPath) {
 		int sep = fullPath.lastIndexOf(File.separatorChar);
-		return fullPath.substring(0, sep);
-	}
-	
-	public static String path(String fullPath, Character separator) {
-		int sep = fullPath.lastIndexOf('/');
-		fullPath = fullPath.substring(0, sep);		
+		fullPath = fullPath.substring(0, sep);
 		try { fullPath = URLDecoder.decode(fullPath, "UTF-8");}
 		catch (UnsupportedEncodingException e1) { e1.printStackTrace();}
-		return fullPath;
-	}	
+		return fullPath;		
+	}
+	
+	public static String [] splitPath(String path) {
+		return path.split(Pattern.quote(File.separator));
+	}
 }

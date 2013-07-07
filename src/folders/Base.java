@@ -24,6 +24,11 @@ public abstract class Base {
 	};
 
 	public Base(Tab container) { tab = container; }
+
+	public FolderNode find(String folder) {
+		int i = folders.indexOf(folder);
+		return i == -1 ? null : folders.get(i);
+	}
 	
 	public abstract void save(PrintWriter pw);
 }

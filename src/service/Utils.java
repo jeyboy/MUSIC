@@ -38,7 +38,7 @@ public class Utils {
     
 	static String UnuxProgramPath() {
 		String path = Constants.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		return IOOperations.path(path, '/');
+		return IOOperations.path(path);
 	}
 	static String WindowsProgramPath() { return System.getProperty("user.dir"); }
 	static public String ProgramPath() {

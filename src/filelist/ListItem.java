@@ -83,6 +83,8 @@ public class ListItem {
 			}
 			else innerExec(); 
 		}
+		getList().setSelectedValue(this, false);
+		getList().model.repaint(getList().model.indexOf(this));		
 	}
 
 	void innerExec() {

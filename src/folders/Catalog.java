@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 
 import filelist.ListItem;
 import service.Common;
+import service.IOOperations;
 import tabber.Tab;
 
 public class Catalog extends Base {
@@ -18,38 +19,56 @@ public class Catalog extends Base {
 	public void iterateCount() { ++itemsCount; tab.updateCounter(); }
 	public void deiterateCount() { --itemsCount; tab.updateCounter(); }
 
-//	FolderNode buildPath(String ... levels) {
-//		FolderNode node = null;
-//		
-//		for(String level : levels) {
-//			if (node == null)
-//				node = getNode(level);
-//		}
-//		
-//		return root;
+	FolderNode buildNodeBranch(FolderNode root_node, String [] levels, int start_index) {
+		for(int loop1 = start_index; loop1 < levels.length; loop1++)
+			root_node = new FolderNode(root_node, levels[loop1]);
+		return root_node;
+	}
 	
-	public FolderNode getNode(String root_path) {
+	public FolderNode getNode(String path) {
 		FolderNode node;
 		
-//TODO:	use list of full paths for search
-		int pos = folders.indexOf(root_path);
-		if (pos == -1) {
-			sincronizeTail();
-			node = new FolderNode(tab, root_path);
-
-			folders.add(node);
-			if (root == null) 
-				last = root = node;
-			else {
-				last.next = node;
-				node.prev = last;
-				last = node;
+		String [] levels = IOOperations.splitPath(path);
+		node = find(levels[0]);
+		
+		if (node == null)
+			node = buildNodeBranch(createNode(levels[0]), levels, 1);
+		else {
+			FolderNode temp;
+			for(int loop1 = 1; loop1 < levels.length; loop1++) {
+				temp = node.find(levels[loop1]);
+				if (temp == null) {
+					node = buildNodeBranch(node, levels, loop1);
+					break;
+				}
+				else node = temp;
 			}
 		}
-		else node = folders.get(pos);
+		
 		return node;
-	}	
+	}
 	
+//	public FolderNode getNode(String root_path) {
+//		FolderNode node;
+//		
+//		int pos = folders.indexOf(root_path);
+//		if (pos == -1) {
+//			sincronizeTail();
+//			node = new FolderNode(tab, root_path);
+//
+//			folders.add(node);
+//			if (root == null) 
+//				last = root = node;
+//			else {
+//				last.next = node;
+//				node.prev = last;
+//				last = node;
+//			}
+//		}
+//		else node = folders.get(pos);
+//		return node;
+//	}	
+//	
 	public FolderNode addItem(String root_path, String ... pathes) {
 		FolderNode node = getNode(root_path);		
 		node.addFiles(pathes);
@@ -65,8 +84,6 @@ public class Catalog extends Base {
 		if ((activeItem = item) != null) {
 			activeItem.setStatusPlayed();
 			activeItem.exec();
-			activeItem.getList().setSelectedValue(activeItem, false);
-			activeItem.getList().model.repaint(activeItem.getList().model.indexOf(activeItem));
 		}
 		else {
 			try { root.tab.pane.repaint(); }
@@ -158,9 +175,27 @@ public class Catalog extends Base {
     		folder.save(pw);
 	}
 	
+	FolderNode createNode(String path) {
+		sincronizeTail();
+		FolderNode node = new FolderNode(tab, path);
+		appendNode(node);
+		return node;
+	}
+	
 	void sincronizeTail() {
 		if (last == null) return;
 		while(last.next != null)
 			last = last.next;
+	}
+	
+	void appendNode(FolderNode node) {
+		folders.add(node);
+		if (root == null) 
+			last = root = node;
+		else {
+			last.next = node;
+			node.prev = last;
+			last = node;
+		}		
 	}	
 }
