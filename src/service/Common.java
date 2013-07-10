@@ -29,7 +29,7 @@ public class Common {
 	static public boolean save_flag = false;
 	static public boolean is_loading = false;
 	static public boolean raw_flag() {
-		try { return drop_manager.player_panel.isVisible(); }
+		try { return drop_manager.top_panel.isVisible(); }
 		catch(Exception e) { return false;}
 	}
 	

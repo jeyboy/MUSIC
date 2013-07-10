@@ -82,7 +82,7 @@ public class MenuBar extends JMenuBar {
 				}),
 				new ActionBind("player", new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Common.drop_manager.player_panel.setVisible(!Common.drop_manager.player_panel.isVisible());
+						Common.drop_manager.top_panel.setVisible(!Common.drop_manager.top_panel.isVisible());
 					}
 				}),				
 				new ActionBind("torrent", new ActionListener() {

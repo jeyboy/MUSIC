@@ -66,9 +66,8 @@ public class PlayerPanel extends JPanel {
 	}
 	
 	void GUI() {
-		setVisible(false);
     	setBackground(Common.color_background);
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		trackProp();
 		volumeProp();
 	}
@@ -118,6 +117,7 @@ public class PlayerPanel extends JPanel {
 		
 		this.add(new Label("Volume", 20, 4)).setVisible(false);
 		this.add((volume = new JSlider(0, 100))).setVisible(false);
+				
 		GUI();
 		Events();
 		Common.player.setPanel(this);

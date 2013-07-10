@@ -74,11 +74,12 @@ public class ListItem {
 	public String toString() { return title; }
 	
 	public void exec() {
+		Common.drop_manager.top_panel.setTitle(title);
 		if (Common.raw_flag()) innerExec();
 		else {		
 			if (IOOperations.open(file())) {
 				setStatusListened();
-				Common.drop_manager.player_panel.setVisible(false);
+				Common.drop_manager.top_panel.setVisible(false);
 				Common._play_initer.addElem(node.tab, mediaInfo().timeLength);
 			}
 			else innerExec(); 
@@ -91,7 +92,7 @@ public class ListItem {
 		try {
 			Common.player.play(file());
 			setStatusListened();
-			Common.drop_manager.player_panel.setVisible(true);
+			Common.drop_manager.top_panel.setVisible(true);
 		}
 		
 		catch (Exception e2) { 

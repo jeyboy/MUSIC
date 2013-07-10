@@ -54,9 +54,9 @@ public class MainWnd {
         procElem(c, 0, 0, 1, 7, wnd.add(Common.drop_manager.drop_left));       
         procElem(c, 4, 0, 1, 7, wnd.add(Common.drop_manager.drop_right));
         
+        c.ipady = 5;
+        procElem(c, 1, 0, 3, 1, wnd.add(Common.drop_manager.top_panel));
         c.ipady = 20;
-        
-        procElem(c, 1, 0, 3, 1, wnd.add(Common.drop_manager.player_panel));       
         procElem(c, 1, 1, 3, 1, wnd.add(Common.drop_manager.drop_top));       
         
         c.ipady = 20;

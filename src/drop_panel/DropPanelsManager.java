@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 
-import media.PlayerPanel;
+import media.TopPanel;
 
 
 import controls.ArrowButton;
@@ -22,7 +22,7 @@ public class DropPanelsManager {
 	public DropPanel drop_top = new DropPanel();
 	public DropPanel drop_bottom = new DropPanel();
 	public DropPanel drop_right = new DropPanel(90);
-	public PlayerPanel player_panel = new PlayerPanel();
+	public TopPanel top_panel = new TopPanel();
 	
 	public ArrowButton arrow_left = new ArrowButton(SwingConstants.WEST); //LEFT
 	public ArrowButton arrow_top = new ArrowButton(SwingConstants.NORTH); //TOP
@@ -54,7 +54,7 @@ public class DropPanelsManager {
 		});
 		
 		arrow_player.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) { ToogleDrop(player_panel); }
+			public void actionPerformed(ActionEvent e) { ToogleDrop(top_panel); }
 		});				
 	}		
 	
@@ -82,7 +82,7 @@ public class DropPanelsManager {
 		drop_top.setVisible(false);
 		drop_bottom.setVisible(false);
 		drop_right.setVisible(false);
-		player_panel.setVisible(false);
+		top_panel.setVisible(false);
 		wnd.revalidate();
 	}
 }
