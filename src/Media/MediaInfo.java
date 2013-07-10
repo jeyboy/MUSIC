@@ -56,7 +56,9 @@ public class MediaInfo {
 	
 	@Override
 	public String toString() {
-		return 	"<html>Type : " + type + "<br>" +
+		return 	"<html> " + titles.get(0) + "<br>" +
+				"Genre : " + genres.get(0) + "<br>" +
+				"Type : " + type + "<br>" +
 				"Bitrate : " + (variableBitrate ? "~" : "") + bitrate + "<br>" +
 				"Channels : " + channels + "<br>" +
 				"SampleRate : " + sampleRate + "<br>" +
