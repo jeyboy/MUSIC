@@ -3,6 +3,7 @@ package filelist;
 import java.io.File;
 import java.util.Date;
 
+import components.MainWnd;
 import folders.FolderNode;
 
 import media.MediaInfo;
@@ -74,6 +75,8 @@ public class ListItem {
 	public String toString() { return title; }
 	
 	public void exec() {
+		MainWnd.updateInfo(title);
+		
 		if (Common.raw_flag()) innerExec();
 		else {		
 			if (IOOperations.open(file())) {

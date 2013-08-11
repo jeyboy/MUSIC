@@ -17,6 +17,8 @@ import service_threads.DropIniter;
 import service_threads.ItemsStateIniter;
 import service_threads.LibraryDumper;
 import service_threads.PlayIniter;
+import service_threads.RunStr;
+import service_threads.Runner;
 import service_threads.Trasher;
 import service_threads.Watcher;
 import tabber.Tabber;
@@ -44,6 +46,8 @@ public class Common {
 	static public LibraryDumper _library_dumper = new LibraryDumper();
 	static public PlayIniter _play_initer = new PlayIniter();
 	static public Watcher _watcher = null;
+	static public RunStr run_str = null;
+	static public Runner runner = new Runner();
 	
 	static public MediaPlayer player = new MediaPlayer();
 	static public TorrentWindow torrent_window = new TorrentWindow();
@@ -56,6 +60,7 @@ public class Common {
 			MainWnd.setTitle("File system watch are disabled");
 			Errorist.printLog(e);
 		}
+		run_str = new RunStr();
 	}
 	
 	static public void shutdown() {

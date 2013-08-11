@@ -22,7 +22,7 @@ public class LibraryDumper extends BaseThread {
     		synchronized(Common.library) {
     			System.out.println("Try dump library at " + new Date());
     			int res = Common.library.save();
-    			MainWnd.setTitle(new SimpleDateFormat("HH:mm").format(new Date()) + ": Saved - " + res);
+    			MainWnd.setTitle(new SimpleDateFormat("HH:mm").format(new Date()) + ": Saved - " + res, 5000);
     		}	            		
     		
     		sleepy(60000);

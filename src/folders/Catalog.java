@@ -83,7 +83,7 @@ public class Catalog extends Base {
 		
 		if ((activeItem = item) != null) {
 			activeItem.setStatusPlayed();
-			activeItem.exec();
+			Common.runner.AddElem(activeItem);
 		}
 		else {
 			try { root.tab.pane.repaint(); }

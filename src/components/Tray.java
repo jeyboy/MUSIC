@@ -10,11 +10,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import service.ActionBind;
+import service.Common;
 import service.Errorist;
 import service.Utils;
+import tabber.Tabber;
 
 public class Tray {
 	static TrayIcon trayIcon;
+	public static String title = "none";
 	
 	static PopupMenu BuildMenu() {
 		return Utils.BuildMenu(
@@ -27,15 +30,15 @@ public class Tray {
 		);
 	}
 	
-	static void TrayIconInitialization()
-	{
+	static void TrayIconInitialization() {
 		trayIcon = new TrayIcon(Utils.GetImage("tray.png"), "(O_o)");
 		
 		trayIcon.setImageAutoSize(true);
 		trayIcon.addMouseMotionListener(new MouseMotionListener() {
 	        public void mouseDragged(MouseEvent e) 	{}
 	        public void mouseMoved(MouseEvent e) {
-	        	MainWnd.Show();	        	
+	        	MainWnd.Show();
+	        	trayIcon.setToolTip(title);
 	        	
 //	        	ListItem temp_li = Common.tabber.GetCurrentItem();
 //	        	String temp = temp_li == null ? "None" : temp_li.title;

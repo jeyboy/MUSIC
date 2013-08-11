@@ -54,9 +54,10 @@ public class MainWnd {
         procElem(c, 0, 0, 1, 7, wnd.add(Common.drop_manager.drop_left));       
         procElem(c, 4, 0, 1, 7, wnd.add(Common.drop_manager.drop_right));
         
-        c.ipady = 20;
+        c.ipady = 5;
         
-        procElem(c, 1, 0, 3, 1, wnd.add(Common.drop_manager.player_panel));       
+        procElem(c, 1, 0, 3, 1, wnd.add(Common.drop_manager.player_panel));
+        c.ipady = 20;
         procElem(c, 1, 1, 3, 1, wnd.add(Common.drop_manager.drop_top));       
         
         c.ipady = 20;
@@ -162,4 +163,17 @@ public class MainWnd {
 	}
 	
 	static public void setTitle(String title) { ((JFrame)wnd).setTitle(title);	}
+	static public void setTitle(String title, int delay) {
+		Common.run_str.delay(delay);
+		try { Thread.currentThread().sleep(100); }
+		catch (InterruptedException e) { e.printStackTrace(); }
+		((JFrame)wnd).setTitle(title);	
+	}
+	static public String getTitle() { return ((JFrame)wnd).getTitle();	}
+	
+	static public void updateInfo(String title) {
+		Tray.title = title;
+		MainWnd.setTitle(title);
+		Common.run_str.update();
+	}
 }
