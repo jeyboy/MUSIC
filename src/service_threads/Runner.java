@@ -23,7 +23,7 @@ public class Runner extends BaseThread {
             	temp = null;
             }
             
-            sleepy();
+            sleepy(100);
     	}
     }
 }
